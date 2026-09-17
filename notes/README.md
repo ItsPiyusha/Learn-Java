@@ -22,8 +22,8 @@ try {
 } catch (Exception e) {    // robust error handling
 }
 ```
-Simple -> **Java doesn't support complex features in cpp like multiple inheritance, operator overloading**
-Robust -> **doesn't allow pointer arithmetic**
+Simple -> Java doesn't support complex features in cpp like multiple inheritance, operator overloading
+Robust -> doesn't allow pointer arithmetic
 ---
 
 ### 3. Secure
