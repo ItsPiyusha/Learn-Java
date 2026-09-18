@@ -3,10 +3,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "HelloWorld",
+            "name": "Run Sum",
             "request": "launch",
-            "mainClass": "HelloWorld",
-            "args": "Piyusha"
+            "mainClass": "java01.Sum",
+            "args": "10 20"
         }
     ]
 }

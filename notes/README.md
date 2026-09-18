@@ -1598,3 +1598,373 @@ public     → Anyone
 **Access modifier vs access specifier:** In Java interviews, people often use these terms interchangeably. Technically, Java documentation commonly refers to them as **access control/access modifiers**.
 
 And remember: **`private`, `protected`, and `public` are keywords; “default access” means you write no modifier.**
+
+* API -> Application Programmer Interface
+* Package -> collection of functionally similar classes
+* java.lang package by default available always inherently
+* import -> to avail
+* syntax of import outside of class always
+* Java follows single root inherentance hierarchy-> all classes implicitly extend **Object class**
+* System-> static class having fields in, out
+* out has type PrintStream(from java.io package) which is another class shows -> HAS-A relationship
+* src -> java files
+* bin -> .class files
+* to generate .class files in bin folder use command -> javac -d ..\bin File.java
+* ```cd ..\bin``` (go to bin folder to run the class file) -> ```java File``` (case - sensitive file name)
+
+* Java is both compiled and interpreted language
+* it is platform independent because JVM is platform specific - .class files will be platform independent -> JVM creates platform specific bytecodes
+* JDK = Java dev tools(javac, java, javap, jar,jar signer, appletviewer) + JRE( Java API libs ) + JVM (containing 1. class loader, 2. Interpreter, 3. JIT compiler, 4. HotSpot profiler)
+* Java src code -->(Java compiler) --> ByteCode -->(JIT compiler) --> Native code 
+* class files -> class loader -><- Runtime data areas(Method area + Heap + Java stacks + PC registers + Native method stacks) -><- Execution Engine -><- Native method interface -> native method library
+* Java Hot Spot -> adaptive learning like AI
+* main function expects String, we'll parse string to num to calculate the sum and avoid concatenation
+CoreJava/src/java01/Sum.java
+```
+package java01;
+
+public class Sum {
+    public static void main(String[] ss){
+        int num1 = Integer.parseInt(ss[0]);
+        int num2 = Integer.parseInt(ss[1]);
+        System.out.println("Sum="+(num1 + num2));
+    }
+}
+```
+```
+piyushalomte@Piyushas-MacBook-Pro ~ % cd Documents
+piyushalomte@Piyushas-MacBook-Pro Documents % cd Learn-Java
+piyushalomte@Piyushas-MacBook-Pro Learn-Java % code . 
+piyushalomte@Piyushas-MacBook-Pro Learn-Java % mkdir -p CoreJava/bin/java01
+piyushalomte@Piyushas-MacBook-Pro Learn-Java % javac -d CoreJava/bin CoreJava/src/java01/Sum.java
+piyushalomte@Piyushas-MacBook-Pro Learn-Java % java -cp CoreJava/bin java01.Sum 10 20
+Sum=30
+```
+the flow is 
+```text
+Sum.java
+   │
+   │ javac
+   ▼
+Sum.class
+   │
+   │ java + arguments
+   ▼
+output: 30
+```
+
+
+# Java Data Types
+
+## Definition
+
+A data type defines what kind of value a variable can store and what operations can be performed on that value.
+
+Java is **statically typed**, so a variable's type is known at compile time.
+
+```text
+Java Data Types
+│
+├── Primitive
+│   ├── byte
+│   ├── short
+│   ├── int
+│   ├── long
+│   ├── float
+│   ├── double
+│   ├── char
+│   └── boolean
+│
+└── Reference
+    ├── Class/Object
+    ├── String
+    ├── Array
+    ├── Interface
+    ├── Enum
+    └── Record
+```
+
+## 1. Primitive Types
+
+| Type      |                         Size | Typical use                         |
+| --------- | ---------------------------: | ----------------------------------- |
+| `byte`    |                        8-bit | Small integers                      |
+| `short`   |                       16-bit | Rare in application code            |
+| `int`     |                       32-bit | Default integer choice              |
+| `long`    |                       64-bit | Large integers / IDs                |
+| `float`   |                       32-bit | Lower-precision decimal             |
+| `double`  |                       64-bit | General floating-point calculations |
+| `char`    |                       16-bit | Single UTF-16 code unit             |
+| `boolean` | JVM-dependent representation | `true` / `false`                    |
+
+### Practical choices
+
+```text
+Normal integer       → int
+Large integer / ID   → long
+Floating point       → double
+Money                → BigDecimal
+Boolean              → boolean
+Text                 → String
+Single character     → char
+```
+
+**Do not use `double` for financial amounts. Use `BigDecimal`.**
+
+```java
+BigDecimal amount = new BigDecimal("100.50");
+```
+
+Avoid:
+
+```java
+new BigDecimal(100.50); // may capture binary floating-point approximation
+```
+
+## 2. Reference Types
+
+Reference variables refer to objects.
+
+```java
+BankAccount account = new BankAccount();
+String name = "Piyusha";
+int[] amounts = {100, 200, 500};
+```
+
+Common reference types:
+
+* Classes
+* Objects
+* Arrays
+* Interfaces
+* Strings
+* Enums
+* Records
+
+Example:
+
+```java
+List<String> names = new ArrayList<>();
+```
+
+`List` is the reference type/interface and `ArrayList` is the implementation.
+
+## 3. Primitive vs Reference
+
+| Primitive        | Reference                                |
+| ---------------- | ---------------------------------------- |
+| 8 built-in types | Classes, arrays, interfaces, enums, etc. |
+| Stores a value   | Holds a reference to an object           |
+| Cannot be `null` | Can be `null`                            |
+| `int`            | `Integer`                                |
+| `double`         | `Double`                                 |
+| `boolean`        | `Boolean`                                |
+
+## 4. Wrapper Classes
+
+```text
+byte      → Byte
+short     → Short
+int       → Integer
+long      → Long
+float     → Float
+double    → Double
+char      → Character
+boolean   → Boolean
+```
+
+Collections use wrapper types because generics work with reference types:
+
+```java
+List<Integer> numbers = new ArrayList<>();
+```
+
+Not:
+
+```java
+List<int> numbers; // invalid
+```
+
+### Autoboxing / Unboxing
+
+```java
+Integer x = 100; // autoboxing
+int y = x;       // unboxing
+```
+
+Autoboxing and generics were introduced in **Java 5**.
+
+## 5. `null`
+
+Primitives cannot be `null`:
+
+```java
+int age = null;       // invalid
+```
+
+Reference variables can:
+
+```java
+Integer age = null;   // valid
+String name = null;   // valid
+```
+
+`null` means a reference currently refers to no object.
+
+## 6. Default Values
+
+Instance/static fields receive default values:
+
+```text
+byte/short/int   → 0
+long             → 0L
+float            → 0.0f
+double           → 0.0d
+char             → '\u0000'
+boolean          → false
+reference        → null
+```
+
+Local variables do **not** receive automatic default values.
+
+```java
+void test() {
+    int count;
+    System.out.println(count); // compile-time error
+}
+```
+
+## 7. Type Conversion
+
+### Widening — automatic
+
+```java
+int x = 100;
+long y = x;
+```
+
+### Narrowing — explicit cast
+
+```java
+long x = 100;
+int y = (int) x;
+```
+
+Narrowing can lose information:
+
+```java
+double amount = 100.99;
+int value = (int) amount;
+
+// value = 100
+```
+
+## 8. Overflow
+
+```java
+int x = 2_147_483_647;
+x++;
+```
+
+The value wraps around because the maximum `int` value was exceeded.
+
+Use `long` when the domain requires a larger integer range.
+
+## 9. Banking Project Examples
+
+```java
+class Customer {
+    long customerId;
+    String name;
+    String email;
+    boolean active;
+}
+```
+
+```java
+class BankAccount {
+    long accountId;
+    String accountNumber;
+    BigDecimal balance;
+    boolean active;
+}
+```
+
+```java
+class Transaction {
+    long transactionId;
+    long accountId;
+    BigDecimal amount;
+    TransactionStatus status;
+}
+```
+
+```java
+enum TransactionStatus {
+    PENDING,
+    SUCCESS,
+    FAILED
+}
+```
+
+### Senior-level rule
+
+Choose a type based on:
+
+1. Meaning of the value
+2. Required range
+3. Required precision
+4. Database type
+5. API contract
+6. Whether absence (`null`) is meaningful
+
+## Interview Answer
+
+> "Java data types define what kind of value a variable can store. Java is statically typed, so types are checked at compile time. Data types are broadly divided into primitive and reference types. Java has eight primitive types: byte, short, int, long, float, double, char, and boolean. Reference types include classes, arrays, interfaces, enums, records, and other objects. Primitive variables represent values directly, while reference variables refer to objects. Java also provides wrapper classes such as Integer and Long when an object representation is required."
+
+## Quick Interview Questions
+
+**Q: How many primitive types does Java have?**
+
+8.
+
+**Q: Is String a primitive?**
+
+No. `String` is a class/reference type.
+
+**Q: Can int store null?**
+
+No.
+
+**Q: Can Integer store null?**
+
+Yes.
+
+**Q: Why use BigDecimal for money?**
+
+Because binary floating-point types such as `double` are not suitable for exact decimal financial arithmetic.
+
+**Q: Why use Integer instead of int?**
+
+When an object/reference representation is required, such as with generics/collections, or when `null` needs to represent absence.
+
+**Q: What is the difference between widening and narrowing?**
+
+Widening converts to a type with a larger compatible range and is generally implicit; narrowing converts to a smaller type and requires an explicit cast because information may be lost.
+
+**Java version note:** The eight primitive types are part of Java's original language fundamentals (Java 1.0). Wrapper classes, autoboxing/unboxing, and generics were introduced in **Java 5**.
+
+Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
+
+# Basic Rules
+
+
+* **Uninitialized Variables (Rules 1 & 6):** The Java compiler (`javac`) prevents accessing unitialized data members/variables before assigning them a value.
+* *Example shown:* Declaring `int n;` or `Emp e;` and trying to print them via `sop(n);` or `sop(e);` without initialization causes a compilation error.
+
+
+* **Non-Public Classes (Rule 2):** Files with default-scoped (non-public) classes do not require the file name to match any of the class names defined inside it.
+* **Multiple Non-Public Classes (Rule 3):** A single source code file can contain more than one non-public class.
+* **Single Public Class Limit (Rule 4):** A Java source code file can contain at most **one** `public` class.
+* **File Naming for Public Classes (Rule 5):** If a file contains a `public` class, the file name **must** exactly match the name of that public class with a `.java` extension (e.g., `public class Example` must be stored in `Example.java`).
+* **No Pointer Arithmetic (Code Example):** Java does not support pointer arithmetic. Attempting operations like incrementing a String (`s++;`) results in a compilation error.
