@@ -4138,3 +4138,1169 @@ class Box{
 * ```boolean isEqual(Box anotherBox)// primitive and ref types of variables are passed by value(copy) 
 
 # Packages
+* Avoids name space collision -> resolves duplicate class names
+* Finer control over access specifiers
+* package statement has to be placed as the 1st statement in Java source.
+* package names are mapped to folder names.
+* For simplicity -- create folder p1 -- under <src> & compile from <src>
+* **NOTE** : Its not mandatory to create java sources(.java) under package named folder. BUT its mandatory to store packaged compiled classes (.class) under package named folders.
+Earlier half is just maintained as convenience
+* How to launch / run package java classes?
+* How to run?
+```
+cd ..\bin
+java FullyQualifiedClassName
+```
+# Assignment 2 continued
+Create a Rectangle class under "com.cdac.shapes" package.
+Add data members -- x,y,width,height
+Add a constructer to accept all inputs from user
+Add a method to return string form of rectangle details.
+Create a class TestRect to test rectangle -- under pkg -- "com.tester"
+access specifier questions
+
+# Classpath
+ 
+Day 3 1 - 0:46:00
+The **classpath** tells Java where to find **compiled classes and libraries (`.class` / `.jar`)** required by the program.
+
+```text
+Source code (.java)
+      ↓ javac
+Compiled classes (.class)
+      ↓
+   Classpath
+      ↓
+JVM finds required classes
+```
+
+## 1. Why Classpath?
+
+Suppose:
+
+```text
+CoreJava/
+├── bin/
+│   └── java01/
+│       └── Sum.class
+└── lib/
+    └── some-library.jar
+```
+
+When running:
+
+```bash
+java -cp bin java01.Sum
+```
+
+`-cp bin` tells Java:
+
+> “Look inside `bin` for the classes I need.”
+
+---
+
+## 2. `-cp` / `-classpath`
+
+These are equivalent:
+
+```bash
+java -cp bin java01.Sum
+```
+
+```bash
+java -classpath bin java01.Sum
+```
+
+For compilation:
+
+```bash
+javac -cp lib/library.jar -d bin src/java01/Sum.java
+```
+
+---
+
+## 3. Multiple Classpath Entries
+
+Separate entries using:
+
+```text
+macOS/Linux → :
+Windows     → ;
+```
+
+Example on macOS:
+
+```bash
+java -cp "bin:lib/library.jar" java01.Sum
+```
+
+Meaning:
+
+```text
+bin
+ ↓
+look for classes
+
+lib/library.jar
+ ↓
+look for library classes
+```
+
+---
+
+## 4. Current Directory
+
+`.` means **current directory**.
+
+```bash
+java -cp . java01.Sum
+```
+
+Multiple locations:
+
+```bash
+java -cp ".:bin:lib/library.jar" java01.Sum
+```
+
+---
+
+## 5. Classpath vs Sourcepath
+
+|                | Sourcepath     | Classpath          |
+| -------------- | -------------- | ------------------ |
+| Contains       | `.java` source | `.class`, `.jar`   |
+| Used mainly by | Compiler       | Compiler + JVM     |
+| Example        | `src`          | `bin`, `lib/*.jar` |
+
+```text
+src  → .java
+bin  → .class
+lib  → .jar
+```
+
+---
+
+## 6. Compile vs Run
+
+### Compile
+
+```bash
+javac -d bin src/java01/Sum.java
+```
+
+Compiler creates:
+
+```text
+bin/java01/Sum.class
+```
+
+### Run
+
+```bash
+java -cp bin java01.Sum
+```
+
+JVM searches `bin` and finds:
+
+```text
+bin/java01/Sum.class
+```
+
+Important:
+
+```text
+javac → compile source
+java  → run compiled class
+```
+
+---
+
+## 7. Package + Classpath
+
+If:
+
+```java
+package java01;
+
+public class Sum {
+}
+```
+
+and the class file is:
+
+```text
+bin/java01/Sum.class
+```
+
+then:
+
+```bash
+java -cp bin java01.Sum
+```
+
+Why `bin` and not `bin/java01`?
+
+Because the classpath points to the **root of the package hierarchy**.
+
+```text
+classpath
+   ↓
+  bin
+   ↓
+java01
+   ↓
+Sum.class
+```
+
+---
+
+## 8. Classpath Environment Variable
+
+You can define a global classpath:
+
+```bash
+export CLASSPATH=bin:lib/library.jar
+```
+
+Then Java can search those locations by default.
+
+However, in modern projects, prefer:
+
+```bash
+java -cp ...
+javac -cp ...
+```
+
+or build tools such as Maven/Gradle rather than relying on a global `CLASSPATH`.
+
+---
+
+## 9. VS Code Project Context
+
+Your project has:
+
+```text
+CoreJava/
+├── src/   → source
+├── bin/   → compiled output
+└── lib/   → external JARs
+```
+
+Your VS Code settings:
+
+```json
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
+}
+```
+
+Conceptually:
+
+```text
+src → source path
+bin → output/classpath location
+lib → external libraries
+```
+
+---
+
+## Common Error
+
+```text
+Error: Could not find or load main class java01.Sum
+```
+
+Often means the JVM's classpath does not contain the directory containing the package hierarchy.
+
+For your project:
+
+```bash
+java -cp bin java01.Sum
+```
+
+not:
+
+```bash
+java -cp src java01.Sum
+```
+
+because `src` contains `.java`, while `bin` contains `.class`.
+
+---
+
+## Interview Answer
+
+> **“Classpath is the set of locations where Java looks for compiled classes and libraries required by an application. It can contain directories and JAR files. We specify it using `-cp` or `-classpath`, and multiple entries are separated by `:` on Linux/macOS and `;` on Windows. The classpath should point to the root of the package hierarchy, not directly to the package directory.”**
+
+### One-Line Memory
+
+```text
+Classpath = Where Java finds .class files + JARs
+```
+
+### Most Important Distinction
+
+```text
+Sourcepath → Where .java files are
+Classpath  → Where .class files + libraries are
+```
+
+For your revision notes, I’d keep arrays compact but include the **JVM type-descriptor notation** because `[B` and `[[Z` are useful interview/JVM knowledge.
+
+# Arrays
+
+An **array** is a fixed-size, indexed collection of elements of the **same type**.
+
+```java
+int[] numbers = new int[5];
+```
+
+### Key Points
+
+* Fixed length after creation.
+* Index starts from `0`.
+* Last index = `length - 1`.
+* Can store primitives or references.
+* Arrays are **objects** in Java.
+* `array.length` gives size; `length` is a field, not a method.
+* Default values are assigned automatically.
+
+```java
+int[] a = new int[3];       // 0, 0, 0
+boolean[] b = new boolean[2]; // false, false
+String[] c = new String[2];  // null, null
+```
+
+---
+
+## Declaration
+
+```java
+int[] a;
+int b[];
+```
+
+Preferred:
+
+```java
+int[] a;
+```
+
+Creation:
+
+```java
+int[] a = new int[5];
+```
+
+Initialization:
+
+```java
+int[] a = {10, 20, 30};
+```
+
+---
+
+## Array of References
+
+```java
+BankAccount[] accounts = new BankAccount[3];
+```
+
+This creates an array containing **references**, not three `BankAccount` objects.
+
+```text
+accounts
+   ↓
+[ null | null | null ]
+```
+
+You still need:
+
+```java
+accounts[0] = new BankAccount();
+```
+
+---
+
+## Multidimensional Arrays
+
+Java arrays are actually **arrays of arrays**.
+
+```java
+int[][] matrix = new int[2][3];
+```
+
+```text
+matrix
+  ↓
+[ int[] → [0, 0, 0]
+  int[] → [0, 0, 0] ]
+```
+
+Rows can have different lengths:
+
+```java
+int[][] a = {
+    {1, 2},
+    {3, 4, 5}
+};
+```
+
+This is called a **jagged array**.
+
+---
+
+# JVM Array Notation
+
+The JVM uses **type descriptors** to represent array types.
+
+### `[` means "array of"
+
+```text
+[I   → int[]
+[B   → byte[]
+[S   → short[]
+[J   → long[]
+[F   → float[]
+[D   → double[]
+[C   → char[]
+[Z   → boolean[]
+```
+
+### Why `J` for `long`?
+
+`L` is used for reference types, so JVM uses `J` for `long`.
+
+---
+
+## Multidimensional Notation
+
+Each `[` represents **one array dimension**.
+
+```text
+[[Z → boolean[][]
+[[I → int[][]
+[[[D → double[][][]
+```
+
+Example:
+
+```java
+boolean[][] flags;
+```
+
+JVM descriptor:
+
+```text
+[[Z
+```
+
+Meaning:
+
+```text
+[   → array
+[   → array
+Z   → boolean
+```
+
+---
+
+## Reference-Type Notation
+
+Reference types use:
+
+```text
+Lfully/qualified/ClassName;
+```
+
+Example:
+
+```java
+String[]
+```
+
+JVM descriptor:
+
+```text
+[Ljava/lang/String;
+```
+
+Two-dimensional:
+
+```java
+String[][]
+```
+
+becomes:
+
+```text
+[[Ljava/lang/String;
+```
+
+---
+
+## Complete Descriptor Table
+
+| Java Type      | JVM Descriptor        |
+| -------------- | --------------------- |
+| `byte[]`       | `[B`                  |
+| `char[]`       | `[C`                  |
+| `double[]`     | `[D`                  |
+| `float[]`      | `[F`                  |
+| `int[]`        | `[I`                  |
+| `long[]`       | `[J`                  |
+| `short[]`      | `[S`                  |
+| `boolean[]`    | `[Z`                  |
+| `String[]`     | `[Ljava/lang/String;` |
+| `int[][]`      | `[[I`                 |
+| `boolean[][]`  | `[[Z`                 |
+| `double[][][]` | `[[[D`                |
+
+### Primitive Descriptor Memory
+
+```text
+B → byte
+C → char
+D → double
+F → float
+I → int
+J → long
+S → short
+Z → boolean
+```
+
+---
+
+## Array Type vs `ArrayList`
+
+```text
+Array
+→ fixed size
+→ can store primitives
+→ array.length
+
+ArrayList
+→ dynamic size
+→ stores objects
+→ list.size()
+```
+
+Example:
+
+```java
+int[] numbers = new int[5];
+
+List<Integer> numbers = new ArrayList<>();
+```
+
+---
+
+## Common Errors
+
+```java
+int[] a = new int[3];
+
+a[3] = 10; // ❌ ArrayIndexOutOfBoundsException
+```
+
+Valid indices:
+
+```text
+0  1  2
+```
+
+Also:
+
+```java
+int[] a = null;
+System.out.println(a.length); // ❌ NullPointerException
+```
+
+---
+
+## Interview Answer
+
+> **“An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
+
+### One-Line Memory
+
+```text
+Array → fixed size + same type + index 0
+
+JVM:
+[  = array
+I  = int
+Z  = boolean
+B  = byte
+J  = long
+
+[[Z = boolean[][]
+[B  = byte[]
+```
+# Assignment 3 (Day 3 1 1:54:00)
+Create array of primitive types
+for loop
+for-each limitations -> always works on a copy
+* toString method (Day 3 2 0:40:00)
+Box class
+
+Day 3 2 (2:01:00)
+# Inheritance
+IS - A relationship
+**Inheritance** allows a child class to acquire accessible properties and behavior from a parent class.
+
+```text
+Parent Class
+     ↓
+Child Class
+```
+
+Example:
+
+```java
+class Account {
+    void deposit() {
+        System.out.println("Deposit");
+    }
+}
+
+class SavingsAccount extends Account {
+}
+```
+
+```java
+SavingsAccount account = new SavingsAccount();
+account.deposit(); // inherited
+```
+
+---
+
+## 1. `extends`
+
+A class uses `extends` to inherit from another class.
+
+```java
+class SavingsAccount extends Account {
+}
+```
+
+### Rule
+
+```text
+A class can extend only ONE class.
+```
+
+Java does **not** support multiple class inheritance.
+
+```java
+class C extends A, B { } // ❌
+```
+
+---
+
+## 2. Types of Inheritance
+
+### Single
+
+```text
+A
+↓
+B
+```
+
+```java
+class B extends A {}
+```
+
+### Multilevel
+
+```text
+A
+↓
+B
+↓
+C
+```
+
+```java
+class B extends A {}
+class C extends B {}
+```
+
+### Hierarchical
+
+```text
+     A
+   ↙   ↘
+  B     C
+```
+
+```java
+class B extends A {}
+class C extends A {}
+```
+
+### Multiple — Not supported with classes
+
+```text
+A     B
+ \   /
+   C
+```
+
+```java
+class C extends A, B {} // ❌
+```
+
+Can be achieved through **interfaces**:
+
+```java
+class C implements A, B {}
+```
+
+### Hybrid
+
+A combination of inheritance forms. Java avoids ambiguity by not supporting multiple inheritance of classes.
+
+---
+
+## 3. What Is Inherited?
+
+A subclass can inherit accessible:
+
+* fields
+* methods
+
+But:
+
+* `private` members are **not directly accessible** in the subclass.
+* Constructors are **not inherited**.
+* Static members belong to the class, although they can be accessed through a subclass name.
+* `final` methods cannot be overridden.
+
+Example:
+
+```java
+class Account {
+
+    private double balance;
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+}
+
+class SavingsAccount extends Account {
+}
+```
+
+`SavingsAccount` cannot directly access:
+
+```java
+balance; // ❌ private
+```
+
+but can use:
+
+```java
+deposit(1000); // ✅
+```
+
+---
+
+##S 4. Method Overriding
+
+When a subclass provides its own implementation of an inherited method.
+
+```java
+class Account {
+
+    void calculateInterest() {
+        System.out.println("Account interest");
+    }
+}
+
+class SavingsAccount extends Account {
+
+    @Override
+    void calculateInterest() {
+        System.out.println("Savings interest");
+    }
+}
+```
+
+### Rules
+
+* Same method signature.
+* Return type must be compatible (covariant return types allowed).
+* Cannot reduce visibility.
+* Cannot override `final` methods.
+* `private` methods are not overridden.
+* `static` methods are hidden, not overridden.
+* Use `@Override` to let the compiler verify the override.
+
+---
+
+## 5. Runtime Polymorphism
+
+A parent reference can refer to a child object.
+
+```java
+Account account = new SavingsAccount();
+account.calculateInterest();
+```
+
+The JVM chooses the overridden **instance method** based on the actual object at runtime.
+
+```text
+Reference type → Account
+Object type    → SavingsAccount
+                    ↓
+             SavingsAccount method
+```
+
+This is **runtime method dispatch / dynamic method dispatch**.
+
+---
+
+## 6. `super`
+
+`super` refers to the **immediate parent class**.
+
+### Access parent field
+
+```java
+super.balance;
+```
+
+### Call parent method
+
+```java
+super.calculateInterest();
+```
+
+### Call parent constructor
+
+```java
+super();
+```
+
+`super()` must be the **first statement** in a constructor.
+
+Example:
+
+```java
+class SavingsAccount extends Account {
+
+    SavingsAccount() {
+        super();
+        System.out.println("Savings account");
+    }
+}
+```
+
+If you don't explicitly call a parent constructor, Java implicitly inserts `super()` **if an accessible no-argument parent constructor exists**.
+
+---
+
+## 7. Constructor Chaining
+
+When an object is created, constructors execute from parent to child.
+
+```java
+class Account {
+
+    Account() {
+        System.out.println("Account");
+    }
+}
+
+class SavingsAccount extends Account {
+
+    SavingsAccount() {
+        System.out.println("SavingsAccount");
+    }
+}
+```
+
+```java
+new SavingsAccount();
+```
+
+Output:
+
+```text
+Account
+SavingsAccount
+```
+
+Flow:
+
+```text
+new SavingsAccount()
+        ↓
+Account constructor
+        ↓
+SavingsAccount constructor
+```
+
+---
+
+## 8. `this` vs `super`
+
+| `this`                         | `super`                        |
+| ------------------------------ | ------------------------------ |
+| Current object                 | Immediate parent               |
+| `this.field`                   | `super.field`                  |
+| `this.method()`                | `super.method()`               |
+| `this()` → another constructor | `super()` → parent constructor |
+
+Memory:
+
+```text
+this  → me
+super → parent
+```
+
+---
+
+## 9. Access Modifiers and Inheritance
+
+```text
+                 Same Class   Same Package   Subclass   Other Package
+public               ✅            ✅            ✅            ✅
+protected             ✅            ✅            ✅            ⚠️
+default               ✅            ✅            ❌            ❌
+private               ✅            ❌            ❌            ❌
+```
+
+Important:
+
+**`protected` across packages is accessible through inheritance, subject to Java's protected-access rules.**
+
+---
+
+## 10. `final` and Inheritance
+
+### Final class
+
+Cannot be extended.
+
+```java
+final class Transaction {
+}
+
+class Payment extends Transaction { } // ❌
+```
+
+### Final method
+
+Cannot be overridden.
+
+```java
+class Account {
+
+    final void closeAccount() {
+    }
+}
+```
+
+```java
+class SavingsAccount extends Account {
+
+    void closeAccount() { } // ❌
+}
+```
+
+---
+
+## 11. Abstract Class + Inheritance
+
+An abstract class is commonly used as a base class.
+
+```java
+abstract class Account {
+
+    abstract void calculateInterest();
+
+    void deposit() {
+        System.out.println("Deposit");
+    }
+}
+
+class SavingsAccount extends Account {
+
+    @Override
+    void calculateInterest() {
+        System.out.println("Savings interest");
+    }
+}
+```
+
+The child must implement inherited abstract methods unless the child is also abstract.
+
+---
+
+## 12. Inheritance + Interfaces
+
+A class can:
+
+```text
+extend ONE class
++
+implement MANY interfaces
+```
+
+Example:
+
+```java
+class SavingsAccount
+        extends Account
+        implements Transferable, Auditable {
+}
+```
+
+This is how Java provides multiple-type inheritance without multiple class inheritance.
+
+---
+
+## 13. Banking Example
+
+```java
+class Account {
+
+    protected BigDecimal balance;
+
+    public void deposit(BigDecimal amount) {
+        balance = balance.add(amount);
+    }
+}
+
+class SavingsAccount extends Account {
+
+    public void addInterest() {
+        balance = balance.add(
+            balance.multiply(new BigDecimal("0.05"))
+        );
+    }
+}
+```
+
+```java
+SavingsAccount account = new SavingsAccount();
+
+account.deposit(new BigDecimal("10000"));
+account.addInterest();
+```
+
+Here:
+
+```text
+Account
+   ↑
+   │ extends
+   │
+SavingsAccount
+```
+
+`SavingsAccount` reuses the common account behavior and adds its own behavior.
+
+---
+
+## Quick Revision
+
+```text
+Inheritance
+    ↓
+Child acquires accessible parent behavior/state
+
+extends
+    ↓
+ONE parent class
+
+implements
+    ↓
+MANY interfaces
+
+super
+    ↓
+Immediate parent
+
+this
+    ↓
+Current object
+
+Overriding
+    ↓
+Child provides new implementation
+
+Runtime polymorphism
+    ↓
+Parent reference → Child object
+
+Constructors
+    ↓
+Not inherited
+
+private
+    ↓
+Not directly accessible in child
+
+final class
+    ↓
+Cannot extend
+
+final method
+    ↓
+Cannot override
+```
+
+## Interview Answer
+
+> **“Inheritance is an object-oriented mechanism where a subclass derives from a superclass using `extends`. Java supports single, multilevel, and hierarchical class inheritance, but not multiple inheritance of classes. A subclass inherits accessible members, but constructors are not inherited and private members are not directly accessible. Inheritance also enables runtime polymorphism through method overriding, where a parent reference can refer to a child object.”**
+
+## Rapid-Fire Questions
+
+**Q: Does Java support multiple inheritance?**
+Not for classes. Multiple interfaces can be implemented.
+
+**Q: Are constructors inherited?**
+No.
+
+**Q: Are private members inherited?**
+They are part of the parent object state, but are not directly accessible in the subclass.
+
+**Q: Can static methods be overridden?**
+No. They are **hidden**.
+
+**Q: Can private methods be overridden?**
+No.
+
+**Q: Can final methods be overridden?**
+No.
+
+**Q: What is method overriding?**
+Subclass provides a compatible implementation of an inherited instance method.
+
+**Q: What does `super` mean?**
+Reference to the immediate parent class.
+
+**Q: What happens first when a child object is created?**
+Parent constructor executes before child constructor.
+
+### One-Line Memory
+
+```text
+Inheritance = IS-A relationship
+
+SavingsAccount IS-A Account
+
+extends ONE
+implements MANY
+this = current object
+super = parent
+```

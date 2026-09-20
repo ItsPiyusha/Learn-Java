@@ -3,22 +3,33 @@ core-java-lab/
 │
 ├── README.md
 │
-├── notes/
-│   ├── 01-java-basics.md
-│   ├── 02-oop.md
-│   ├── 03-strings.md
-│   ├── 04-arrays.md
-│   ├── 05-collections.md
-│   ├── 06-generics.md
-│   ├── 07-exceptions.md
-│   ├── 08-file-io.md
-│   ├── 09-functional-java.md
-│   ├── 10-streams.md
-│   ├── 11-multithreading.md
-│   ├── 12-concurrency.md
-│   ├── 13-jvm.md
-│   ├── 14-java-memory.md
-│   └── 15-design-patterns.md
+├── notes/README.md
+│   ├── 01-Why Java Day 1
+│   ├── 02-Java Security
+│   ├── 03-Naming conventions
+│   ├── 04-JVM Architecture
+│   ├── 05-Rules of identifier
+│   ├── 06-Access Specifiers
+│   ├── 07-Data Types Day 2
+│   ├── 08-JVM Architecture
+│   ├── 08-class and object - through Box class
+│   ├── 09-Memory Diagrams, constr chaining through Cube, equality
+│   ├── 10-Garbage Collection
+│   ├── 11-packages, access specifier questions Rectangle class(day 3 1 1:00:00) & CLASSPATH(day 3 1 0:46:00)
+│   ├── 12-Array Day 3 1 1:42:40
+│   ├── 13-Inheritance, Polymorphism - Day 4
+│   ├── 14-@Override,Abstraction, final, static, Interfaces - Day 5
+│   └── 15-Exception Handling- Day 6
+│   ├── 16-strings:immutability, == vs equals, literal vs non- literal Day 7
+│   ├── 17-Date handling, variable arguments syntax, enum, wrapper class, nested classes, String handling, equals(), Association - Day 7
+│   ├── 18-Association, Generics, Collection framework- Day 8
+│   ├── 19-Generic method : Arrays.toList, Collection framework, BankAccount CRUD, Searching by PK n non PK, Sorting, Attaching Iterators n ListIterator- Day 9
+│   ├── 20-Anonymous inner class,?, extends, super, sets, Set interface features, implementation of HashSet, LinkedHashSet, TreeSet, Hashing algorithm based upon- HashCode & equals, LinkedHashSet, TreeSet -- Sorted Set(Natural order- comparable or custom order -- comparator)- Day 10
+│   ├── 21- Maps, HahsMap, LinkedHashMap, TreeMap, Java 8 new features
+│   ├── 22- Java8-> default keyword, Lambda expressions
+│   ├── 23- I/O, Streams
+│   ├── 24 - Object Streams, Serialization, Threads
+│   ├── 25- Runnable, User vs Deamon, socket programming, networking, JDBC
 │
 └── src/
     └── main/
