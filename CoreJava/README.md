@@ -83,7 +83,7 @@ This makes the API contract explicit: **the user may or may not exist.**
 
 > **“Optional is a Java 8 container used to explicitly model the presence or absence of a value, primarily for return types, helping us avoid implicit null handling and reduce NullPointerException risks.”**
 
-## Intermediate vs Terminal operations in Java 8 Streams
+## 2. Intermediate vs Terminal operations in Java 8 Streams
 
 > **“Stream operations are divided into intermediate and terminal operations. Intermediate operations transform or filter a stream and return another Stream, while terminal operations consume the stream and produce a final result or side effect.”**
 
@@ -206,7 +206,7 @@ Now the pipeline executes.
 **Intermediate = build the pipeline**
 **Terminal = execute the pipeline**
 
-## Remove duplicates from a list of city names
+## 3. Remove duplicates from a list of city names
 
 ```java
 List<String> cities = List.of(
@@ -260,8 +260,8 @@ So duplicate city names are removed.
 **Space complexity:** **O(n)** for tracking distinct elements.
 
 
-## Dependency Injection in SpringBoot
-### Dependency Injection in Spring Boot — interview answer
+## 4. Dependency Injection in SpringBoot
+
 
 > **“Dependency Injection, or DI, is a design pattern where an object receives the dependencies it needs from an external source instead of creating those dependencies itself. In Spring Boot, the Spring IoC container creates and manages these objects, called beans, and injects them where required.”**
 
@@ -387,7 +387,7 @@ DI  = How are dependencies supplied?
        → Spring injects them
 ```
 
-## Offset in Kafka
+## 5. Offset in Kafka
 
 In **Kafka**, an **offset is the unique position/sequence number of a message within a partition**.
 
@@ -431,7 +431,7 @@ instead of starting from the beginning.
 
 ---
 
-## Offset belongs to a partition
+### Offset belongs to a partition
 
 This is VERY important.
 
@@ -474,7 +474,7 @@ The actual identity of a Kafka record is effectively:
 
 ---
 
-## Consumer group and offset
+### Consumer group and offset
 
 Now comes the important real-world part.
 
@@ -521,7 +521,7 @@ If the consumer crashes, another consumer in the **same consumer group** can con
 
 ---
 
-## `commit` is important
+### `commit` is important
 
 There are two common approaches:
 
@@ -571,7 +571,7 @@ The message may not be processed again because Kafka thinks you've already consu
 
 ---
 
-## One subtle but VERY important point
+### One subtle but VERY important point
 
 Suppose the current committed offset is:
 
@@ -632,7 +632,7 @@ can resume after restart/rebalance
 If you're preparing for **Spring Boot + Kafka real work**, the next concepts you should connect to offset are **consumer group → partition assignment → offset commit → acknowledgment → at-least-once delivery → duplicate processing**.
 
 
-## Calling other REST API services
+## 6. Calling other REST API services
 
 Yes. In **Java Spring Boot**, when one REST API needs to call another REST API, you typically use an HTTP client.
 
