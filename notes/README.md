@@ -851,23 +851,6 @@ Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
 * Pointer arithmetic -> means operator attaching to reference type -> sc++; or sc += 10; ->not allowed in java
 
 # JVM Architecture or Java memory areas
-Absolutely. For interviews, don't just memorize **"heap, stack, method area"**. You should be able to explain **what gets stored where, who manages it, and what happens when a method executes**.
-
-## JVM Memory Model — Interview Explanation
-
-### Start with this interview answer
-
-> **"The JVM memory is divided into several runtime data areas. The major areas are Heap, JVM Stack, Method Area, PC Register, and Native Method Stack.**
->
-> **The Heap is shared across threads and stores objects and arrays. It is managed by the Garbage Collector. Each thread has its own JVM Stack, which contains stack frames for method calls. A frame contains local variables, the operand stack, and information needed for the method execution.**
->
-> **The Method Area is shared and contains class-level information such as class metadata, runtime constant pools, and method information. The PC register is private to each thread and keeps track of the current instruction being executed. The Native Method Stack supports execution of native methods."**
-
-That's already a solid **45–60 second answer**.
-
----
-
-## 1. First understand the big picture
 
 When you run:
 
