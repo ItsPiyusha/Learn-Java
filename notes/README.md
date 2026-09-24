@@ -2262,301 +2262,7 @@ Add a constructer to accept all inputs from user
 Add a method to return string form of rectangle details.
 Create a class TestRect to test rectangle -- under pkg -- "com.tester"
 access specifier questions
-
-# Classpath
- 
-Day 3 1 - 0:46:00
-The **classpath** tells Java where to find **compiled classes and libraries (`.class` / `.jar`)** required by the program.
-
-```text
-Source code (.java)
-      ↓ javac
-Compiled classes (.class)
-      ↓
-   Classpath
-      ↓
-JVM finds required classes
-```
-
-## 1. Why Classpath?
-
-Suppose:
-
-```text
-CoreJava/
-├── bin/
-│   └── java01/
-│       └── Sum.class
-└── lib/
-    └── some-library.jar
-```
-
-When running:
-
-```bash
-java -cp bin java01.Sum
-```
-
-`-cp bin` tells Java:
-
-> “Look inside `bin` for the classes I need.”
-
----
-
-## 2. `-cp` / `-classpath`
-
-These are equivalent:
-
-```bash
-java -cp bin java01.Sum
-```
-
-```bash
-java -classpath bin java01.Sum
-```
-
-For compilation:
-
-```bash
-javac -cp lib/library.jar -d bin src/java01/Sum.java
-```
-
----
-
-## 3. Multiple Classpath Entries
-
-Separate entries using:
-
-```text
-macOS/Linux → :
-Windows     → ;
-```
-
-Example on macOS:
-
-```bash
-java -cp "bin:lib/library.jar" java01.Sum
-```
-
-Meaning:
-
-```text
-bin
- ↓
-look for classes
-
-lib/library.jar
- ↓
-look for library classes
-```
-
----
-
-## 4. Current Directory
-
-`.` means **current directory**.
-
-```bash
-java -cp . java01.Sum
-```
-
-Multiple locations:
-
-```bash
-java -cp ".:bin:lib/library.jar" java01.Sum
-```
-
----
-
-## 5. Classpath vs Sourcepath
-
-|                | Sourcepath     | Classpath          |
-| -------------- | -------------- | ------------------ |
-| Contains       | `.java` source | `.class`, `.jar`   |
-| Used mainly by | Compiler       | Compiler + JVM     |
-| Example        | `src`          | `bin`, `lib/*.jar` |
-
-```text
-src  → .java
-bin  → .class
-lib  → .jar
-```
-
----
-
-## 6. Compile vs Run
-
-### Compile
-
-```bash
-javac -d bin src/java01/Sum.java
-```
-
-Compiler creates:
-
-```text
-bin/java01/Sum.class
-```
-
-### Run
-
-```bash
-java -cp bin java01.Sum
-```
-
-JVM searches `bin` and finds:
-
-```text
-bin/java01/Sum.class
-```
-
-Important:
-
-```text
-javac → compile source
-java  → run compiled class
-```
-
----
-
-## 7. Package + Classpath
-
-If:
-
-```java
-package java01;
-
-public class Sum {
-}
-```
-
-and the class file is:
-
-```text
-bin/java01/Sum.class
-```
-
-then:
-
-```bash
-java -cp bin java01.Sum
-```
-
-Why `bin` and not `bin/java01`?
-
-Because the classpath points to the **root of the package hierarchy**.
-
-```text
-classpath
-   ↓
-  bin
-   ↓
-java01
-   ↓
-Sum.class
-```
-
----
-
-## 8. Classpath Environment Variable
-
-You can define a global classpath:
-
-```bash
-export CLASSPATH=bin:lib/library.jar
-```
-
-Then Java can search those locations by default.
-
-However, in modern projects, prefer:
-
-```bash
-java -cp ...
-javac -cp ...
-```
-
-or build tools such as Maven/Gradle rather than relying on a global `CLASSPATH`.
-
----
-
-## 9. VS Code Project Context
-
-Your project has:
-
-```text
-CoreJava/
-├── src/   → source
-├── bin/   → compiled output
-└── lib/   → external JARs
-```
-
-Your VS Code settings:
-
-```json
-{
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
-}
-```
-
-Conceptually:
-
-```text
-src → source path
-bin → output/classpath location
-lib → external libraries
-```
-
----
-
-## Common Error
-
-```text
-Error: Could not find or load main class java01.Sum
-```
-
-Often means the JVM's classpath does not contain the directory containing the package hierarchy.
-
-For your project:
-
-```bash
-java -cp bin java01.Sum
-```
-
-not:
-
-```bash
-java -cp src java01.Sum
-```
-
-because `src` contains `.java`, while `bin` contains `.class`.
-
----
-
-## Interview Answer
-
-> **“Classpath is the set of locations where Java looks for compiled classes and libraries required by an application. It can contain directories and JAR files. We specify it using `-cp` or `-classpath`, and multiple entries are separated by `:` on Linux/macOS and `;` on Windows. The classpath should point to the root of the package hierarchy, not directly to the package directory.”**
-
-### One-Line Memory
-
-```text
-Classpath = Where Java finds .class files + JARs
-```
-
-### Most Important Distinction
-
-```text
-Sourcepath → Where .java files are
-Classpath  → Where .class files + libraries are
-```
-
-For your revision notes, I’d keep arrays compact but include the **JVM type-descriptor notation** because `[B` and `[[Z` are useful interview/JVM knowledge.
-
 # Arrays
-
 An **array** is a fixed-size, indexed collection of elements of the **same type**.
 
 ```java
@@ -2658,7 +2364,7 @@ This is called a **jagged array**.
 
 ---
 
-# JVM Array Notation
+# JVM Array Notation - JVM Desciptors
 
 The JVM uses **type descriptors** to represent array types.
 
@@ -2691,93 +2397,13 @@ Each `[` represents **one array dimension**.
 [[[D → double[][][]
 ```
 
-Example:
-
-```java
-boolean[][] flags;
-```
-
-JVM descriptor:
-
-```text
-[[Z
-```
-
-Meaning:
-
-```text
-[   → array
-[   → array
-Z   → boolean
-```
-
----
-
 ## Reference-Type Notation
 
 Reference types use:
-
-```text
-Lfully/qualified/ClassName;
-```
-
+```Lfully/qualified/ClassName;```
 Example:
-
-```java
-String[]
-```
-
-JVM descriptor:
-
-```text
-[Ljava/lang/String;
-```
-
-Two-dimensional:
-
-```java
-String[][]
-```
-
-becomes:
-
-```text
-[[Ljava/lang/String;
-```
-
----
-
-## Complete Descriptor Table
-
-| Java Type      | JVM Descriptor        |
-| -------------- | --------------------- |
-| `byte[]`       | `[B`                  |
-| `char[]`       | `[C`                  |
-| `double[]`     | `[D`                  |
-| `float[]`      | `[F`                  |
-| `int[]`        | `[I`                  |
-| `long[]`       | `[J`                  |
-| `short[]`      | `[S`                  |
-| `boolean[]`    | `[Z`                  |
-| `String[]`     | `[Ljava/lang/String;` |
-| `int[][]`      | `[[I`                 |
-| `boolean[][]`  | `[[Z`                 |
-| `double[][][]` | `[[[D`                |
-
-### Primitive Descriptor Memory
-
-```text
-B → byte
-C → char
-D → double
-F → float
-I → int
-J → long
-S → short
-Z → boolean
-```
-
----
+```[Ljava/lang/String;``` for ```String[]```
+```[[Ljava/lang/String;``` for ```String[][]```
 
 ## Array Type vs `ArrayList`
 
@@ -2856,72 +2482,19 @@ Day 3 2 (2:01:00)
 # Inheritance
 IS - A relationship
 **Inheritance** allows a child class to acquire accessible properties and behavior from a parent class.
-
-```text
-Parent Class
-     ↓
-Child Class
-```
-
-Example:
-
-```java
-class Account {
-    void deposit() {
-        System.out.println("Deposit");
-    }
-}
-
-class SavingsAccount extends Account {
-}
-```
-
-```java
-SavingsAccount account = new SavingsAccount();
-account.deposit(); // inherited
-```
-
----
-
-## 1. `extends`
-
-A class uses `extends` to inherit from another class.
-
-```java
-class SavingsAccount extends Account {
-}
-```
-
-### Rule
-
-```text
-A class can extend only ONE class.
-```
-
-Java does **not** support multiple class inheritance.
-
-```java
-class C extends A, B { } // ❌
-```
-
----
-
-## 2. Types of Inheritance
-
-### Single
-
+* A class uses `extends` to inherit from another class. A class can extend only ONE class.
+* Java does **not** support multiple class inheritance.
+## Types of Inheritance
+1. Single
 ```text
 A
 ↓
 B
 ```
-
 ```java
 class B extends A {}
 ```
-
-### Multilevel
-
+2. Multilevel
 ```text
 A
 ↓
@@ -2929,58 +2502,40 @@ B
 ↓
 C
 ```
-
 ```java
 class B extends A {}
 class C extends B {}
 ```
-
-### Hierarchical
-
+3. Hierarchical
 ```text
      A
    ↙   ↘
   B     C
 ```
-
 ```java
 class B extends A {}
 class C extends A {}
 ```
-
-### Multiple — Not supported with classes
-
+4. Multiple — Not supported with classes
 ```text
 A     B
  \   /
    C
 ```
-
 ```java
 class C extends A, B {} // ❌
 ```
-
 Can be achieved through **interfaces**:
-
 ```java
 class C implements A, B {}
 ```
-
-### Hybrid
-
+5. Hybrid
 A combination of inheritance forms. Java avoids ambiguity by not supporting multiple inheritance of classes.
-
----
-
-## 3. What Is Inherited?
-
+## What Is Inherited?
 A subclass can inherit accessible:
-
 * fields
 * methods
-
 But:
-
 * `private` members are **not directly accessible** in the subclass.
 * Constructors are **not inherited**.
 * Static members belong to the class, although they can be accessed through a subclass name.
@@ -3013,10 +2568,7 @@ but can use:
 ```java
 deposit(1000); // ✅
 ```
-
----
-
-##S 4. Method Overriding
+## Method Overriding
 
 When a subclass provides its own implementation of an inherited method.
 
@@ -3036,8 +2588,7 @@ class SavingsAccount extends Account {
     }
 }
 ```
-
-### Rules
+Rules
 
 * Same method signature.
 * Return type must be compatible (covariant return types allowed).
@@ -3049,7 +2600,7 @@ class SavingsAccount extends Account {
 
 ---
 
-## 5. Runtime Polymorphism
+## Runtime Polymorphism
 
 A parent reference can refer to a child object.
 
@@ -3071,30 +2622,23 @@ This is **runtime method dispatch / dynamic method dispatch**.
 
 ---
 
-## 6. `super`
+## `super`
 
 `super` refers to the **immediate parent class**.
 
-### Access parent field
-
+* Access parent field
 ```java
 super.balance;
 ```
-
-### Call parent method
-
+* Call parent method
 ```java
 super.calculateInterest();
 ```
-
-### Call parent constructor
-
+* Call parent constructor
 ```java
 super();
 ```
-
 `super()` must be the **first statement** in a constructor.
-
 Example:
 
 ```java
@@ -3108,10 +2652,7 @@ class SavingsAccount extends Account {
 ```
 
 If you don't explicitly call a parent constructor, Java implicitly inserts `super()` **if an accessible no-argument parent constructor exists**.
-
----
-
-## 7. Constructor Chaining
+## Constructor Chaining
 
 When an object is created, constructors execute from parent to child.
 
@@ -3154,7 +2695,7 @@ SavingsAccount constructor
 
 ---
 
-## 8. `this` vs `super`
+## `this` vs `super`
 
 | `this`                         | `super`                        |
 | ------------------------------ | ------------------------------ |
@@ -3163,36 +2704,8 @@ SavingsAccount constructor
 | `this.method()`                | `super.method()`               |
 | `this()` → another constructor | `super()` → parent constructor |
 
-Memory:
-
-```text
-this  → me
-super → parent
-```
-
----
-
-## 9. Access Modifiers and Inheritance
-
-```text
-                 Same Class   Same Package   Subclass   Other Package
-public               ✅            ✅            ✅            ✅
-protected             ✅            ✅            ✅            ⚠️
-default               ✅            ✅            ❌            ❌
-private               ✅            ❌            ❌            ❌
-```
-
-Important:
-
-**`protected` across packages is accessible through inheritance, subject to Java's protected-access rules.**
-
----
-
-## 10. `final` and Inheritance
-
-### Final class
-
-Cannot be extended.
+## `final` and Inheritance
+* Final class cannot be extended.
 
 ```java
 final class Transaction {
@@ -3200,11 +2713,7 @@ final class Transaction {
 
 class Payment extends Transaction { } // ❌
 ```
-
-### Final method
-
-Cannot be overridden.
-
+* Final method cannot be overridden.
 ```java
 class Account {
 
@@ -3212,17 +2721,13 @@ class Account {
     }
 }
 ```
-
 ```java
 class SavingsAccount extends Account {
 
     void closeAccount() { } // ❌
 }
 ```
-
----
-
-## 11. Abstract Class + Inheritance
+## Abstract Class + Inheritance
 
 An abstract class is commonly used as a base class.
 
@@ -3247,9 +2752,7 @@ class SavingsAccount extends Account {
 
 The child must implement inherited abstract methods unless the child is also abstract.
 
----
-
-## 12. Inheritance + Interfaces
+## Inheritance + Interfaces
 
 A class can:
 
@@ -3269,51 +2772,6 @@ class SavingsAccount
 ```
 
 This is how Java provides multiple-type inheritance without multiple class inheritance.
-
----
-
-## 13. Banking Example
-
-```java
-class Account {
-
-    protected BigDecimal balance;
-
-    public void deposit(BigDecimal amount) {
-        balance = balance.add(amount);
-    }
-}
-
-class SavingsAccount extends Account {
-
-    public void addInterest() {
-        balance = balance.add(
-            balance.multiply(new BigDecimal("0.05"))
-        );
-    }
-}
-```
-
-```java
-SavingsAccount account = new SavingsAccount();
-
-account.deposit(new BigDecimal("10000"));
-account.addInterest();
-```
-
-Here:
-
-```text
-Account
-   ↑
-   │ extends
-   │
-SavingsAccount
-```
-
-`SavingsAccount` reuses the common account behavior and adds its own behavior.
-
----
 
 ## Quick Revision
 
@@ -3395,16 +2853,3 @@ Reference to the immediate parent class.
 
 **Q: What happens first when a child object is created?**
 Parent constructor executes before child constructor.
-
-### One-Line Memory
-
-```text
-Inheritance = IS-A relationship
-
-SavingsAccount IS-A Account
-
-extends ONE
-implements MANY
-this = current object
-super = parent
-```
