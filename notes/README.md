@@ -160,7 +160,21 @@ Definitions -
 * **UPPER_SNAKE_CASE** → Words uppercase and separated by `_`: `MAX_AMOUNT`
 * **lowercase** → All letters lowercase, typically used for packages: `com.bank.account`
 * **Enum constants** → Usually `UPPER_SNAKE_CASE`: `PENDING_APPROVAL`
-
+day 1 1 33:06
+day1 -> src
+```java 
+//import java.lang.*; : for all java classes :java.lang package is inherently available
+class First{
+    public static void main(String[] args){//cmd line args: java First Piyusha Lomte
+    //System : name of a class from java.lang.package
+    //out : static data member => std output stream
+    //out : java.io.PrintStream : print / println / printf
+        System.out.println("Welcome to Java!!!");
+        System.out.println("Hi there!!!" + args[0] + " " + args[1]);
+    }
+}
+```
+save as .java file
 
 # Identifiers
 An **identifier** is the **name given by the programmer to identify a program element**.
@@ -253,7 +267,7 @@ protected        ✅            ✅            ✅            ⚠️
 default          ✅            ✅            ❌            ❌
 private          ✅            ❌            ❌            ❌
 ```
-* methods? private, default, protected, public
+* methods? private, default(package-private), protected, public
 * which are applicable to top level classes? -> default, public
 * `private` and `protected` are allowed for nested classes.
 
@@ -364,7 +378,7 @@ public     → Anyone
 * Java Hot Spot -> adaptive learning like AI
 * main function expects String, we'll parse string to num to calculate the sum and avoid concatenation
 CoreJava/src/java01/Sum.java
-```
+```java
 package java01;
 
 public class Sum {
@@ -375,7 +389,7 @@ public class Sum {
     }
 }
 ```
-```
+```shell
 piyushalomte@Piyushas-MacBook-Pro ~ % cd Documents
 piyushalomte@Piyushas-MacBook-Pro Documents % cd Learn-Java
 piyushalomte@Piyushas-MacBook-Pro Learn-Java % code . 
@@ -415,9 +429,6 @@ public class Main {
     }
 }
 ```
-
-**Interview answer:**
-
 > A static method should normally be called using the class name because it belongs to the class rather than an instance.
 
 ---
@@ -2165,15 +2176,39 @@ src is just maintained as convenience
 cd ..\bin
 java FullyQualifiedClassName
 ```
+* CLASSPATH = Java only env var, used mainly by JRE's classloader : to locate & load the classes.
+* Classloader will try to locate the classes from current folder, if not found --- will refer to classpath entries : to resolve & load Java classes.
+* What should be value of the classpath ---Must be set to top of packaged class heirarchy(eg : bin)
+* set classpath=d:\dac\day2\bin;.;(cmd line invocation)
+OR better still set it from env variables
+**RULES**
+1. If the class is part of a package, the package statement must be the first line in the source code file, before any import statements that may be present.
+2. If there are import statements, they must go between the package statement (if there is one) and the class declaration. If there isn't a package statement, then the import statement(s) must be the first line(s) in the source code file.
 # Assignment 2 continued
-Create a Rectangle class under "com.cdac.shapes" package.
-Add data members -- x,y,width,height
-Add a constructer to accept all inputs from user
-Add a method to return string form of rectangle details.
-Create a class TestRect to test rectangle -- under pkg -- "com.tester"
+1. Create a Rectangle class under "com.cdac.shapes" package.
+2. Add data members -- x,y,width,height
+3. Add a constructer to accept all inputs from user
+4. Add a method to return string form of rectangle details.
+5. Create a class TestRect to test rectangle -- under pkg -- "com.tester"
 access specifier questions
+6. Confirm access specifier's table(day 3 1 till 1:39:00)
+
 # Arrays
-An **array** is a fixed-size, indexed collection of elements of the **same type**.
+* In Java, arrays are full-fledged objects. Like objects, arrays are dynamically created & stored on the heap.
+* Arrays(like any other object) are associated with the class. All arrays of the same dimension and type have the same class. The length of an array does not play any role in establishing the array's class. For example, an array of three ints has the same class as an array of three hundred ints.([I) The length of an array is considered part of its instance data.
+* The class name of single dimension array of ints is "[I". The class name for 3-dimensional array of bytes is "[[[B". The class name of 1-dimension array of boolean is "[Z".
+* Array size(length) is fixed. Implicit super class of array is java.lang.Object.
+to print the loaded class name for object obj:
+getClass() -> class Object
+getName() -> class Class<T>
+```java
+void printClassName(Object ob){
+    System.out.println("The class of "+ obj +" is "+ obj.getClass().getName());
+}
+```
+* FOR - EACH Loop always works on a copy of the data.
+* java.util.Arrays class contains static toString() methods to display array data as lists.(day 3 2 0:42:00)
+
 
 ```java
 int[] numbers = new int[5];
@@ -2218,11 +2253,50 @@ Initialization:
 ```java
 int[] a = {10, 20, 30};
 ```
-
 ---
+## Assignment 3 (Day 3 1 1:54:00)
+Create array of primitive types
 
-## Array of References
+# Array of References
 
+## Assignment 3 (Day 3 2 0:48:37)
+Add Box class into "com.app.core", define package in 1st line.
+Create a tester class TestBoxArray : "com.tester", define package stmt.
+import Box class in tester class, make Box class public in its package.
+Objective : Ask user(client), how many boxes to make?
+Prompt for Box dims, for each box.
+Store these details suitably.
+1.Disply using single for-each loop, box dims n volume
+
+```java
+package com.tester;
+import com.app.core.Box;
+import java.util.Scanner;
+class TestBoxArray{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("How many boxes? ");
+        Box[] boxes;
+        boxes = new Box[sc.nextInt()]; // to create array -> []
+        //one array object gets created no matter what input is.initialized with null values.
+        //boxes = new Box(); // () -> to create the object
+        for (Box b : boxes)
+            System.out.println(b);// confirms if it's array of refs or primitives-> if values are 0 -> prim, if values are null -> refs
+        //fill array boxes prompting the user for dims
+        for(int i = 0; i < boxes.length; i++){
+            System.out.println("Enter Box dims ");
+            boxes[i] = new Box(sc.nextDouble(),sc.nextDouble(),sc.nextDouble());//creating box, outside of array on heap whose ref will be stored in array
+            }
+            //Display using single for-each loop, box dims n volume
+            for(Box b : boxes){//b = boxes[0]..boxes[boxes.length-1]
+                    System.out.println(b.getDetails() + "volume= " + b.computeVolume());
+                    }
+        sc.close;
+    }
+}
+
+```
+Day 3 2 1:19:07
 ```java
 BankAccount[] accounts = new BankAccount[3];
 ```
@@ -2358,19 +2432,7 @@ System.out.println(a.length); // ❌ NullPointerException
 ```
 > “An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
 
-```text
-Array → fixed size + same type + index 0
 
-JVM:
-[  = array
-I  = int
-Z  = boolean
-B  = byte
-J  = long
-
-[[Z = boolean[][]
-[B  = byte[]
-```
 # Assignment 3 (Day 3 1 1:54:00)
 Create array of primitive types
 for loop
