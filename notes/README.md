@@ -1,23 +1,11 @@
 # Why Java?
-
-### 1. Platform Independent — WORA
-
-.class files can run on any machine as JVM will platform specific
-
-### 2. Simple & Robust
-
-* Java doesn't support complex features in cpp like multiple inheritance, operator overloading(Simple)
-* It doesn't allow pointer arithmetic (Robust)
----
-
-### 3. Secure
-
-When the JVM loads the class, it performs verification as part of class loading automatically.
-
----
-
-### 4. Object-Oriented
+* Platform Independent — WORA, because .class files can run on any machine as JVM will platform specific
+* **Simple** because doesn't support complex features in cpp like multiple inheritance, operator overloading
+* **Robust** because it doesn't allow pointer arithmetic (Robust)
+* Secure - When the JVM loads the class, it performs verification as part of class loading automatically.
+* Object-Oriented
 Though java is not 100% Object oriented as it allows primitive data types as well.
+**OOP → Encapsulation + Inheritance + Polymorphism + Abstraction**
 ```java
 class Account {
     private double balance;       // Encapsulation
@@ -33,12 +21,7 @@ class SavingsAccount extends Account { } // Inheritance
 ```java
 Account account = new SavingsAccount();   // Polymorphism
 ```
-
-**OOP → Encapsulation + Inheritance + Polymorphism + Abstraction**
-
----
-
-### 5. Automatic Memory Management
+* Automatic Memory Management
 
 ```java
 Account account = new Account();
@@ -46,12 +29,9 @@ Account account = new Account();
 account = null;    // object becomes eligible for GC
 ```
 
-**JVM → Garbage Collector → automatically manages unused objects**
+**JVM → Garbage Collector → automatically manages unused objects** -> Unlike CPP where we need to call destructor everytime to free the memory
 
-Unlike CPP where we need to call destructor everytime to free the memory
----
-
-### 6. Multithreaded
+* Multithreaded - Java provides built-in support for concurrent execution.
 
 ```java
 Thread thread = new Thread(() -> {
@@ -61,11 +41,7 @@ Thread thread = new Thread(() -> {
 thread.start();
 ```
 
-Java provides built-in support for concurrent execution.
-
----
-
-### 7. Functional Programming Support
+* Functional Programming Support
 After Java 8:
 Java supports functional-style programming using **lambda expressions, functional interfaces, method references, and Streams**.
 
@@ -88,21 +64,16 @@ System.out::println       → Method reference
 
 It allows Java to express **what should be done** more concisely, especially when processing collections.
 
-### 8. Rich I/O & Networking
+* Rich I/O & Networking - Java provides APIs for files, streams, TCP/IP, UDP/IP, URLs, etc.
 
-**I/O:**
-
+I/O:
 ```java
 Files.readString(Path.of("data.txt"));
 ```
-
-**Networking:**
-
+Networking:
 ```java
 Socket socket = new Socket("example.com", 80);
 ```
-
-Java provides APIs for files, streams, TCP/IP, UDP/IP, URLs, etc.
 
 
 # Java Security features
@@ -125,40 +96,7 @@ Java Security
     ├── Certificates
     └── TLS/SSL
 ```
-
-And be able to explain:
-
-```java
-private double balance;
-```
-
-→ prevents arbitrary direct access.
-
-```java
-javac Bank.java
-```
-
-→ produces bytecode.
-
-```java
-java Bank
-```
-
-→ JVM loads/verifies/executes that bytecode.
-
-And know the distinction:
-
-> **Authentication** → Who are you?
-> **Authorization** → What are you allowed to do?
-
-**STOP.** Don't spend days implementing cryptographic algorithms yourself.
-
----
-
 ### Level 2 — Backend/Senior interview: learn these separately
-
-
-
 ```text
 Security & Cryptography
 ├── Hashing
@@ -190,12 +128,6 @@ Because at your target level, you may be asked things like:
 
 Those are **backend security concepts**, not merely “Java syntax.”
 
----
-
-### Put Everything Together
-
-This is the mental model I want you to remember:
-
 ```text
                     JAVA SECURITY
                          │
@@ -211,9 +143,9 @@ This is the mental model I want you to remember:
                                       TLS/SSL
 ```
 
-And the **interview answer** can be:
+In short -
 
-> **"Java provides security at multiple levels. At the language level, strong type checking, encapsulation, access control, and the absence of explicit pointer arithmetic improve memory and type safety. At the JVM level, class loading and bytecode verification help ensure that loaded classes follow JVM safety constraints. Java also provides security APIs for cryptography, digital signatures, certificates, and TLS-based secure communication."**
+> "Java provides security at multiple levels. At the language level, strong type checking, encapsulation, access control, and the absence of explicit pointer arithmetic improve memory and type safety. At the JVM level, class loading and bytecode verification help ensure that loaded classes follow JVM safety constraints. Java also provides security APIs for cryptography, digital signatures, certificates, and TLS-based secure communication."
 
 # Java Naming Conventions
 
@@ -222,9 +154,7 @@ And the **interview answer** can be:
 * **Constant:** `UPPER_SNAKE_CASE` 
 * **Package:** `lowercase` 
 * **Enum:** `PascalCase` (constants `UPPER_SNAKE_CASE`)
-
-### Java Naming Conventions
-
+Definitions -
 * **PascalCase** → Each word starts with a capital letter: `BankAccount`
 * **camelCase** → First word lowercase, subsequent words capitalized: `accountBalance`
 * **UPPER_SNAKE_CASE** → Words uppercase and separated by `_`: `MAX_AMOUNT`
@@ -232,14 +162,8 @@ And the **interview answer** can be:
 * **Enum constants** → Usually `UPPER_SNAKE_CASE`: `PENDING_APPROVAL`
 
 
-# Rules on identifiers
-
-### Identifier in Java
-
+# Identifiers
 An **identifier** is the **name given by the programmer to identify a program element**.
-
-Examples:
-
 ```java
 class BankAccount {          // BankAccount → identifier
     private double balance;  // balance → identifier
@@ -249,9 +173,7 @@ class BankAccount {          // BankAccount → identifier
     }
 }
 ```
-
-### What can be an identifier?
-
+What can be an identifier?
 ```text
 Class        → BankAccount
 Variable     → balance
@@ -261,24 +183,6 @@ Parameter    → amount
 Package      → banking
 ```
 
-### Rules
-
-```java
-int accountBalance;     // ✅
-int _balance;           // ✅
-int $amount;            // ✅
-int account2;           // ✅
-
-int 2account;           // ❌ cannot start with digit
-int account-balance;    // ❌ '-' is not allowed
-int class;              // ❌ keyword
-```
-
-**Key rule:** An identifier can contain **letters, digits, `_`, and `$`**, but **cannot start with a digit**, cannot contain spaces, and cannot be a Java keyword.
-
-**One-line revision:**
-
-> **Identifier = a programmer-defined name used to identify classes, methods, variables, packages, parameters, etc.**
 
 ### Rules for Java Identifiers
 
@@ -349,9 +253,11 @@ protected        ✅            ✅            ✅            ⚠️
 default          ✅            ✅            ❌            ❌
 private          ✅            ❌            ❌            ❌
 ```
+* methods? private, default, protected, public
+* which are applicable to top level classes? -> default, public
+* `private` and `protected` are allowed for nested classes.
 
-
-## 3. `protected` — Same package + subclasses
+## `protected` — Same package + subclasses
 
 ```java
 class Account {
@@ -401,19 +307,6 @@ Across packages, `protected` access is available through **inheritance**, not si
 ### The easiest way to remember
 
 Think of access as **increasing visibility**:
-
-```text
-private
-   ↓
-default
-   ↓
-protected
-   ↓
-public
-```
-
-Or:
-
 ```text
 private    → My room
 default    → My building
@@ -502,14 +395,143 @@ Sum.class
    ▼
 output: 30
 ```
+# Static Method ->
+In Java, a **static method belongs to the class, not to an object**. So there are several ways you may see it called.
+
+### 1. Using the class name — ✅ Recommended
+
+```java
+class Calculator {
+    static int add(int a, int b) {
+        return a + b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int result = Calculator.add(10, 20);
+        System.out.println(result);
+    }
+}
+```
+
+**Interview answer:**
+
+> A static method should normally be called using the class name because it belongs to the class rather than an instance.
+
+---
+
+### 2. Directly by method name from the same class
+
+```java
+class Calculator {
+
+    static void greet() {
+        System.out.println("Hello");
+    }
+
+    public static void main(String[] args) {
+        greet();
+    }
+}
+```
+
+This works because `main()` and `greet()` are both static methods of the same class.
+
+You can also write:
+
+```java
+Calculator.greet();
+```
+
+Both work.
+
+---
+
+### 3. Using an object — ⚠️ Possible, but not recommended
+
+```java
+class Calculator {
+    static void greet() {
+        System.out.println("Hello");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator c = new Calculator();
+
+        c.greet();   // Works, but NOT recommended
+    }
+}
+```
+
+Java allows this, but the compiler treats the call as a **static method invocation based on the type**, not as an instance-method call.
+
+Conceptually, prefer:
+
+```java
+Calculator.greet();
+```
+
+instead of:
+
+```java
+c.greet();
+```
+
+---
+
+### 4. Through inheritance
+
+Static methods can be inherited by a subclass.
+
+```java
+class Parent {
+    static void show() {
+        System.out.println("Parent");
+    }
+}
+
+class Child extends Parent {
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child.show();   // Works
+    }
+}
+```
+
+But remember: **static methods are hidden, not overridden.**
+
+
+
+### ⭐ One important point
+
+This is why you often see:
+
+```java
+public static void main(String[] args)
+```
+
+The JVM can invoke `main()` **without creating an object**:
+
+```text
+JVM
+ ↓
+Main.main(args)
+```
+
+because `main()` is static.
+
+> **The JVM invokes the `main` method as the application's entry point using the class name and the required `String[]` signature. Inside a static context, static methods can be invoked directly by method name if they are accessible.**
+
+And one correction to my previous answer: **“same class” is a simplification.** A static method can also be called by its simple name when it is inherited or statically imported and is accessible.
+
 
 
 # Java Data Types
-
-## Definition
-
-A data type defines what kind of value a variable can store and what operations can be performed on that value.
-
 Java is **statically typed**, so a variable's type is known at compile time.
 
 ```text
@@ -883,312 +905,6 @@ The most important distinction:
 
 ---
 
-## 2. Heap — most important
-
-The **Heap** is where objects and arrays are allocated.
-
-Example:
-
-```java
-BankAccount account = new BankAccount();
-```
-
-Conceptually:
-
-```text
-Stack                         Heap
-
-account ──────────────────→ BankAccount object
-                              balance = 5000
-                              id = 101
-```
-
-The variable `account` is a reference.
-
-The actual `BankAccount` object is allocated on the heap.
-
-### Another example
-
-```java
-int[] amounts = new int[3];
-```
-
-The array object is on the heap.
-
-```text
-Stack                         Heap
-
-amounts ─────────────────→  int[3]
-                             [100, 200, 300]
-```
-
-### Garbage Collection
-
-When an object is no longer reachable:
-
-```java
-BankAccount account = new BankAccount();
-
-account = null;
-```
-
-the object may eventually become eligible for garbage collection.
-
-Important interview wording:
-
-> **"Eligible for GC" does not mean "immediately deleted."**
-
-The Garbage Collector determines when/how memory is reclaimed.
-
----
-
-## 3. Stack — per thread
-
-Every thread gets its own JVM Stack.
-
-Suppose:
-
-```java
-public static void main(String[] args) {
-    int amount = 100;
-    calculate(amount);
-}
-
-static void calculate(int amount) {
-    int tax = 10;
-    System.out.println(amount + tax);
-}
-```
-
-When `main()` starts:
-
-```text
-Thread 1 Stack
-
-┌──────────────────────┐
-│ main() frame         │
-│ amount = 100         │
-│ args → ...           │
-└──────────────────────┘
-```
-
-When `calculate()` is called:
-
-```text
-┌──────────────────────┐
-│ calculate() frame    │
-│ amount = 100         │
-│ tax = 10              │
-├──────────────────────┤
-│ main() frame         │
-│ amount = 100         │
-│ args → ...            │
-└──────────────────────┘
-```
-
-When `calculate()` finishes, its frame is removed:
-
-```text
-┌──────────────────────┐
-│ main() frame         │
-│ amount = 100         │
-│ args → ...            │
-└──────────────────────┘
-```
-
-This is why we say:
-
-> **Method calls create stack frames.**
-
----
-
-## 4. What is inside a Stack Frame?
-
-This is a **very good interview follow-up**.
-
-Each method invocation gets a frame.
-
-Conceptually, a frame contains:
-
-```text
-Stack Frame
-│
-├── Local Variables
-├── Operand Stack
-└── Reference to runtime constant pool /
-    method execution information
-```
-
-### Local variables
-
-Example:
-
-```java
-int amount = 100;
-```
-
-The local variable is stored in the method's frame.
-
-### Operand stack
-
-The JVM uses an operand stack while executing bytecode.
-
-For example:
-
-```java
-int result = a + b;
-```
-
-The JVM loads operands onto the operand stack, performs the operation, and places the result back.
-
-You don't normally manipulate this stack directly in Java code.
-
----
-
-## 5. Method Area
-
-The **Method Area** is shared among threads.
-
-It stores class-level/runtime information such as:
-
-* Class metadata
-* Method information
-* Field information
-* Runtime constant pool
-* Static-related class information
-
-Example:
-
-```java
-class BankAccount {
-
-    static String bankName = "ABC Bank";
-
-    int balance;
-
-    void deposit(int amount) {
-        balance += amount;
-    }
-}
-```
-
-When `BankAccount` is loaded, the JVM needs information about:
-
-```text
-BankAccount
- ├── class metadata
- ├── method information
- ├── field information
- └── runtime constant pool
-```
-
-### Important Java 8+ interview nuance
-
-You may hear:
-
-> "Method Area = PermGen"
-
-That's outdated.
-
-In **HotSpot**:
-
-```text
-Java 7 and earlier → PermGen
-Java 8+            → Metaspace
-```
-
-Java 8 removed PermGen and introduced **Metaspace** for class metadata.
-
-So in an interview, say:
-
-> **"Method Area is a JVM specification concept. In HotSpot, class metadata is implemented using Metaspace since Java 8."**
-
-That's a much stronger answer.
-
----
-
-## 6. PC Register
-
-PC = **Program Counter**.
-
-Every thread has its own PC register.
-
-Its job is essentially to keep track of **which JVM instruction that thread is currently executing / will execute next**, subject to JVM specification details.
-
-Conceptually:
-
-```text
-Thread 1
-PC → instruction 25
-
-Thread 2
-PC → instruction 108
-```
-
-Why is it per-thread?
-
-Because different threads execute different instructions at the same time.
-
----
-
-## 7. Native Method Stack
-
-Java can call native code, commonly through mechanisms such as JNI.
-
-For example, some Java APIs ultimately interact with operating-system/native implementations.
-
-The JVM provides a **Native Method Stack** for native method execution.
-
-For most backend interviews, one sentence is enough:
-
-> **"The native method stack supports execution of native methods outside the JVM's Java bytecode execution model."**
-
-Don't spend five minutes on it unless the interviewer asks.
-
----
-
-## 8. The question interviewers LOVE
-
-### "Where is this stored?"
-
-Consider:
-
-```java
-class Customer {
-    static String bank = "ABC";
-
-    int age;
-
-    void show() {
-        int x = 10;
-        Customer c = new Customer();
-    }
-}
-```
-
-You should reason like this:
-
-```text
-Customer c = new Customer();
-
-        Stack                         Heap
-┌─────────────────┐            ┌──────────────────┐
-│ c ──────────────┼──────────→ │ Customer object  │
-│                 │            │ age = 0          │
-└─────────────────┘            └──────────────────┘
-```
-
-`c` → local reference in the method's frame.
-
-`new Customer()` → object allocated in the heap.
-
-`x` → local variable in the current stack frame.
-
-`bank` → class/static state associated with the class; don't oversimplify it as "stored in Method Area." The JVM specification doesn't mandate one exact physical location for static fields.
-
-That's an important interview correction.
-
----
 
 ## 9. Heap vs Stack
 
@@ -1201,13 +917,6 @@ That's an important interview correction.
 | Lifetime depends on object reachability | Lifetime tied to method invocation |
 | `new BankAccount()` object              | `account` local reference          |
 
-### Don't say:
-
-> "All variables are stored in stack."
-
-That's an oversimplification and can get you into trouble.
-
-A better statement is:
 
 > **"Local variables are represented in a method's stack frame, while objects and arrays are allocated in the heap. JVM implementations may optimize or eliminate allocations, so this is a conceptual model rather than a guarantee of physical memory placement."**
 
@@ -1215,41 +924,7 @@ That's senior-level wording.
 
 ---
 
-## 10. StackOverflowError vs OutOfMemoryError
-
-Another very common interview question.
-
-### StackOverflowError
-
-Usually caused by excessive/deep method calls, often recursion.
-
-```java
-static void test() {
-    test();
-}
-```
-
-Eventually:
-
-```text
-StackOverflowError
-```
-
-because the thread's stack cannot accommodate more frames.
-
-### OutOfMemoryError
-
-Can occur when the JVM cannot satisfy memory allocation.
-
-For example, conceptually:
-
-```java
-List<byte[]> list = new ArrayList<>();
-
-while (true) {
-    list.add(new byte[1024 * 1024]);
-}
-```
+## StackOverflowError vs OutOfMemoryError
 
 Eventually the heap may be exhausted:
 
@@ -1267,80 +942,6 @@ Heap allocation cannot be satisfied → OutOfMemoryError
 
 ---
 
-## 11. One complete example
-
-Suppose:
-
-```java
-public class Bank {
-
-    static String name = "ABC Bank";
-
-    public static void main(String[] args) {
-
-        int amount = 1000;
-
-        Account account = new Account();
-
-        account.deposit(amount);
-    }
-}
-```
-
-Conceptually:
-
-```text
-                    JVM
-                     │
-       ┌─────────────┴─────────────┐
-       │                           │
-     HEAP                      THREAD 1
-       │                           │
-       │                        STACK
-       │                           │
-       │                    ┌───────────────┐
-       │                    │ main() frame  │
-       │                    │ amount = 1000 │
-       │                    │ account ──────┼─────┐
-       │                    └───────────────┘     │
-       │                                          │
-       ▼                                          ▼
-┌──────────────────┐                    ┌────────────────┐
-│ Account object   │                    │ Account data   │
-│ balance = ...    │                    │                │
-└──────────────────┘                    └────────────────┘
-```
-
-Meanwhile, class-related information for `Bank`/`Account` is maintained in the JVM's class metadata areas.
-
----
-
-## 12. One subtle point: JVM memory ≠ Java memory only
-
-When people say:
-
-> "JVM memory"
-
-they sometimes mean the JVM's **runtime data areas**, but a real JVM process also uses **native/off-heap memory**.
-
-For example:
-
-```text
-JVM Process
-│
-├── Heap
-├── Thread Stacks
-├── Metaspace
-├── Code Cache
-├── Native memory
-└── other JVM/internal structures
-```
-
-You don't need to dump all of this in your first interview answer.
-
-Give the core model first, then expand if asked.
-
----
 
 ## 13. The interview flow I want you to memorize
 
@@ -1421,62 +1022,12 @@ public class BankAccount
 }
 ```
 
----
-
-## 1. Class Name Must Be a Valid Identifier
-
-```java
-class BankAccount { }      // ✅
-class Bank123 { }          // ✅
-class 123Bank { }          // ❌
-class Bank-Account { }     // ❌
-```
-
-Rules for identifiers:
-
-* Cannot start with a digit
-* Cannot contain spaces
-* Cannot use most special characters
-* Cannot be a Java keyword
-* Case-sensitive
-* `_` and `$` are technically allowed
-
-### Naming Convention
-
-Use **PascalCase**:
-
-```java
-class BankAccount { }
-class PaymentProcessor { }
-class CustomerService { }
-```
-
----
 
 ## 2. Top-Level Class Access Modifiers
 
-A top-level class can be:
+* A top-level class can be public or package-private:
 
-```java
-public class BankAccount {
-}
-```
-
-or package-private:
-
-```java
-class BankAccount {
-}
-```
-
-A top-level class cannot be:
-
-```java
-private class BankAccount { }    // ❌
-protected class BankAccount { }  // ❌
-```
-
-`private` and `protected` are allowed for nested classes.
+* A top-level class **cannot** be: `private` and `protected` are allowed for nested classes.
 
 ---
 
@@ -1484,48 +1035,10 @@ protected class BankAccount { }  // ❌
 
 If a top-level class is `public`, the filename must match the class name.
 
-```java
-// BankAccount.java
-
-public class BankAccount {
-}
-```
-
-✅
-
-But:
-
-```java
-// BankAccount.java
-
-public class Customer {
-}
-```
-
-❌
-
-The file must be:
-
-```text
-Customer.java
-```
-
----
 
 ## 4. Multiple Classes in One File
 
 A `.java` file can contain multiple top-level classes:
-
-```java
-public class BankAccount {
-}
-
-class Customer {
-}
-
-class Transaction {
-}
-```
 
 But there can be **at most one public top-level class** in the file.
 
@@ -1536,26 +1049,6 @@ The public class determines the filename.
 ## 5. `extends` — Class Inheritance
 
 A class can extend **only one class**.
-
-```java
-class SavingsAccount extends BankAccount {
-}
-```
-
-Valid:
-
-```java
-class SavingsAccount extends BankAccount {
-}
-```
-
-Invalid:
-
-```java
-class SavingsAccount
-        extends BankAccount, Account {
-}
-```
 
 Java does not support multiple class inheritance.
 
@@ -1570,12 +1063,6 @@ extends → maximum ONE class
 ## 6. `implements` — Multiple Interfaces
 
 A class can implement multiple interfaces.
-
-```java
-class BankAccount
-        implements Transferable, Auditable {
-}
-```
 
 ### Rule
 
@@ -1599,15 +1086,6 @@ extends
    ↓
 implements
 ```
-
-Not:
-
-```java
-implements Transferable
-extends BankAccount  // ❌
-```
-
----
 
 ## 7. `abstract` Class
 
@@ -1645,18 +1123,6 @@ Use an abstract class when you want to provide a common base and potentially req
 ## 8. `final` Class
 
 A `final` class cannot be extended.
-
-```java
-final class Transaction {
-}
-```
-
-This is invalid:
-
-```java
-class OnlineTransaction extends Transaction {
-} // ❌
-```
 
 Example from Java:
 
@@ -1797,29 +1263,6 @@ public class BankAccount
     }
 }
 ```
-
-Here:
-
-```text
-public
-  → accessible from other packages
-
-class
-  → declares a class
-
-BankAccount
-  → class name
-
-extends Account
-  → inherits from Account
-
-implements Transferable
-  → provides Transferable behavior
-
-private BigDecimal balance
-  → encapsulated account state
-```
-
 ---
 
 ## 13. Important Rules — Quick Revision
@@ -1846,7 +1289,7 @@ private BigDecimal balance
 
 10. Final classes cannot be extended.
 
-11. Sealed classes restrict permitted subclasses.
+11. Sealed classes restrict permitted subclasses. - permits keyword
 
 12. Sealed classes became final in Java 17.
 ```
@@ -1928,7 +1371,6 @@ Class Declaration
 Modifier → class → Name → extends ONE → implements MANY
 ```
 
-This is the format I'd continue using for your Java revision notes: **short theory + rules + code + project application + interview answer + rapid-fire questions**.
 
 ## Nested Class Rules
 
