@@ -866,7 +866,7 @@ Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
 * Can you write a java class without main and compile it? YES
 * Can you write a java class without main and run it? NO
 * What are legal access specifiers for members(data members & methods)? private, default, protected, public
-* which are applicable to classes? -> default, public
+* which are applicable to top - level classes in heirarchy? -> default, public
 * can a java src file contain multiple default classes? : YES
 * can a java src file contain multiple public classes? : NO
 * Any rules regarding default class name & src file name? : NO
@@ -926,15 +926,6 @@ That's senior-level wording.
 ---
 
 ## StackOverflowError vs OutOfMemoryError
-
-Eventually the heap may be exhausted:
-
-```text
-OutOfMemoryError: Java heap space
-```
-
-So:
-
 ```text
 Stack too deep → StackOverflowError
 
@@ -942,9 +933,6 @@ Heap allocation cannot be satisfied → OutOfMemoryError
 ```
 
 ---
-
-
-## 13. The interview flow I want you to memorize
 
 If interviewer says:
 
@@ -966,7 +954,7 @@ Let the interviewer ask follow-ups.
 
 ---
 
-## 14. Follow-up questions you should be ready for
+## Follow-up questions you should be ready for
 
 You should be able to answer these next:
 
@@ -986,13 +974,7 @@ You should be able to answer these next:
 14. **Where are String objects stored?**
 15. **What happens in memory when `new` is used?**
 16. **What happens when one method calls another?**
-
-For your **Core Java → Banking System** learning path, I'd learn these as one connected topic rather than memorizing isolated definitions. The next natural topic is **"What exactly happens in JVM memory when `BankAccount account = new BankAccount()` executes?"** — that will make heap, stack, references, objects, class loading, and GC click together.
-
 # Java Class Declaration
-
-## Definition
-
 A **class** is a blueprint for creating objects. A class declaration defines the class name, its access/modifier rules, inheritance, implemented interfaces, and its members.
 
 ### General Syntax
@@ -1022,64 +1004,34 @@ public class BankAccount
     }
 }
 ```
-
-
-## 2. Top-Level Class Access Modifiers
-
 * A top-level class can be public or package-private:
 
 * A top-level class **cannot** be: `private` and `protected` are allowed for nested classes.
 
----
+* If a top-level class is `public`, the filename must match the class name.
 
-## 3. Public Class and File Name
+* A `.java` file can contain multiple top-level classes:
 
-If a top-level class is `public`, the filename must match the class name.
+* But there can be **at most one public top-level class** in the file.
 
+* The public class determines the filename.
 
-## 4. Multiple Classes in One File
+* A class can extend **only one class**.
 
-A `.java` file can contain multiple top-level classes:
-
-But there can be **at most one public top-level class** in the file.
-
-The public class determines the filename.
-
----
-
-## 5. `extends` — Class Inheritance
-
-A class can extend **only one class**.
-
-Java does not support multiple class inheritance.
+* Java does not support multiple class inheritance.
 
 ### Rule
 
 ```text
 extends → maximum ONE class
 ```
-
----
-
-## 6. `implements` — Multiple Interfaces
-
-A class can implement multiple interfaces.
+* A class can implement multiple interfaces.
 
 ### Rule
 
 ```text
 implements → MULTIPLE interfaces allowed
 ```
-
-A class can therefore have:
-
-```java
-class SavingsAccount
-        extends BankAccount
-        implements Transferable, Auditable {
-}
-```
-
 The order is:
 
 ```text
@@ -1087,10 +1039,7 @@ extends
    ↓
 implements
 ```
-
-## 7. `abstract` Class
-
-An abstract class cannot be directly instantiated.
+* An abstract class cannot be directly instantiated.
 
 ```java
 abstract class Account {
@@ -1119,11 +1068,7 @@ class SavingsAccount extends Account {
 
 Use an abstract class when you want to provide a common base and potentially require subclasses to implement certain behavior.
 
----
-
-## 8. `final` Class
-
-A `final` class cannot be extended.
+* A `final` class cannot be extended.
 
 Example from Java:
 
@@ -1132,13 +1077,9 @@ public final class String {
 }
 ```
 
-`String` cannot be subclassed.
+* `String` cannot be subclassed.
 
----
-
-## 9. `sealed` Class
-
-**Sealed classes became a permanent Java feature in Java 17.**
+* **Sealed classes became a permanent Java feature in Java 17.**
 
 A sealed class restricts which classes can extend it.
 
@@ -1182,7 +1123,7 @@ Payment
 
 ---
 
-## 10. Common Class Modifiers
+* Common Class Modifiers
 
 | Modifier     | Meaning                                            |
 | ------------ | -------------------------------------------------- |
@@ -1192,81 +1133,7 @@ Payment
 | `sealed`     | Restricts permitted subclasses                     |
 | `non-sealed` | Opens inheritance under a sealed hierarchy         |
 
----
-
-## 11. Class Declaration Examples
-
-### Simple class
-
-```java
-class Customer {
-}
-```
-
-### Public class
-
-```java
-public class Customer {
-}
-```
-
-### Abstract class
-
-```java
-abstract class Account {
-}
-```
-
-### Final class
-
-```java
-final class Transaction {
-}
-```
-
-### Inheritance
-
-```java
-class SavingsAccount extends Account {
-}
-```
-
-### Multiple interfaces
-
-```java
-class SavingsAccount
-        implements Transferable, Auditable {
-}
-```
-
-### Complete declaration
-
-```java
-public final class BankAccount
-        extends Account
-        implements Transferable, Auditable {
-}
-```
-
----
-
-## 12. Banking Project Example
-
-```java
-public class BankAccount
-        extends Account
-        implements Transferable {
-
-    private BigDecimal balance;
-
-    public void deposit(BigDecimal amount) {
-        balance = balance.add(amount);
-    }
-}
-```
----
-
-## 13. Important Rules — Quick Revision
+* Quick Revision
 
 ```text
 1. Class name must be a valid identifier.
@@ -1295,76 +1162,40 @@ public class BankAccount
 12. Sealed classes became final in Java 17.
 ```
 
----
-
-## Interview Answer
-
 > **"A Java class declaration consists of optional modifiers, the `class` keyword, a valid class name, and optionally an `extends` clause and an `implements` clause. A class can extend only one class but can implement multiple interfaces. A top-level public class must have the same name as its source file, and a source file can contain at most one public top-level class. A class can also be abstract, final, or sealed depending on the inheritance and instantiation requirements."**
 
 ---
-
-## Quick Interview Questions
-
-### Q1. Can a class extend multiple classes?
-
-No.
+* Q1. Can a class extend multiple classes? No.
 
 ```java
 class C extends A, B { } // ❌
 ```
-
-### Q2. Can a class implement multiple interfaces?
-
-Yes.
+* Can a class implement multiple interfaces? Yes.
 
 ```java
 class C implements A, B { } // ✅
 ```
+* Can a top-level class be private? No.
 
-### Q3. Can a top-level class be private?
+* Can a `.java` file contain multiple classes? Yes, but at most one top-level class can be `public`.
 
-No.
-
-### Q4. Can a `.java` file contain multiple classes?
-
-Yes, but at most one top-level class can be `public`.
-
-### Q5. What determines the filename?
-
-The public top-level class.
+* What determines the filename? The public top-level class.
 
 ```java
 public class BankAccount { }
 ```
-
 → `BankAccount.java`
 
-### Q6. Can an abstract class be instantiated?
-
-No.
-
-### Q7. Can a final class be inherited?
-
-No.
-
-### Q8. What is a sealed class?
-
+* Can an abstract class be instantiated? No.
+* Can a final class be inherited? No.
+* What is a sealed class?
 A class that explicitly restricts which classes can extend it.
-
-### Q9. When did sealed classes become a permanent Java feature?
-
-**Java 17.**
-
-### Q10. `extends` vs `implements`?
-
+* When did sealed classes become a permanent Java feature?
+* `extends` vs `implements`?
 ```text
 extends     → inherit from a class
 implements  → implement one or more interfaces
 ```
-
----
-
-## One-line memory trick
 
 ```text
 Class Declaration
@@ -1856,45 +1687,45 @@ class UpiProcessor
 
 > “Java supports nested types, including static nested classes, inner classes, local classes, anonymous classes, and nested interfaces. A static nested class does not require an outer-class instance, while a non-static inner class is associated with an outer-class object. Interfaces define contracts and can be implemented by multiple classes. A class can extend only one class but can implement multiple interfaces, while an interface can extend multiple interfaces. Interface fields are implicitly public, static, and final, and interface methods can be abstract, default, static, or private depending on the Java version.”
 
-### Quick Interview Questions
+### Quick Questions
 
-**Q: Can a class be declared inside another class?**
+* Can a class be declared inside another class?
 Yes. It is called a nested class.
 
-**Q: What is the difference between static nested class and inner class?**
+* What is the difference between static nested class and inner class?
 A static nested class does not require an outer-class instance; an inner class does.
 
-**Q: Can an inner class access private members of the outer class?**
+* Can an inner class access private members of the outer class?
 Yes.
 
-**Q: Can a class extend multiple classes?**
+* Can a class extend multiple classes?
 No.
 
-**Q: Can a class implement multiple interfaces?**
+* Can a class implement multiple interfaces?
 Yes.
 
-**Q: Can an interface extend multiple interfaces?**
+* Can an interface extend multiple interfaces?
 Yes.
 
-**Q: Can an interface extend a class?**
+* Can an interface extend a class?
 No.
 
-**Q: Can an interface be instantiated?**
+* Can an interface be instantiated?
 No.
 
-**Q: What are interface variables by default?**
+* What are interface variables by default?
 `public static final`.
 
-**Q: What are normal interface methods by default?**
+* What are normal interface methods by default?
 `public abstract`, unless they are `default`, `static`, or `private`.
 
-**Q: When were default and static interface methods introduced?**
+* When were default and static interface methods introduced?
 Java 8.
 
-**Q: When were private interface methods introduced?**
+* When were private interface methods introduced?
 Java 9.
 
-**Q: Can a nested interface be private?**
+* Can a nested interface be private?
 Yes, when declared inside a class or another suitable enclosing type.
 
 ### Memory Trick
