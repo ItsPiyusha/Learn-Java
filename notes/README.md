@@ -360,6 +360,7 @@ public     → Anyone
 ```
 * Java src code -->(Java compiler) --> ByteCode -->(JIT compiler) --> Native code 
 * class files -> class loader -><- Runtime data areas(Method area + Heap + Java stacks + PC registers + Native method stacks) -><- Execution Engine -><- Native method interface -> native method library
+![JVM Architecture](JVM.png)
 * Java Hot Spot -> adaptive learning like AI
 * main function expects String, we'll parse string to num to calculate the sum and avoid concatenation
 CoreJava/src/java01/Sum.java
