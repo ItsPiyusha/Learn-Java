@@ -794,10 +794,6 @@ Choose a type based on:
 5. API contract
 6. Whether absence (`null`) is meaningful
 
-
-
-## Quick Interview Questions
-
 **Q: How many primitive types does Java have?**
 
 8.
@@ -1020,14 +1016,10 @@ public class BankAccount
 
 * Java does not support multiple class inheritance.
 
-### Rule
-
 ```text
 extends → maximum ONE class
 ```
 * A class can implement multiple interfaces.
-
-### Rule
 
 ```text
 implements → MULTIPLE interfaces allowed
@@ -1618,7 +1610,7 @@ Implementations must follow the sealed hierarchy rules.
 
 ---
 
-## Nested Class vs Interface — Quick Comparison
+## Nested Class vs Interface
 
 | Feature                      | Nested Class                               | Nested Interface                      |
 | ---------------------------- | ------------------------------------------ | ------------------------------------- |
@@ -1683,11 +1675,7 @@ class UpiProcessor
 
 ---
 
-## Interview Answer
-
 > “Java supports nested types, including static nested classes, inner classes, local classes, anonymous classes, and nested interfaces. A static nested class does not require an outer-class instance, while a non-static inner class is associated with an outer-class object. Interfaces define contracts and can be implemented by multiple classes. A class can extend only one class but can implement multiple interfaces, while an interface can extend multiple interfaces. Interface fields are implicitly public, static, and final, and interface methods can be abstract, default, static, or private depending on the Java version.”
-
-### Quick Questions
 
 * Can a class be declared inside another class?
 Yes. It is called a nested class.
@@ -1727,8 +1715,6 @@ Java 9.
 
 * Can a nested interface be private?
 Yes, when declared inside a class or another suitable enclosing type.
-
-### Memory Trick
 
 ```text
 Nested Classes
@@ -1923,12 +1909,7 @@ account.deposit(); // NullPointerException
 | Not inherited                 | Can be inherited/overridden depending on method |
 
 ---
-
-## Interview Answer
-
 > **“An object is an instance of a class. A constructor initializes an object when it is created using `new`. The `this` keyword refers to the current object and is commonly used to distinguish instance fields from parameters or to invoke another constructor. A reference variable holds a reference to an object, while `null` represents the absence of an object reference.”**
-
-### One-line Memory
 
 ```text
 Class → blueprint
@@ -1966,8 +1947,6 @@ Eligible for Garbage Collection
 GC reclaims memory
 ```
 
-### Example
-
 ```java
 BankAccount account = new BankAccount("123");
 ```
@@ -1991,9 +1970,6 @@ object may become unreachable
  ↓
 eligible for GC
 ```
-
-### Key Point
-
 **Garbage Collection is automatic, but becoming eligible for GC does not mean the object is immediately destroyed.**
 
 # Assignment 2 ->
@@ -2173,7 +2149,7 @@ class Box{
 }
 ```
 * Heart of Java -> toString, equals, hashcode, compare, compareTo. 
-* ```boolean isEqual(Box anotherBox)// primitive and ref types of variables are passed by value(copy) 
+* ```boolean isEqual(Box anotherBox)// primitive and ref types of variables are passed by value(copy) ```
 
 # Packages
 * Avoids name space collision -> resolves duplicate class names
