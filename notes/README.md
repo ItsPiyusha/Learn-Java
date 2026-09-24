@@ -2024,14 +2024,8 @@ method declaration -- access specifier, ret type, name, args method def -- body
 3. Object created within a method & its ref NOT returned to the caller
 4. Island of isolation
 
-* Method area will get empty when JVM terminates, class unloading happens, GC doesn't clear method area
-
-## Garbage Collection (GC)
-
-**Garbage Collection** is the JVM's automatic process of reclaiming memory occupied by objects that are **no longer reachable**.
-
-### Key Points
-
+* Method area will get empty when JVM terminates, class unloading happens, GC doesn't clear method area.
+* **Garbage Collection** is the JVM's automatic process of reclaiming memory occupied by objects that are **no longer reachable**.
 * **Automatic** — JVM manages it; developers don't explicitly free objects.
 * Works mainly on the **Heap**.
 * An object becomes **GC-eligible when it is unreachable**.
@@ -2048,24 +2042,6 @@ method declaration -- access specifier, ret type, name, args method def -- body
 * `finalize()` is **deprecated for removal** and should not be used for resource cleanup.
 * Use **try-with-resources** for resources such as files, sockets, and DB connections; GC is not a replacement for explicit resource management.
 
-### Reachability
-
-```text
-Reference exists
-      ↓
-Object reachable
-      ↓
-Not GC-eligible
-
-Reference removed
-      ↓
-No path from GC roots
-      ↓
-Object unreachable
-      ↓
-GC-eligible
-```
-
 ### GC Roots
 
 Objects can remain reachable through GC roots such as:
@@ -2076,28 +2052,7 @@ Static references
 Local variables / stack references
 JNI references
 ```
-
-### Example
-
-```java
-BankAccount a = new BankAccount();
-BankAccount b = a;
-
-a = null;       // object still reachable through b
-b = null;       // object may now be GC-eligible
-```
-
-### Interview Answer
-
-> **“Garbage Collection is the JVM's automatic memory-management mechanism that identifies objects that are no longer reachable and reclaims their heap memory. An object becoming eligible for GC does not mean it is immediately collected. Modern JVMs use different collectors and may perform concurrent and stop-the-world phases to balance throughput, latency, and memory usage.”**
-
-### One-Line Memory
-
-```text
-Unreachable object → GC-eligible → GC may reclaim heap memory
-```
-
-### Most Important Interview Questions
+> “Garbage Collection is the JVM's automatic memory-management mechanism that identifies objects that are no longer reachable and reclaims their heap memory. An object becoming eligible for GC does not mean it is immediately collected. Modern JVMs use different collectors and may perform concurrent and stop-the-world phases to balance throughput, latency, and memory usage.”
 
 **Q: Where does GC mainly work?**
 Heap.
@@ -2126,20 +2081,14 @@ The JVM could not satisfy a memory allocation request; it does not necessarily m
 # Daemon Thread
 
 A **daemon thread** is a background thread that provides services to other threads and **does not keep the JVM alive**.
-
-### Key Points
-
 * Runs in the **background**.
 * JVM does **not wait** for daemon threads to finish.
-* JVM exits when **all non-daemon threads finish**.
+* JVM exits when all **non-daemon** threads finish.
 * A daemon thread may be terminated when JVM exits.
 * Must call `setDaemon(true)` **before** `start()`.
 * By default, a newly created thread inherits the daemon status of its parent thread.
 * Common use: background/support tasks.
 * **GC is not simply “a daemon thread”** — Garbage Collection is a JVM subsystem and collector implementation may use multiple internal threads.
-
-### Example
-
 ```java
 Thread t = new Thread(() -> {
     while (true) {
@@ -2172,7 +2121,7 @@ Daemon thread stops
 | Used for important application work | Used for background/support work |
 | Default for `main` thread           | Must be explicitly/inherited     |
 
-### Important Rule
+* Rule
 
 ```java
 t.setDaemon(true);
@@ -2183,18 +2132,7 @@ t.start();          // ✅
 t.start();
 t.setDaemon(true);  // ❌ IllegalThreadStateException
 ```
-
-### Interview Answer
-
-> **“A daemon thread is a background thread that does not prevent the JVM from shutting down. Once all non-daemon threads finish, the JVM can exit without waiting for daemon threads. Its daemon status must be set before the thread is started.”**
-
-### Memory Trick
-
-```text
-Non-daemon → JVM waits
-Daemon     → JVM doesn't wait
-```
-
+> “A daemon thread is a background thread that does not prevent the JVM from shutting down. Once all non-daemon threads finish, the JVM can exit without waiting for daemon threads. Its daemon status must be set before the thread is started.”
 
 * **GC is not itself a daemon thread.** GC is a **JVM subsystem/process** for automatic memory management.
 * JVM garbage collectors use **internal JVM threads** to perform GC work.
@@ -2208,12 +2146,8 @@ Daemon thread
 GC
 → JVM's automatic heap-memory management mechanism
 ```
+> “Garbage Collection is a JVM memory-management mechanism, not a daemon thread. The JVM uses internal GC threads to perform collection, but GC itself should not be described as a daemon thread.”
 
-### Interview-safe answer
-
-> **“Garbage Collection is a JVM memory-management mechanism, not a daemon thread. The JVM uses internal GC threads to perform collection, but GC itself should not be described as a daemon thread.”**
-
-**Memory trick:**
 `GC ≠ daemon thread`
 `GC → uses JVM-internal threads`
 
@@ -2248,7 +2182,7 @@ class Box{
 * package names are mapped to folder names.
 * For simplicity -- create folder p1 -- under <src> & compile from <src>
 * **NOTE** : Its not mandatory to create java sources(.java) under package named folder. BUT its mandatory to store packaged compiled classes (.class) under package named folders.
-Earlier half is just maintained as convenience
+src is just maintained as convenience
 * How to launch / run package java classes?
 * How to run?
 ```
@@ -2268,9 +2202,6 @@ An **array** is a fixed-size, indexed collection of elements of the **same type*
 ```java
 int[] numbers = new int[5];
 ```
-
-### Key Points
-
 * Fixed length after creation.
 * Index starts from `0`.
 * Last index = `length - 1`.
@@ -2449,14 +2380,7 @@ Also:
 int[] a = null;
 System.out.println(a.length); // ❌ NullPointerException
 ```
-
----
-
-## Interview Answer
-
-> **“An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
-
-### One-Line Memory
+> “An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
 
 ```text
 Array → fixed size + same type + index 0
@@ -2773,59 +2697,7 @@ class SavingsAccount
 
 This is how Java provides multiple-type inheritance without multiple class inheritance.
 
-## Quick Revision
-
-```text
-Inheritance
-    ↓
-Child acquires accessible parent behavior/state
-
-extends
-    ↓
-ONE parent class
-
-implements
-    ↓
-MANY interfaces
-
-super
-    ↓
-Immediate parent
-
-this
-    ↓
-Current object
-
-Overriding
-    ↓
-Child provides new implementation
-
-Runtime polymorphism
-    ↓
-Parent reference → Child object
-
-Constructors
-    ↓
-Not inherited
-
-private
-    ↓
-Not directly accessible in child
-
-final class
-    ↓
-Cannot extend
-
-final method
-    ↓
-Cannot override
-```
-
-## Interview Answer
-
-> **“Inheritance is an object-oriented mechanism where a subclass derives from a superclass using `extends`. Java supports single, multilevel, and hierarchical class inheritance, but not multiple inheritance of classes. A subclass inherits accessible members, but constructors are not inherited and private members are not directly accessible. Inheritance also enables runtime polymorphism through method overriding, where a parent reference can refer to a child object.”**
-
-## Rapid-Fire Questions
+> “Inheritance is an object-oriented mechanism where a subclass derives from a superclass using `extends`. Java supports single, multilevel, and hierarchical class inheritance, but not multiple inheritance of classes. A subclass inherits accessible members, but constructors are not inherited and private members are not directly accessible. Inheritance also enables runtime polymorphism through method overriding, where a parent reference can refer to a child object.”
 
 **Q: Does Java support multiple inheritance?**
 Not for classes. Multiple interfaces can be implemented.
