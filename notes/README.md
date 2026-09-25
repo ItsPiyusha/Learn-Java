@@ -2565,6 +2565,7 @@ class TestRectangle{
 2. make it public
 3. make the methods as well public
 
+1. same package subclass
 create folders p1 and p2
 ```java
 package p1;
@@ -2590,7 +2591,95 @@ class B extends A{
     }
 }
 ```
+error: i has private access in A
+2. same package non-sub class
+```java
+package p1;
+class C{
+    C(){
+        System.out.println("A's state " + i + " " + j + " " + k + " " + l);
+    }
+}
 
+```
+4 errors: cannot find symbol for all i, j, k, l
+
+3. create object of A -> Uses-a relationship
+```java
+package p1;
+class C{
+    C(){
+        A a1 = new A();
+        System.out.println("A's state " + a.i + " " + a.j + " " + a.k + " " + a.l);
+    }
+}
+```
+now only 1 error: i has private access in A
+
+4. Different package now:
+```java
+package p2;
+class D extends A{
+    D(){
+        System.out.println("D's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+* Before extending the class, you need to import it first
+
+5. Different package now: imported
+```java
+package p1;
+public class A{
+    private int i;
+    int j;
+    protected int k;
+    public int l;
+    protected A(){ 
+        System.out.println("A's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+```java
+package p2;
+import p1.A;
+class D extends A{
+    D(){
+        System.out.println("D's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+Error1: A is not public in p1;cannot be accessed from outside package.
+Error2: subclass always call super class constructor first just like cpp, which is not public -> make constructor A **protected** (enough access), public works but not needed for now.
+-> now we can access k(protected) and l(public) only
+
+6. Different package now: non-subclass
+```java
+package p1;
+public class A{
+    private int i;
+    int j;
+    protected int k;
+    public int l;
+    public A(){ 
+        System.out.println("A's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+```java
+package p2;
+import p1.A;
+class E{
+    E(){
+        A a1 = new A();
+        System.out.println("D's state " + a1.i + " " + a1.j + " " + a1.k + " " + a1.l);
+    }
+}
+```
+Error1: import A
+Error2: make A() constructor public only work here
+Now only public members will be accessible which is l
+i,j,k not accessible
 
 # Arrays
 * In Java, arrays are full-fledged objects. Like objects, arrays are dynamically created & stored on the heap.
@@ -2653,11 +2742,99 @@ Initialization:
 int[] a = {10, 20, 30};
 ```
 ---
-## Assignment 3 (Day 3 1 1:54:00)
+
+# Assignment 3 (Day 3 1 1:54:00)
 Create array of primitive types
+1. Accept no. of data samples(of type double) from user(using Scanner). Create suitable array & display it using for-loop, to confirm default values.
+```java
+package arrays;
+import java.util.Scanner;
+class TestPrimitiveArray{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Name of the loaded class for Scanner " + sc.getClass().getName());
+        System.out.println("How many data samples?");
+        double[] data;// array type of ref variable, method local var stored on stack 
+        data = new double[sc.nextInt()];//size will be always int not matter what values stored in the array
+        System.out.println("Default contents of the array");
+        for(int i = 0; i < data.length; i++){
+            System.out.println(data[i]);
+        }
+        System.out.println();//new line
+        System.out.println("Name of the loaded class for array " + data.getClass().getName());
+        
+        for(int i = 0; i < data.length; i++){
+            System.out.println("Enter array data:");
+            data[i] = sc.nextDouble();
+        }
+        System.out.println("Initialized contents of the array");
+        for(int i = 0; i < data.length; i++){
+            System.out.println(data[i]);
+        }
+        sc.close();
+    }
+}
+```
+output- 0.0 0.0 0.0 0.0
+[D -> name of loaded class
+* Arrays values initialized with default values according to data type
+* for loop
+```java
+for(int i = 0; i < data.length; i++){
+            System.out.println(data[i]);
+        }
+```
+for-each(enhanced for loop) limitations -> always works on a copy- used when we don't modify the data, only when we want to access the data
+limitations:
+1. can only iterate from 1st element to last element, with step size 1
+2. works on a copy of array elements
+```java
+package arrays;
+import java.util.Scanner;
+import java.util.Arrays;
+class TestPrimitiveArray{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("How many data samples?");
+        double[] data = new double[sc.nextInt()];//only 1 object created with given number of places
+        System.out.println("Default contents of the array");
+        for(double d : data)
+            System.out.println(d + " ");
+        System.out.println();//new line
+        System.out.println("Name of the loaded class for array " + data.getClass().getName());
+        
+        for(int i = 0; i < data.length; i++){
+            System.out.println("Enter array data:");
+            data[i] = sc.nextDouble();
+        }
+        
+        for(double d : data){ 
+            d *= 2;//works only on copy d which gets removed when this loop finishes.
+            System.out.print(d + " " );
+        }
+        System.out.println("output?");
+        for(double d : data)
+            System.out.println(d + " ");
+
+        System.out.println();
+        System.out.println("Array contents via toString " + Arrays.toString(data));
+        sc.close();
+    }
+}
+```
+* Arrays class methods - toString() -> takes array and returns string representation of it, static method-> ```Arrays.toString();```
+* toString method (Day 3 2 0:40:00)
+
+```text
+ API --java.util.Arrays : helper class for array handling 
+ Method
+ public static String toString(double[] a)
+ returns a string representation of the contents of the specified  array. 
+ ```
 
 # Array of References
-
+Box class
+Day 3 2 (2:01:00)
 ## Assignment 3 (Day 3 2 0:48:37)
 Add Box class into "com.app.core", define package in 1st line.
 Create a tester class TestBoxArray : "com.tester", define package stmt.
@@ -2666,7 +2843,36 @@ Objective : Ask user(client), how many boxes to make?
 Prompt for Box dims, for each box.
 Store these details suitably.
 1.Disply using single for-each loop, box dims n volume
-
+```java
+package com.app.core;
+public class Box{
+    private double width, depth,height;
+    public Box(double w, double d, double height){
+        width = w;
+        depth = d;
+        this.height = height;
+    }
+    public Box(double side) // -> for a cube, constructor overloading
+    {   
+        //width=depth=height=side;
+        this(side,side,side); // constructor chaining
+    }
+    public String getDetails(){
+        return "Box Dims" + this.width + " " + depth + " " + height;
+    }
+    public double computeVolume(){
+        return width*depth*height;
+    }
+    public boolean isEqual(Box anotherBox){//prim and ref both passed by value
+        return this.width == anotherBox.width && depth == anotherBox.depth && height == anotherBox.height;
+    }
+    //
+    public Box createNewBox(double wOff, double dOff, double hOff){
+        Box newBox = new Box(width + wOff, depth + dOff, height + hOff);
+        return newBox;
+    }
+}
+```
 ```java
 package com.tester;
 import com.app.core.Box;
@@ -2832,14 +3038,6 @@ System.out.println(a.length); // ❌ NullPointerException
 > “An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
 
 
-# Assignment 3 (Day 3 1 1:54:00)
-Create array of primitive types
-for loop
-for-each limitations -> always works on a copy
-* toString method (Day 3 2 0:40:00)
-Box class
-
-Day 3 2 (2:01:00)
 # Inheritance
 IS - A relationship
 **Inheritance** allows a child class to acquire accessible properties and behavior from a parent class.
