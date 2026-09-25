@@ -374,7 +374,7 @@ public     → Anyone
 ```
 * Java src code -->(Java compiler) --> ByteCode -->(JIT compiler) --> Native code 
 * class files -> class loader -><- Runtime data areas(Method area + Heap + Java stacks + PC registers + Native method stacks) -><- Execution Engine -><- Native method interface -> native method library
-![JVM Architecture](JVM.png)
+
 * Java Hot Spot -> adaptive learning like AI
 * main function expects String, we'll parse string to num to calculate the sum and avoid concatenation
 
@@ -1124,7 +1124,7 @@ When you run:
 ```bash
 java MyProgram
 ```
-
+![JVM Architecture](JVM.png)
 the JVM creates runtime memory areas.
 
 Conceptually:
@@ -1147,7 +1147,7 @@ Conceptually:
 The most important distinction:
 
 > **Heap and Method Area are shared between threads. Stack and PC Register are thread-specific.**
-
+> Native method Stack is not written in java, it is written in executable languages, just if our program needs to call native methods
 ---
 
 
@@ -1442,7 +1442,6 @@ Class Declaration
       ↓
 Modifier → class → Name → extends ONE → implements MANY
 ```
-
 
 ## Nested Class Rules
 
@@ -2230,6 +2229,41 @@ method declaration -- access specifier, ret type, name, args method def -- body
 2. return computed volume of the box
 1.4 Create a TestBox class, which allows user to supply 3 dims as user inputs via scanner. create Box object and display volume.
 
+```java
+class Box{
+    //state : properties/ attributes/ non data members : instance vars : Heap
+    private double width, depth, height;// instance variables.
+    Box(double w,double d, double height){//this height is local variable
+        width = w;
+        depth = d;
+        this.height = height;// to resolve conflict between local variable and instance variable
+    }
+    String getDetails(){
+        return "Box Dims" + this.width + " " + depth + " " + height;
+    }
+    double computeVolume(){
+        return width*depth*height;
+    }
+}
+```
+```java
+import java.util.Scanner;
+class TestBox{
+    public static void main(String[] args){
+        int data;
+        System.out.println(data);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Box dims: width depth height");
+        Box b1;
+        b1 = new Box(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
+        System.out.println(b1.getDetails());
+        System.out.println(b1.computeVolume());
+        sc.close();
+    }
+}
+```
+* when you provide your own constructor, default is no longer available from compiler
+* TestBox and Box have USES-A relationship- there are 3: IS-A, HAS-A, USES-A
 # Memory Diagrams
 * Stack Heap Method area, class pointer
 * java.lang.NullPointerException
@@ -2241,14 +2275,19 @@ method declaration -- access specifier, ret type, name, args method def -- body
 * G.C. -- deamon thread -- background thread - JVM activates it periodically(only if required) -- GC releases the memory occupied by un-referenced objects allocated on the heap(the obj whose no. of ref = 0)
 * How to request for GC? -> API of System class -> ```public static void gc()```
 * Object class API -> ```protected void finalize() throws Throwable``` -> Automatically called by the garbage collector on an object before garbage collection of the object takes place.
+* overriding finalize() is not a good idea because it isn't called then and there anyway, it is called only if it is required by JVM(when no memory left and urgently we need to cleanup)
 * Releasing of non-java resources. (closeing of DB connection, closing file handles, closing socket connection) is NOT done automatically by GC
+* Marking Objects for GC and clearing them is different. We can't predict clearing by GC but marking to GC can be predicted for sure
 * Triggers for marking the object for GC :
 1. Nullifying all valid refs.
 2. re-assigning the reference to another object
 3. Object created within a method & its ref NOT returned to the caller
+Box b1 = new Box(1,2,3);
+b1 = new Box(1,2,3);// earlier object marked for GC
+whenever we use 'new' keyword, new object will be created for sure.
 4. Island of isolation
 
-* Method area will get empty when JVM terminates, class unloading happens, GC doesn't clear method area.
+* Method area will get empty when JVM terminates, class unloading happens, GC doesn't clear method area, GC works mainly on heap
 * **Garbage Collection** is the JVM's automatic process of reclaiming memory occupied by objects that are **no longer reachable**.
 * **Automatic** — JVM manages it; developers don't explicitly free objects.
 * Works mainly on the **Heap**.
@@ -2382,7 +2421,7 @@ GC
 3. Add a method to Box class to return a new Box with modified offset dims & test it with the tester.
 # Constructor Chaining, Constructor overloading
 DRY principle -> Do not repeat yourself
-```
+```java
 class Box{
     private double width, depth,height;
     Box(double w, double d, double height){
@@ -2391,8 +2430,65 @@ class Box{
         this.height = height;
     }
     Box(double side) // -> for a cube, constructor overloading
-    {
+    {   
+        //width=depth=height=side;
         this(side,side,side); // constructor chaining
+    }
+    String getDetails(){
+        return "Box Dims" + this.width + " " + depth + " " + height;
+    }
+    double computeVolume(){
+        return width*depth*height;
+    }
+    boolean isEqual(Box anotherBox){//prim and ref both passed by value
+        return this.width == anotherBox.width && depth == anotherBox.depth && height == anotherBox.height;
+    }
+    //
+    Box createNewBox(double wOff, double dOff, double hOff){
+        Box newBox = new Box(width + wOff, depth + dOff, height + hOff);
+        return newBox;
+    }
+}
+```
+```java
+import java.util.Scanner;
+class TestConstrChaining{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter side of a cube");
+        Box cube = new Box(sc.nextDouble());
+        System.out.println(cube.getDetails());
+        System.out.println("Volume " + cube.computeVolume());
+        sc.close();
+    }
+}
+```
+```java
+import java.util.Scanner;
+class TestBoxEquals{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter box 1 dims");
+        Box box1 = new Box(sc.nextDouble(), sc.nextDouble, sc.nextDouble());
+        System.out.println("Box1 details"+box1.getDetails());
+
+        System.out.println("Enter box 2 dims");
+        Box box2 = new Box(sc.nextDouble(), sc.nextDouble, sc.nextDouble());
+        System.out.println("Box2 details"+box2.getDetails());
+
+        System.out.println(box1.isEqual(box2)? "Same" : "Different");
+
+        Box box3 = box1;//none marked for GC
+        System.out.println(box1.isEqual(box3)? "Same" : "Different");
+
+        System.out.println(box1.hashCode() + " " + box2.hashCode() + " " + box3.hashCode());//box1 and box3 address will be same
+
+        //create another box with dims offset from box1
+        System.out.println("Enter offsets w, d, h");
+        Box box4 = box1.createNewBox(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
+        System.out.println("New Box details"+box4.getDetails());
+        sc.close();
     }
 }
 ```
@@ -2413,6 +2509,10 @@ src is just maintained as convenience
 cd ..\bin
 java FullyQualifiedClassName
 ```
+* Note that fullyqualifiedname also works only from bin directory not from file directory itself
+otherwise JVM gives error could not find the class
+* we don't use .class while running because, . is used to separate packages, then it takes classname is folder name and class as file name, so doesn't work
+* that's why we set classpath to bin
 * CLASSPATH = Java only env var, used mainly by JRE's classloader : to locate & load the classes.
 * Classloader will try to locate the classes from current folder, if not found --- will refer to classpath entries : to resolve & load Java classes.
 * What should be value of the classpath ---Must be set to top of packaged class heirarchy(eg : bin)
@@ -2428,7 +2528,69 @@ OR better still set it from env variables
 4. Add a method to return string form of rectangle details.
 5. Create a class TestRect to test rectangle -- under pkg -- "com.tester"
 access specifier questions
-6. Confirm access specifier's table(day 3 1 till 1:39:00)
+6. Confirm access specifier's table(day 3 1 till 1:39:00 from 1:11:00)
+```java
+package com.cdac.shapes;
+public class Rectangle{
+    private int x,y;
+    private double width,height;
+    public Rectangle(int x, int y, double width, double height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+    public String getRectDetails(){
+        return "Rect " + x + "," + y + " width= " + width + "height " + height;
+    }
+}
+```
+```java
+package com.tester;
+import java.util.Scanner;
+import com.cdac.shapes.Rectangle;
+class TestRectangle{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Rect Details x, y, w, h");
+        Rectangle rect;//method local var on stack, space as per JVM spec
+        rect = new Rectangle(sc.nextInt(),sc.nextInt(), sc.nextDouble(), sc.nextDouble());
+        System.out.println(rect.getDetails());
+        sc.close();
+    }
+}
+```
+ when we separate packages:
+1. import base class
+2. make it public
+3. make the methods as well public
+
+create folders p1 and p2
+```java
+package p1;
+class A{
+    private int i;
+    int j;
+    protected int k;
+    public int l;
+    A(){ 
+        System.out.println("A's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+```shell
+javac -d ..\bin p1\A.java
+
+```
+```java
+package p1;
+class B extends A{
+    B(){
+        System.out.println("B's state " + i + " " + j + " " + k + " " + l);
+    }
+}
+```
+
 
 # Arrays
 * In Java, arrays are full-fledged objects. Like objects, arrays are dynamically created & stored on the heap.
