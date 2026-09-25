@@ -377,6 +377,9 @@ public     → Anyone
 ![JVM Architecture](JVM.png)
 * Java Hot Spot -> adaptive learning like AI
 * main function expects String, we'll parse string to num to calculate the sum and avoid concatenation
+
+# Assignment 1
+
 CoreJava/src/java01/Sum.java
 ```java
 package java01;
@@ -727,7 +730,7 @@ int x = 100;
 long y = x;
 ```
 
-### Narrowing — explicit cast
+### Narrowing — explicit cast - type casting
 
 ```java
 long x = 100;
@@ -746,6 +749,101 @@ int value = (int) amount;
 > Rule -> src and dest must be compatible, dest should store larger magnitude values than src data type.
 **FLOAT > LONG**
 * Any arithmetic operation results in bigger data type
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        byte b1 = 12;
+    }
+}
+```
+No compiler error
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        byte b1 = 128;
+    }
+}
+```
+compiler error - exceeded the range.
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        byte b1 = 12;
+        short s = b1;
+    }
+}
+```
+No compiler error - automatic conversion
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        byte b1 = 12;
+        short s = b1;
+        byte b2 = 10;
+        byte b3 = 5;
+        byte b4 = (b2 + b3);
+    }
+}
+```     
+compiler error : compiler goes by the type : incompatible types here byte and int
+* **Any arithmetic operation** involving bytes or shorts or combination automatically **promotes** to int
+You can do either ```int b4 = (b2 + b3);``` or ```byte b4 = (byte)(b2 + b3);```
+
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        byte b1 = 12;
+        b1 += 10;
+    }
+}
+```
+No compiler error
+* **Any compound assignment operators(-=,+=,*=),Simple assignment(=),Bitwise(&, |), shift operators(<<,>>),ternery expression(?:)** performs implicit type casting.
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        float f1 = 5.67;
+    }
+}
+```
+compiler error -> float can't allow double precision
+Solution- ```float f1 = 5.6;``` or ```float f1 = 5.67F;``` or ```float f1 = (float)5.67;```
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        float f1 = 5.67F;
+        double d = f1;
+    }
+}
+```
+No compiler error
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        float f1 = 5.67F;
+        double d = f1;
+        long l1 = f1;
+    }
+}
+```
+error- float to long is not automatic conversion, long to float is automatic
+```java
+class TestPrimTypes{
+    public static void main(String[] args){
+        int count = 10;
+        if(count == 10)
+            System.out.println("Yes");
+        else
+            System.out.println("No");
+        long l = 123456789;
+        short s = 10;
+        s = s * 2; // arithmetic operation gives incompatible type error
+        int i1 = 11/2; // compatible types
+        char ch = 'A';
+        ch = 70;//allowed, takes as unicode value
+    }
+}
+```
 ## 8. Overflow
 
 ```java
@@ -794,7 +892,16 @@ enum TransactionStatus {
 }
 ```
 
-### Senior-level rule
+```java
+class  TestPrimTypesRanges{
+    public static void main(String[] args){
+        System.out.println("byte Range " + Byte.MIN_VALUE + " -- " + Byte.MAX_VALUE);
+        System.out.println("int Range " + Integer.MIN_VALUE + " -- " + Integer.MAX_VALUE);
+        System.out.println("long Range " + Long.MIN_VALUE + " -- " + Long.MAX_VALUE);
+        System.out.println("float Range " + Float.MIN_VALUE + " -- " + Float.MAX_VALUE);
+    }
+}
+```
 
 Choose a type based on:
 
@@ -804,6 +911,8 @@ Choose a type based on:
 4. Database type
 5. API contract
 6. Whether absence (`null`) is meaningful
+
+
 
 **Q: How many primitive types does Java have?**
 
@@ -838,20 +947,121 @@ Widening converts to a type with a larger compatible range and is generally impl
 Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
 
 # Basic Rules
+1. Java compiler doesn't allow accessing of un initialized LOCAL data members.
+2. Files with no public classes(default scoped) can have a name that does not match with any classes in the file.
+3. A file can have more than one non public classes.
+4. There can be only one public class per source code file.
+5. If there is a public class in a file, the name of the file must match the name of the public class. For example, a class declared as public class Example{ ... } must be in a source code file named Example.java
+TestBasicRules.java
+```java
+class TestBasicRules{}
+```
+compile & run -> compiles well, but runtime error (needs main method to run)
+TestBasicRules.java
+```java
+class TestBasicRules{}
+class A{}
+class B{}
+class C{}
+```
+compiles well but runtime error due to absence of main method
+so multiple non - public classes allowed, yes.
+one .class file created per class
+TestBasicRules.java
+```java
+class TestBasicRules{}
+public class A{}
+class B{}
+class C{}
+```
+Error - class A is public should be declared in A.java file
+TestBasicRules.java
+```java
+public class TestBasicRules{}
+public class A{}
+class B{}
+class C{}
+```
+2 public classes in a file Not allowed 
+```java
+public class TestBasicRules{
+    public static void main(String[] ss){
+        System.out.println("1234");
+    }
+}
+class A{
+    public static void main(String[] ss){
+        System.out.println("5678");
+    }
+}
+class B{}
+class C{}
+```
+No compiler error
+No runtime error
+to get 1234 printed, run -> java TestBasicRules
+to get 5678 printed, runt -> java A
+```java
+class TestBasicRules{
+    public static void main(String[] args){
+        int data;// primitive type
+        System.out.println("data=" + data);
+        String s;//reference type
+        System.out.println("s="+s);
+    }
+}
+```
+Compiler error on line no. 911, 913 -> 
+declaring uninitialized **LOCAL** variables allowed, accessing them is not allowed NO MATTER THEY ARE PRIMITIVE OR REFERENCE.
+```java
+class TestBasicRules{
+    public static void main(String[] args){
+        int data = 100;
+        System.out.println("data=" + data);
+        if(data)    
+            System.out.println("Yes");
+        else        
+            System.out.println("No");
+        }
+}
+```
+compiler error because if,while, do-while conditions requires boolean
+Java has strong type checking
 
-
-* **Uninitialized Variables (Rules 1 & 6):** The Java compiler (`javac`) prevents accessing unitialized data members/variables before assigning them a value.
-* *Example shown:* Declaring `int n;` or `Emp e;` and trying to print them via `sop(n);` or `sop(e);` without initialization causes a compilation error.
-* **Non-Public Classes (Rule 2):** Files with default-scoped (non-public) classes do not require the file name to match any of the class names defined inside it.
-* **Multiple Non-Public Classes (Rule 3):** A single source code file can contain more than one non-public class.
-* **Single Public Class Limit (Rule 4):** A Java source code file can contain at most **one** `public` class.
-* **File Naming for Public Classes (Rule 5):** If a file contains a `public` class, the file name **must** exactly match the name of that public class with a `.java` extension (e.g., `public class Example` must be stored in `Example.java`).
-* **No Pointer Arithmetic (Code Example):** Java does not support pointer arithmetic. Attempting operations like incrementing a String (`s++;`) results in a compilation error.
-
-* write the program st 58:00 in core java day 1 2
-* Here if - else,for, do, while, continue, break, >>,>>>,Shift operators covered
 # Assignment 1
-1. Accept i/ps from user, till user enters"quit" refer 1:33:00 + 2:28:00 in core java day1 2
+1:33:00 + 2:28:00 in core java day1 2
+1. Accept i/ps from user, till user enters"quit" or any other option.
+Input: operation(add | sub | mult | div), number1(double), number2(double)
+Display the result.
+Give the best **USER EXPERIENCE**, where to take inputs inside switch case or outside.
+* Hints for Assignments
+```text
+boolean exit = false;
+//Scanner obj.
+while(!exit){
+    sop("Menu: 1.Add 2. .. 5. Exit");
+    sop("Choose option & enter inputs");
+    sc.nextDouble() to get input
+    switch(sc.nextInt()){
+        case 1 : ..
+        case 2 : ..
+        ..
+        case 5 : exit = true; //or default case
+        break;
+    }
+}
+```
+* Scanner object has to be outside the loop.
+2. Accept 2 double values from command line argument. compute it's average.
+(Hint : Double.parseDouble())
+3. Display food menue to user. Assign fixed prices to food items.
+User will select items from menu along with the quantity.(1. Dosa, 2. Samosa, 3. Rice, .. 10. Generate bill)
+When User enters "Generate bill" option, display total bill & exit.
+* method to exit can be ```System.exit(0);``` to terminate java application or ```exit = true;```
+* Here if - else,for, do, while, continue, break, >>,>>>,Shift operators covered through ppt
+
+4. Use Scanner to accept 2 inputs, Check its data type, if int, accept ints and comput average otherwise print error message "Invalid 1st number" or "Invalid 2nd number"
+(Hint - by checking - hasNextInt(), if valid, accept by using nextInt() or print error)
 
 # Scanner class
 * java.util package, .* -> only load the required classes
@@ -863,11 +1073,31 @@ Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
 3. check the data type hasNextInt/Byte/Long()
 4. read and parse data nextInt/Double/Line/Boolean() or just next()
 5. before terminating app, close the scanner
+* print() - print on same line
+* println() - print on the next line
+* printf() - format and print
+Write a java application to accept int(emp id), double(salary), emp's first name, emp id, salary, name, permanent status : bolean from Scanner & display the same using printf.
+```java
+import java.util.Scanner;
+class TestScanner{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter emp id, salary, name, permanent status, grade");
+        System.out.printf("Emp ID %d Salary %.1f Name %s isPermanent %b Grade %c%n", sc.nextInt(),sc.nextDouble(),sc.next(),sc.nextBoolean(),sc.next().charAt(0));
+        sc.close();
+    }
+}
+```
+* sc.next() returns String -> go to String class -> charAt(int index) -> will give the char -> method chaining, There is no direct nextChar type method in Scanner
+* sc.close() -> not necessary for System.in class because of automatic memory management but good practice to continue for sockets, databases, they do need to be closed explicitly.
 
-* Assignment at 1:54:00 day1 2
+* sc.next() moves the pointer ahead so you can't read the same char twice, if you want to read it multiple times, save the char in string variable and use it multiple times.
+* sc.hasNext() doesn't move pointer, it's like only peeking
+* Static method overloading is allowed, overriding is not allowed.
+* Main is static method, 2 main methods with different signature allowed, same signature not allowed.(String[]) is main entry point, other method with just String allowed
 
 # Revision Questions:
-* Why Java? platform independence(WORA)
+* Why Java? platform independence(WORA), any platform, any database,any web server
 * how platform independent -> JVM is machine specific
 * Only runtime needs a main method, so you can definitely compile java class without main.
 * Can you write a java class without main and compile it? YES
@@ -878,10 +1108,17 @@ Range check -> Byte.MIN_VALUE or MAX_VALUE, Integer,Long,Float
 * can a java src file contain multiple public classes? : NO
 * Any rules regarding default class name & src file name? : NO
 * Any rules regarding public class name & src file name? : YES
+* Reference holds address(internal representation of address) 
 * Pointer arithmetic -> means operator attaching to reference type -> sc++; or sc += 10; ->not allowed in java
 
-# JVM Architecture or Java memory areas
+* revise automatic and explicit type conversions
 
+# JVM Architecture or Java memory areas
+Test.java
+compile from src folder
+javac -d ..\bin Test.java
+cd bin
+java Test
 When you run:
 
 ```bash
