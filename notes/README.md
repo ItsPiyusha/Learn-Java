@@ -2934,3 +2934,110 @@ Rules:
 
 ![polymorphism image](polymorphism.png)
  
+
+ Example:
+ Fruit : name
+ parameterized constr
+ public void taste(): has no specific taste
+
+ Apple : extends Fruit
+ parameterized constr --- super(name);
+ override : taste
+ method definition: sweet n sour in taste
+ 1. Fruit, Apple, Orange, Mango
+ Add taste() method to display its taste. 
+ Fruit: has no specific taste
+ Apple: sweet n sour in taste
+ Orange: sour in taste
+ Mango: sweet in taste
+
+ 1.5 Write a simple tester: to understand upcasting n run time polymorphism
+
+ 2. Write a tester to create basket of fruits.(populate basket based on user choice)
+ Menu
+ 1. Add Apple
+ 2. Add Orange
+ 3. Add Cherry
+ 4. Display taste of all fruits in the basket(for-each)
+ 5. Exit: terminate the application
+
+ ```java
+ package fruits;
+ public class Fruit{
+    private String name;
+    public Fruit(String name){
+        this.name = name;
+    }
+    public void taste(){
+        System.out.println(" No specific taste..");
+    }
+    public String getName(){
+        return name;
+    }
+ }
+ ```
+ ```java
+package fruits;
+public class Apple extends Fruit{
+    public Apple(String name){
+        super(name);
+    }
+    //method overriding
+    public void taste(){
+        System.out.println(getName() + " Has sweet n sour taste");
+    }
+}
+ ```
+ ```java
+package fruits;
+public class Mango extends Fruit{
+    public Orange(String name){
+        super(name);
+    }
+    //method overriding
+    public void taste(){
+        System.out.println(getName() + " Has sour taste");
+    }
+}
+ ```
+ ```java
+package tester;
+public class TestFruits{
+    public static void main(String[] args){
+        Fruit f1 = new Fruit("some fruit");//direct referencing: super ref --> super class instance
+        f1.taste();
+        System.out.println("Checking mango's taste: direct ref");
+        Mango m1 = new Mango("Mango1");//direct referencing: sub ref --> sub class instance
+        m1.taste();
+        Fruit ref;
+        ref = m1;//implicit conversion upcasting
+        System.out.println("Checking mango's taste: indirect ref");
+        ref.taste();//compiler is ok if taste() is available in ref class.--JVM is ok if type of ref class (subclas here, mango) has taste() method, it'll be called.
+        ref = new Orange("mandarine");
+        ref.taste();
+    }
+}
+ ```
+ * This is dynamic method dispatch: JVM decides which method to call.
+
+ ```java
+package tester;
+import java.util.Scanner;
+import fruits.*;
+
+public class FruitBasket{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        boolean exit = false;
+        System.out.println("Enter basket size");
+        Fruit[] basket = new Fruit[sc.nextInt()];
+        while(!exit){
+            System.out.println("Menu  1. Add Apple
+ 2. Add Orange
+ 3. Add Cherry
+ 4. Display taste of all fruits in the basket(for-each)
+ 5. Exit: terminate the application")
+        }
+    }
+}
+ ```
