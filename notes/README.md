@@ -5,63 +5,13 @@
 * Secure - When the JVM loads the class, it performs verification as part of class loading automatically.
 * Object-Oriented
 Though java is not 100% Object oriented as it allows primitive data types as well.
-**OOP → Encapsulation + Inheritance + Polymorphism + Abstraction**
-```java
-class Account {
-    private double balance;       // Encapsulation
-
-    void deposit(double amount) { // Abstraction
-        balance += amount;
-    }
-}
-
-class SavingsAccount extends Account { } // Inheritance
-```
-
-```java
-Account account = new SavingsAccount();   // Polymorphism
-```
+**OOP → Encapsulation + Inheritance + Polymorphism + 
 * Automatic Memory Management
-
-```java
-Account account = new Account();
-
-account = null;    // object becomes eligible for GC
-```
-
 **JVM → Garbage Collector → automatically manages unused objects** -> Unlike CPP where we need to call destructor everytime to free the memory
-
 * Multithreaded - Java provides built-in support for concurrent execution.
-
-```java
-Thread thread = new Thread(() -> {
-    System.out.println("Running in another thread");
-});
-
-thread.start();
-```
-
 * Functional Programming Support
 After Java 8:
 Java supports functional-style programming using **lambda expressions, functional interfaces, method references, and Streams**.
-
-```java
-List<Integer> amounts = List.of(1000, 2000, 5000);
-
-amounts.stream()
-       .filter(amount -> amount > 1500)
-       .forEach(System.out::println);
-```
-
-Here:
-
-```text
-amount -> amount > 1500   → Lambda expression
-filter()                  → Functional operation
-stream()                  → Stream API
-System.out::println       → Method reference
-```
-
 It allows Java to express **what should be done** more concisely, especially when processing collections.
 
 * Rich I/O & Networking - Java provides APIs for files, streams, TCP/IP, UDP/IP, URLs, etc.
@@ -142,11 +92,6 @@ Those are **backend security concepts**, not merely “Java syntax.”
  Memory safety                       Digital signatures
                                       TLS/SSL
 ```
-
-In short -
-
-> "Java provides security at multiple levels. At the language level, strong type checking, encapsulation, access control, and the absence of explicit pointer arithmetic improve memory and type safety. At the JVM level, class loading and bytecode verification help ensure that loaded classes follow JVM safety constraints. Java also provides security APIs for cryptography, digital signatures, certificates, and TLS-based secure communication."
-
 # Java Naming Conventions
 
 * **Class/Interface:** `PascalCase` 
@@ -178,81 +123,6 @@ save as .java file
 
 # Identifiers
 An **identifier** is the **name given by the programmer to identify a program element**.
-```java
-class BankAccount {          // BankAccount → identifier
-    private double balance;  // balance → identifier
-
-    void deposit(double amount) {  // deposit, amount → identifiers
-        balance += amount;
-    }
-}
-```
-What can be an identifier?
-```text
-Class        → BankAccount
-Variable     → balance
-Method       → deposit
-Object       → account
-Parameter    → amount
-Package      → banking
-```
-
-
-### Rules for Java Identifiers
-
-1. **Can contain letters, digits, `_`, and `$`**
-
-   ```java
-   accountBalance
-   account2
-   _balance
-   $amount
-   ```
-
-2. **Cannot start with a digit**
-
-   ```java
-   2account   // ❌
-   account2   // ✅
-   ```
-
-3. **Cannot contain spaces**
-
-   ```java
-   account balance   // ❌
-   accountBalance    // ✅
-   ```
-
-4. **Cannot use special characters** like `-`, `@`, `#`, `%`
-
-   ```java
-   account-balance   // ❌
-   account_balance   // ✅
-   ```
-
-5. **Cannot be a Java keyword**
-
-   ```java
-   int class;     // ❌
-   int public;    // ❌
-   int account;   // ✅
-   ```
-
-6. **Java identifiers are case-sensitive**
-
-   ```java
-   int balance;
-   int Balance;   // Different identifier
-   ```
-
-7. **Can use Unicode characters**, because Java identifiers support Unicode.
-
-   ```java
-   int café = 10;   // technically valid
-   ```
-
-   However, standard Java naming conventions should be preferred for readability.
-
 
 # Access Specifiers/Modifier in Java
 
@@ -271,64 +141,6 @@ private          ✅            ❌            ❌            ❌
 * which are applicable to top level classes? -> default, public
 * `private` and `protected` are allowed for nested classes.
 
-## `protected` — Same package + subclasses
-
-```java
-class Account {
-
-    protected double balance;
-}
-```
-
-### Same package
-
-```java
-class BankService {
-
-    void update(Account account) {
-        account.balance;  // ✅
-    }
-}
-```
-
-### Different package + subclass
-
-```java
-class SavingsAccount extends Account {
-
-    void showBalance() {
-        System.out.println(balance); // ✅
-    }
-}
-```
-
-### Different package + non-subclass
-
-```java
-class CustomerService {
-
-    void update(Account account) {
-        account.balance;  // ❌
-    }
-}
-```
-
-### Important `protected` nuance
-
-Across packages, `protected` access is available through **inheritance**, not simply because you have an object of the superclass.
-
-
-### The easiest way to remember
-
-Think of access as **increasing visibility**:
-```text
-private    → My room
-default    → My building
-protected  → Family + building
-public     → Anyone
-```
-
----
 
 # Basic Definitions and Concepts
 * API -> Application Programmer Interface
@@ -400,18 +212,6 @@ piyushalomte@Piyushas-MacBook-Pro Learn-Java % mkdir -p CoreJava/bin/java01
 piyushalomte@Piyushas-MacBook-Pro Learn-Java % javac -d CoreJava/bin CoreJava/src/java01/Sum.java
 piyushalomte@Piyushas-MacBook-Pro Learn-Java % java -cp CoreJava/bin java01.Sum 10 20
 Sum=30
-```
-the flow is 
-```text
-Sum.java
-   │
-   │ javac
-   ▼
-Sum.class
-   │
-   │ java + arguments
-   ▼
-output: 30
 ```
 # Static Method ->
 In Java, a **static method belongs to the class, not to an object**. So there are several ways you may see it called.
@@ -855,43 +655,6 @@ The value wraps around because the maximum `int` value was exceeded.
 
 Use `long` when the domain requires a larger integer range.
 
-## 9. Banking Project Examples
-
-```java
-class Customer {
-    long customerId;
-    String name;
-    String email;
-    boolean active;
-}
-```
-
-```java
-class BankAccount {
-    long accountId;
-    String accountNumber;
-    BigDecimal balance;
-    boolean active;
-}
-```
-
-```java
-class Transaction {
-    long transactionId;
-    long accountId;
-    BigDecimal amount;
-    TransactionStatus status;
-}
-```
-
-```java
-enum TransactionStatus {
-    PENDING,
-    SUCCESS,
-    FAILED
-}
-```
-
 ```java
 class  TestPrimTypesRanges{
     public static void main(String[] args){
@@ -902,16 +665,6 @@ class  TestPrimTypesRanges{
     }
 }
 ```
-
-Choose a type based on:
-
-1. Meaning of the value
-2. Required range
-3. Required precision
-4. Database type
-5. API contract
-6. Whether absence (`null`) is meaningful
-
 
 
 **Q: How many primitive types does Java have?**
@@ -1178,26 +931,6 @@ Heap allocation cannot be satisfied → OutOfMemoryError
 
 ---
 
-If interviewer says:
-
-### "Explain JVM memory."
-
-Say:
-
-> **"JVM runtime memory is divided into several runtime data areas. The main ones are Heap, JVM Stack, Method Area, PC Register, and Native Method Stack.**
->
-> **The Heap is shared across threads and stores objects and arrays, and it is managed by the Garbage Collector. Each thread has its own JVM Stack, and every method invocation creates a stack frame containing local variables and an operand stack.**
->
-> **The Method Area is shared and contains class-level runtime information such as class metadata and the runtime constant pool. In HotSpot, class metadata is stored in Metaspace since Java 8.**
->
-> **Each thread also has its own PC register to track the current bytecode execution position, while the Native Method Stack supports native method execution."**
-
-Then **stop**.
-
-Let the interviewer ask follow-ups.
-
----
-
 ## Follow-up questions you should be ready for
 
 You should be able to answer these next:
@@ -1233,21 +966,6 @@ A **class** is a blueprint for creating objects. A class declaration defines the
     // methods
 }
 ```
-
-Example:
-
-```java
-public class BankAccount
-        extends Account
-        implements Transferable, Auditable {
-
-    private double balance;
-
-    public void deposit(double amount) {
-        balance += amount;
-    }
-}
-```
 * A top-level class can be public or package-private:
 
 * A top-level class **cannot** be: `private` and `protected` are allowed for nested classes.
@@ -1280,44 +998,12 @@ extends
 implements
 ```
 * An abstract class cannot be directly instantiated.
-
-```java
-abstract class Account {
-
-    abstract void calculateInterest();
-}
-```
-
-This is invalid:
-
-```java
-Account account = new Account(); // ❌
-```
-
 A concrete subclass can extend it:
-
-```java
-class SavingsAccount extends Account {
-
-    @Override
-    void calculateInterest() {
-        // implementation
-    }
-}
-```
-
 Use an abstract class when you want to provide a common base and potentially require subclasses to implement certain behavior.
 
 * A `final` class cannot be extended.
 
-Example from Java:
-
-```java
-public final class String {
-}
-```
-
-* `String` cannot be subclassed.
+* `String` cannot be subclassed. It's a final class.
 
 * **Sealed classes became a permanent Java feature in Java 17.**
 
@@ -1401,31 +1087,11 @@ Payment
 
 12. Sealed classes became final in Java 17.
 ```
-
-> **"A Java class declaration consists of optional modifiers, the `class` keyword, a valid class name, and optionally an `extends` clause and an `implements` clause. A class can extend only one class but can implement multiple interfaces. A top-level public class must have the same name as its source file, and a source file can contain at most one public top-level class. A class can also be abstract, final, or sealed depending on the inheritance and instantiation requirements."**
-
----
 * Q1. Can a class extend multiple classes? No.
-
-```java
-class C extends A, B { } // ❌
-```
 * Can a class implement multiple interfaces? Yes.
-
-```java
-class C implements A, B { } // ✅
-```
 * Can a top-level class be private? No.
-
 * Can a `.java` file contain multiple classes? Yes, but at most one top-level class can be `public`.
-
 * What determines the filename? The public top-level class.
-
-```java
-public class BankAccount { }
-```
-→ `BankAccount.java`
-
 * Can an abstract class be instantiated? No.
 * Can a final class be inherited? No.
 * What is a sealed class?
@@ -1436,148 +1102,6 @@ A class that explicitly restricts which classes can extend it.
 extends     → inherit from a class
 implements  → implement one or more interfaces
 ```
-
-```text
-Class Declaration
-      ↓
-Modifier → class → Name → extends ONE → implements MANY
-```
-
-## Nested Class Rules
-
-A **nested class** is a class declared inside another class or interface.
-
-### Types of Nested Classes
-
-```text
-Nested Class
-├── Static nested class
-└── Inner class
-    ├── Member inner class
-    ├── Local inner class
-    └── Anonymous inner class
-```
-
-### 1. Static Nested Class
-
-A static nested class belongs to the outer class, not to an instance of the outer class.
-
-```java
-class Bank {
-
-    static class Account {
-        void display() {
-            System.out.println("Account");
-        }
-    }
-}
-```
-
-Usage:
-
-```java
-Bank.Account account = new Bank.Account();
-account.display();
-```
-
-Rules:
-
-* Declared using `static`.
-* Does not require an outer-class object.
-* Can directly access only `static` members of the outer class.
-* Can access private members of the outer class.
-* Can have static and instance members of its own.
-
----
-
-### 2. Member Inner Class
-
-A non-static class declared directly inside another class.
-
-```java
-class Bank {
-
-    private String name = "ABC Bank";
-
-    class Account {
-        void display() {
-            System.out.println(name);
-        }
-    }
-}
-```
-
-Usage:
-
-```java
-Bank bank = new Bank();
-Bank.Account account = bank.new Account();
-account.display();
-```
-
-Rules:
-
-* Must be associated with an instance of the outer class.
-* Can directly access both instance and static members of the outer class.
-* Can have access modifiers such as `private`, `protected`, `public`, or package-private.
-* Can access private members of the outer class.
-
----
-
-### 3. Local Class
-
-A class declared inside a method, constructor, or block.
-
-```java
-class Bank {
-
-    void process() {
-
-        class Transaction {
-            void execute() {
-                System.out.println("Processing transaction");
-            }
-        }
-
-        Transaction transaction = new Transaction();
-        transaction.execute();
-    }
-}
-```
-
-Rules:
-
-* Scope is limited to the block where it is declared.
-* Cannot use most access modifiers such as `public`, `protected`, or `private`.
-* Can access effectively final or final local variables from the enclosing method.
-* Useful when a helper class is needed only inside one method.
-
----
-
-### 4. Anonymous Class
-
-A class without a name, created and instantiated at the same time.
-
-```java
-Runnable task = new Runnable() {
-    @Override
-    public void run() {
-        System.out.println("Transaction processing");
-    }
-};
-```
-
-Rules:
-
-* Has no explicit class name.
-* Created using `new`.
-* Usually used for one-time implementations.
-* Can extend one class or implement one interface.
-* Cannot explicitly declare constructors.
-* Since Java 8, lambdas are often preferred when the target is a functional interface.
-
----
-
 ## Interface Declaration Rules
 
 An **interface** defines a contract that implementing classes agree to follow.
@@ -1596,30 +1120,10 @@ General syntax:
 }
 ```
 
-Example:
-
-```java
-public interface Transferable {
-
-    void transfer();
-
-    default void validate() {
-        System.out.println("Validating transfer");
-    }
-}
-```
-
 ### Interface Rules
 
 1. Interface name must be a valid identifier.
-
 2. Naming convention is **PascalCase**.
-
-```java
-interface Transferable {}
-interface PaymentProcessor {}
-```
-
 3. A top-level interface can be:
 
    * `public`
@@ -1633,17 +1137,6 @@ interface PaymentProcessor {}
    However, a **nested interface** can use `private`, `protected`, or `public`.
 
 5. A public top-level interface must have the same filename as the interface.
-
-```java
-public interface Transferable {}
-```
-
-File:
-
-```text
-Transferable.java
-```
-
 6. Interface fields are implicitly:
 
 ```java
@@ -1691,36 +1184,8 @@ interface Transferable {
 ```
 
 9. A class uses `implements` to implement an interface.
-
-```java
-class BankAccount implements Transferable {
-    
-    @Override
-    public void transfer() {
-        System.out.println("Transfer completed");
-    }
-}
-```
-
 10. A class can implement multiple interfaces.
-
-```java
-class BankAccount
-        implements Transferable, Auditable, Serializable {
-}
-```
-
 11. An interface can extend multiple interfaces.
-
-```java
-interface Transferable {}
-interface Auditable {}
-
-interface SecureTransfer
-        extends Transferable, Auditable {
-}
-```
-
 This is one major difference from class inheritance:
 
 ```text
@@ -1729,19 +1194,8 @@ Class → implements → MANY interfaces
 
 Interface → extends → MANY interfaces
 ```
-
 12. An interface cannot extend a class.
-
-```java
-interface Payment extends Account { } // ❌
-```
-
 13. An interface cannot be instantiated directly.
-
-```java
-Transferable t = new Transferable(); // ❌
-```
-
 14. An interface reference can point to an implementing object.
 
 ```java
@@ -1749,20 +1203,7 @@ Transferable t = new BankAccount(); // ✅
 ```
 
 This demonstrates **polymorphism**.
-
 15. Interface methods can have implementations.
-
-### Default method — Java 8
-
-```java
-interface Transferable {
-
-    default void validate() {
-        System.out.println("Validating");
-    }
-}
-```
-
 16. Static methods in interfaces were introduced in **Java 8**.
 
 ```java
@@ -1873,29 +1314,6 @@ Implementations must follow the sealed hierarchy rules.
 
 ---
 
-## Banking Project Example
-
-A nested class can model an implementation detail that should not be exposed outside the parent class.
-
-```java
-public class BankAccount {
-
-    private final String accountNumber;
-
-    public BankAccount(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    private static class AccountValidator {
-
-        static boolean isValid(String accountNumber) {
-            return accountNumber != null
-                    && !accountNumber.isBlank();
-        }
-    }
-}
-```
-
 A nested interface can define a contract closely related to the enclosing class:
 
 ```java
@@ -1919,10 +1337,6 @@ class UpiProcessor
     }
 }
 ```
-
----
-
-> “Java supports nested types, including static nested classes, inner classes, local classes, anonymous classes, and nested interfaces. A static nested class does not require an outer-class instance, while a non-static inner class is associated with an outer-class object. Interfaces define contracts and can be implemented by multiple classes. A class can extend only one class but can implement multiple interfaces, while an interface can extend multiple interfaces. Interface fields are implicitly public, static, and final, and interface methods can be abstract, default, static, or private depending on the Java version.”
 
 * Can a class be declared inside another class?
 Yes. It is called a nested class.
@@ -2775,7 +2189,7 @@ class TestPrimitiveArray{
     }
 }
 ```
-output- 0.0 0.0 0.0 0.0
+output- 0.0 0.0 0.0 0.0   
 [D -> name of loaded class
 * Arrays values initialized with default values according to data type
 * for loop
@@ -2842,7 +2256,9 @@ import Box class in tester class, make Box class public in its package.
 Objective : Ask user(client), how many boxes to make?
 Prompt for Box dims, for each box.
 Store these details suitably.
-1.Disply using single for-each loop, box dims n volume
+1. Disply using single for-each loop, box dims n volume
+2. Double box width for all boxes having volume > 100(Use for-each & solve this)
+* If you want to change the state of objects, not array, for each works
 ```java
 package com.app.core;
 public class Box{
@@ -2871,12 +2287,18 @@ public class Box{
         Box newBox = new Box(width + wOff, depth + dOff, height + hOff);
         return newBox;
     }
+    public double getWidth(){
+        return width;
+    }
+    public void setWidth(double width){
+        this.width = width;
+    }
 }
 ```
 ```java
 package com.tester;
 import com.app.core.Box;
-import java.util.Scanner;
+import java.util.*;//Scanner and Arrays classes required here
 class TestBoxArray{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
@@ -2885,17 +2307,26 @@ class TestBoxArray{
         boxes = new Box[sc.nextInt()]; // to create array -> []
         //one array object gets created no matter what input is.initialized with null values.
         //boxes = new Box(); // () -> to create the object
+        System.out.println("loaded class name for array: " + boxes.getClass().getName());
+        System.out.println("Arrays contents via toString() " + Arrays.toString(boxes));
         for (Box b : boxes)
             System.out.println(b);// confirms if it's array of refs or primitives-> if values are 0 -> prim, if values are null -> refs
         //fill array boxes prompting the user for dims
         for(int i = 0; i < boxes.length; i++){
             System.out.println("Enter Box dims ");
             boxes[i] = new Box(sc.nextDouble(),sc.nextDouble(),sc.nextDouble());//creating box, outside of array on heap whose ref will be stored in array
-            }
-            //Display using single for-each loop, box dims n volume
-            for(Box b : boxes){//b = boxes[0]..boxes[boxes.length-1]
-                    System.out.println(b.getDetails() + "volume= " + b.computeVolume());
-                    }
+        }
+        //Double Box width for all boxes having volume>100
+        for(Box b : boxes){
+            if(b.computeVolume()>100)
+                b.setWidth(b.getWidth()*2);
+        }
+        //Display using single for-each loop, box dims n volume
+        for(Box b : boxes){//b = boxes[0]..boxes[boxes.length-1]
+            System.out.println(b.getDetails() + "volume= " + b.computeVolume());
+        }
+        System.out.println("Arrays contents via toString() " + Arrays.toString(boxes));//prints actual arrays' addresses of objects
+
         sc.close;
     }
 }
@@ -3035,14 +2466,13 @@ Also:
 int[] a = null;
 System.out.println(a.length); // ❌ NullPointerException
 ```
-> “An array is a fixed-size object that stores elements of the same type and provides indexed access starting from zero. Java arrays can contain primitives or references, and multidimensional arrays are arrays of arrays. The JVM represents arrays using descriptors where `[` means an array, primitive types have single-letter codes such as `I` for int and `Z` for boolean, and reference types use `L<class-name>;`.”**
-
 
 # Inheritance
 IS - A relationship
 **Inheritance** allows a child class to acquire accessible properties and behavior from a parent class.
 * A class uses `extends` to inherit from another class. A class can extend only ONE class.
 * Java does **not** support multiple class inheritance.
+* By pulling out all the common variables and methods into the superclasses, and leave the special variables & methods in subclasses.
 ## Types of Inheritance
 1. Single
 ```text
@@ -3330,9 +2760,6 @@ class SavingsAccount
 }
 ```
 
-This is how Java provides multiple-type inheritance without multiple class inheritance.
-
-> “Inheritance is an object-oriented mechanism where a subclass derives from a superclass using `extends`. Java supports single, multilevel, and hierarchical class inheritance, but not multiple inheritance of classes. A subclass inherits accessible members, but constructors are not inherited and private members are not directly accessible. Inheritance also enables runtime polymorphism through method overriding, where a parent reference can refer to a child object.”
 
 **Q: Does Java support multiple inheritance?**
 Not for classes. Multiple interfaces can be implemented.
@@ -3360,3 +2787,150 @@ Reference to the immediate parent class.
 
 **Q: What happens first when a child object is created?**
 Parent constructor executes before child constructor.
+
+```java
+package inh;
+class A{
+    A(){
+        System.out.println("1");
+    }
+}
+class B extends A{
+    B(){
+        System.out.println("2");
+    }
+}
+class C extends B{
+    C(){
+        System.out.println("3");
+    }
+    public static void main(String[] args){
+        C c1 = new c();
+    }
+}
+```
+* run inh.C as C contains main method
+```shell
+javac -d ..\bin inh\TestConstrInvocation.java
+java inh.C
+```
+* By default ```super();``` is there in constructors.
+
+# Assignment
+Prompt user, how many points to plot?
+Create suitable array, to store Point2D type of references.
+Point2D[] points = new Point2D[sc.nextInt()];//10
+//class: [Lcom.app.geometry.Point2D; :
+sop(points.getClass().getName());
+sop(Arrays.toString(points));//[null,null..null]
+1. Plot a new point
+input -- index, x & y
+eg: if user supplies 5 50 100
+create a Point2D with x, y of (50,100) & its reference should be stored at the 5th index position in array.
+eg: points[index] = new Point2D(...);
+```text
+case 1: sop("Enter index, x, y");
+int index = sc.nextInt();x=...,y=sc.nextInt();
+if(index < points.length-1){points[index] = new Point2D(x,y);}
+else err msg
+```
+2. Display all points plotted so far.(use for-each)
+eg : for-each : null checking
+3. Calculate distance
+I/P start, end point indexes.
+eg: If user enters 2 6
+Find out the distance between 2nd & 6th point.(array indexes start from 0)
+eg: points[strtIndex].calcDistance(points[endIndex]);
+10. Exit
+Note : Boundary condition checking & null checking is expected.(Meaning: if user supplied index > array length - 1, then give error message: invalid index --out of range
+If no point is plotted at user specified index, then give error message: invalid index -- no point plotted here.)
+package com.app.geometry;
+
+Now:
+Organize following in suitable class hierarchy(under "inh" package) : tightencapsulation
+Person -- firstName, lastName
+Student -- firstname, lastName, grad year, course, fees, marks
+Faculty -- firstName, lastName, yrs of experience, sme(subject matter experties)
+
+confirm invocation of constructors & super.
+```java
+package inh;
+public class Person{
+    private String firstName, lastName;
+    public Person(String firstName, String lastName){
+        System.out.println("in person's constr");
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+```
+```java
+package inh;
+public class Student extends Person{
+    private int gradYear;
+    private String course;
+    private double fees;
+    private int marks;
+    public Student(String fName, String lName, int gradYear, String course, double fees, int marks){
+        super(fName,lName);
+        System.out.println("in student's constr");
+        this.gradYear = gradYear;
+        this.course = course;
+        this.fees = fees;
+        this.marks = marks; 
+    }
+}
+```
+```java
+package inh;
+public class Faculty extends Person{
+    private int yrsOfExperience;
+    private String sme;
+    public Faculty(String firstName, String lastName, int yrsOfExperience, String sme){
+        super(firstName, lastName);
+        this.yrsOfExperience = yrsOfExperience;
+        this.sme = sme;
+    }
+}
+```
+
+```java
+package tester;
+import inh.Student;
+public class TestConstrInvocation{
+    public static void main(String[] args){
+        Student s1 = new Student("Rama", "Shaha", 2019, "java", 12345, 85);
+        Faculty f1 = new Faculty("Kiran", "Kher", 20, "java rdbms REST" );
+    }
+}
+```
+![Constructor Invocation in inheritance](constructorInvocationInInheritance.png)
+
+## Super keyword usage
+1. To access super class's visible members(data members n methods)
+2. To invoke immediate super class's matching constructor --- accessible only from sub class constructor.(super(...))
+
+eg1:
+```text
+package p1;
+class A{ void show(){sop("in A's show");}}
+package p2;
+class B extends A{
+    //overriding
+    void show(){sop("in B's show");
+    super.show();
+    }
+}
+
+B b1 = new B();
+b1.show();
+```
+
+Rules:
+1. Only a consr can use this(...) or super(...)
+2. Has to be 1st statement in the constructor
+3. Any constructor can never have both this() & super()
+4. super & this (w/o brackets) are used to access (visible) members of super class or the same class.
+
+![polymorphism image](polymorphism.png)
+ 
