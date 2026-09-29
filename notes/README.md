@@ -2993,6 +2993,21 @@ public class Apple extends Fruit{
  ```
  ```java
 package fruits;
+public class Orange extends Fruit{
+    public Orange(String name){
+        super(name);
+    }
+    //method overriding
+    public void taste(){
+        System.out.println(getName() + " Has sour taste");
+    }
+     public void juice(){
+        System.out.println("Extracting juice of" + getName());
+    }
+}
+ ```
+ ```java
+package fruits;
 public class Mango extends Fruit{
     public Orange(String name){
         super(name);
@@ -3000,6 +3015,9 @@ public class Mango extends Fruit{
     //method overriding
     public void taste(){
         System.out.println(getName() + " Has sour taste");
+    }
+     public void pulp(){
+        System.out.println("Making pulp of" + getName());
     }
 }
  ```
@@ -3069,8 +3087,15 @@ case 4://Display using for-each(run time polymorphism)
 //basket : {m1,o1,o2,a1,a2,a3,null,...}
 System.out.println("Displaying Fruit Basket");
 for(Fruit f : basket)//f=basket[0],f=basket[1]...
-    if(f != null)
+    if(f != null){
         f.taste();
+        if(f instanceof Apple)
+            ((Apple)f).jam();
+        else if(f instanceof Orange)
+            ((Orange)f).juice();
+        else
+            ((Mango)f).pulp();
+    }
     break;
 case 5:
     exit = false;
@@ -3097,3 +3122,51 @@ public class TestFruits2 {
 }
 ```
 ![memory pic](dynamicinitarraymemorypicture.png)
+
+```java
+package tester;
+import fruits.Fruit;
+import fruits.Orange;
+public class TestFruits3 {
+    public static void main(String[] args){
+        Fruit ref = new Mango("mango1");//indirect type of ref, upcasting
+        ref.taste();
+        //ref.pulp() is not allowed by compiler
+        ((Mango)ref).pulp();// down casting: explicit by prog
+        ref = new Orange("orange1");
+        ref.taste();
+        ((Orange)ref).juice
+        if(ref instanceof Mango)
+            ((Mango)ref).pulp();//illegal downcasting-> java.lang.ClassCastException: Orange can't be casted in Mango
+        else
+            System.out.println("Not a mango : can't be pulped!!");
+}
+}
+```
+## When is Downcasting required?
+when superclass ref --> sub class instance(eg. Fruit f = new Mango(...)) & you want to access new functionality added by sub class, then down casting MUST
+```f.taste();```--> not required
+```f.pulp();```-->downcasting is REQUIRED--to avoid javac error
+```((Mango)f).pulp();```--> no javac error
+## InstanceOf
+* keyword in java -- used for testing **run time type** information.
+* It is used to test whether the object is an instance of the specified type(class or subclass or interface).
+* Meaning -- in "a instanceof b", the expression returns true if the reference to which a points is an instance of classB, a subclass of B(diractly or indirectly), or a class that implements the B interface(directly or indirectly).
+* The instanceof in java is also known as type comparison operator because it compares the instance with type. It returns either true or false.
+* For null --instanceof returns false.
+* For sub-class object -- instanceof superclass -- returns true
+* For super-class object -- instanceof sub class -- returns false
+* eg -- Emp <--Mgr <--SalseMgr
+* Emp <-- Worker
+* what will be output?
+    1. Emp e = new Mgr(...);
+    2. e instanceof Mgr -- ture
+    3. e instanceof Emp -- true
+    4. e instanceof Object -- true
+    5. e instanceof SalesMgr -- false
+    6. e instanceof Worker -- false
+    7. Emp e = null;
+    8. e instanceof Emp/Mgr/SalesMgr -- false     
+
+## Abstraction
+* Abstract method not allowed in concrete class, we have to declare the class as abstract
