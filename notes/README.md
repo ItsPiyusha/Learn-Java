@@ -3170,3 +3170,25 @@ when superclass ref --> sub class instance(eg. Fruit f = new Mango(...)) & you w
 
 ## Abstraction
 * Abstract method not allowed in concrete class, we have to declare the class as abstract
+
+
+# Assignment Day 4
+3. Solve this
+Fresh business scenario to apply inheritance, polymorphism to emp based organization scene
+
+Create Emp based organization structure --- Emp, Mgr, Worker
+All of the above classes must be in --com.app.org
+
+3.1 Emp state --- id(int), name(string), deptId(string), basic(double) : private
+Accept all of above in constructor arguments.
+Behaviour --- 1. get emp details -- override toString(inherited from Object class)
+2. compute net salary --- returns 0
+(eg : public double computeNetSalary(){return 0;})
+
+3.2 Mgr state -- id, name, basic, deptId, perfBonus
+Behaviour --- 1. get Mgr details -- override toString(inherited from Emp class)
+2. compute net salary -- (formula: basic + perfBonus) -- override computeNetSalary
+3. get performance bonus. -- add a new method to return bonus.(getter)
+
+3.3 Worker state -- id, name, basic, deptId, hoursWorked, hourlyRate
+Behaviour
