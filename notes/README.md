@@ -3197,6 +3197,13 @@ Behaviour ---
 3. get hourlyRate of the worker -- add a new method to return hourly rate of a worker.(getter)
 
 Organize classes in inheritance heirarchy.
+Write TestOrganization in "tester" package.
+Create suitable array to store organization details.
+Provide following options:
+1. Hire Manager - input all manager details
+2. Hire Worker - input all worker details
+3. Display information of all employees including net salary, display bonus if its' manager or display hourly rate of a worker using single for-each loop.
+4. Update Manager's bonus - input emp id & bonus increment, output error or success message.
 
 * Object class - public String toString() - returns a string representation of the object.
 ```java
