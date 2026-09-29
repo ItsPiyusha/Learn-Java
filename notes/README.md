@@ -2986,6 +2986,9 @@ public class Apple extends Fruit{
     public void taste(){
         System.out.println(getName() + " Has sweet n sour taste");
     }
+    public void jam(){
+        System.out.println("Making jam of" + getName());
+    }
 }
  ```
  ```java
