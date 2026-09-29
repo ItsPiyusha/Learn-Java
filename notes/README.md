@@ -3062,8 +3062,9 @@ if(counter < basket.length){
 }else
     System.out.println("Basket full!!");
     break;
-case 4://Display using for-each
+case 4://Display using for-each(run time polymorphism)
 //basket : {m1,o1,o2,a1,a2,a3,null,...}
+System.out.println("Displaying Fruit Basket");
 for(Fruit f : basket)//f=basket[0],f=basket[1]...
     if(f != null)
         f.taste();
@@ -3076,3 +3077,19 @@ case 5:
     }
 }
  ```
+```java
+package tester;
+import fruits.Fruit;
+import fruits.Orange;
+public class TestFruits2 {
+    public static void main(String[] args){
+    //dynamic init of array
+    int[] data = {1,2,3,4,5,6};
+    Fruit[] fruits = {new Orange("orange1"),new Mango("mango1"),new Apple("apple1")};
+    System.out.println();
+    System.out.println("Fruits");
+    for(Fruit f : fruits)
+        f.taste();
+}
+}
+```
