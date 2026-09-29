@@ -3191,4 +3191,41 @@ Behaviour --- 1. get Mgr details -- override toString(inherited from Emp class)
 3. get performance bonus. -- add a new method to return bonus.(getter)
 
 3.3 Worker state -- id, name, basic, deptId, hoursWorked, hourlyRate
-Behaviour
+Behaviour --- 
+1. get worker details : override toString(inherited from Emp class)
+2. compute net salary(formula: basic + (hoursWorked * hourlyRate)) --- override computeNetSalary
+3. get hourlyRate of the worker -- add a new method to return hourly rate of a worker.(getter)
+
+Organize classes in inheritance heirarchy.
+
+* Object class - public String toString() - returns a string representation of the object.
+```java
+package com.app.org;
+public class Emp{
+    private int id;
+    private String name;
+    private double salary;
+    public Emp(int id, String name, double salary){
+    super();
+    this.id = id;
+    this.name = name;
+    this.salary = salary;
+    }
+    public String to String(){
+    return "Emp " + id + " " + name + " " + "eraning " + salary;
+    }
+}
+```
+write mgr class with remaining data members and overrided toString using super() + perfBonus.
+```java
+package com.tester;
+import com.app.org.Emp;
+public class TestEmp{
+    public static void main(String[] args){
+        Emp e1 = new Emp(101, "Riya", 12345);
+        System.out.println(e1.toString());
+        System.out.println(e1); // find out how both gives same output: printStream's println(Object ref) method.
+        Object e1 = new Emp(101, "Riya", 12345);
+    }
+}
+```
