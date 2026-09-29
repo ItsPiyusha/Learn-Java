@@ -3093,3 +3093,4 @@ public class TestFruits2 {
 }
 }
 ```
+![memory pic](dynamicinitarraymemorypicture.png)
