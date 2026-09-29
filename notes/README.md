@@ -3031,12 +3031,47 @@ public class FruitBasket{
         boolean exit = false;
         System.out.println("Enter basket size");
         Fruit[] basket = new Fruit[sc.nextInt()];
+        int counter = 0;
         while(!exit){
-            System.out.println("Menu  1. Add Apple
- 2. Add Orange
- 3. Add Cherry
- 4. Display taste of all fruits in the basket(for-each)
- 5. Exit: terminate the application")
+            System.out.println("Menu  1. Add Apple\r\n" + 
+ "2. Add Orange\r\n" +
+ "3. Add Mango\r\n" + 
+ "4. Display taste of all fruits in the basket(for-each)\r\n" +
+ "5. Exit: terminate the application.");
+System.out.println("Choose Option");
+switch(sc.nextInt()){
+case 1: System.out.println("Enter Apple's name");
+        //array being a fixed structure counter added
+if(counter < basket.length){
+   basket[counter++] = new Apple(sc.next());//if you want to accept space in the input, use nextLine()
+//upcasting Apple ---> Fruit automatic bcoz Apple extends Fruit
+}else
+    System.out.println("Basket full!!");
+    break;
+case 2: System.out.println("Enter Orange's name");
+if(counter < basket.length){
+   basket[counter++] = new Orange(sc.next());
+//upcasting Orange ---> Fruit
+}else
+    System.out.println("Basket full!!");
+    break;
+case 3: System.out.println("Enter Mango's name");
+if(counter < basket.length){
+   basket[counter++] = new Mango(sc.next());
+//upcasting Mango ---> Fruit
+}else
+    System.out.println("Basket full!!");
+    break;
+case 4://Display using for-each
+//basket : {m1,o1,o2,a1,a2,a3,null,...}
+for(Fruit f : basket)//f=basket[0],f=basket[1]...
+    if(f != null)
+        f.taste();
+    break;
+case 5:
+    exit = false;
+    break;
+}
         }
     }
 }
