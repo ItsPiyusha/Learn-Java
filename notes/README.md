@@ -3244,6 +3244,24 @@ public class TestEmp{
 Revise
 Run time polymorphism-- Dynamic method dispatch(late binding): resolved by JVM 
 same method name, signature same, ret type must be same or it can be sub type of the overriden method(co-varient ret type)
+scope(access specifiers) :
+overriding form of a method can't narrow down scope
+
+What is a toString()?
+method of Object class
+public String toString()
+returns string representation of Object.
+FullyQualified class name@ hashcode
+hashcode : internal representation of address
+Student s = new Student("a","b",...);
+sop(s.toString());
+why override toString?
+to replace address returuning version by actual details(state) of the object(debugging)
+
+## Why sop(s) expands to sop(s.toString())?
+sop(s); --> sop(s.toString());
+PrintStream : println(Object o) --> String.valueOf(o) : o.toString
+
 Rules of method overriding
 Types of polymorphism
 static (early binding) : compile time polymorphism
@@ -3257,3 +3275,80 @@ Abstraction
 final keyword
 static
 Interfaces
+
+## inheritance - polymorphism - co-variance 
+1. same method name, same signature, ret type must be same or its sub-type(co-variance)
+eg of co-variance
+```text
+class A{
+    A getInstance(){
+        return new A();
+    }
+}
+class B extends A{
+    B getInstance(){
+        return new B();
+    }
+}
+```
+2. scope -- must be same or wider.
+3. will be discussed in exception handling
+> return type of overriden method is subclass then it is called as co-variance.
+
+
+## Annotations @Override
+* From JDK 1.5 onwards : Annotations are available -- metadata meant for compiler or JRE
+* Java Annotation is a tag that represents the metadata i.e. attached with class, iterface, fields to indicate some additional information which can be used by java compiler and JVM.
+* Annotations in java are used to provide additional informationa, so it is an alternative option
+eg @Override, @Deprecated, @SuppressWarnings, @FunctionalInterface
+```text
+@Override --
+Annotation meant for javac.
+Method level annotation
+Optional BUT recommended.
+eg :
+public class Orange extends Fruit{
+@Override
+public void taste(){...}
+}
+```
+* Refer Java docs also
+* While overriding the method -- if you want to inform the compiler that : following is the overriden form of method use:
+```text
+@Override
+method declaration{...}
+```
+
+# Abstraction
+* abstract : keyword in java
+* abstract methods -- methods only with declaration & no definition
+* eg : public abstract double calNetsalry();
+* private, static and final keywords with abstract gives javac.
+* Any time a class has one or multiple abstract methods -- class must be declared as abstract --> eg. public abstract class Emp{...}
+* Abstract classes can't be instantiated BUT can create the ref. of abstract class type pointing to sub class instances.
+* Emp e1 = new Emp(...);//illegal
+* Emp e1 = new Mgr(...);//legal
+* Abstract classes CAN HAVE concrete(non-abstract) methods.
+* Abstract classes MUST provide constructors to initialize its own private data members.(to create concrete sub class instances)
+* Can a class be declared as abstract & final ? NO
+* Can an abstract class be created with 100% concrete functionality? YES
+* eg -- Event adapter classes / HttpServlet
+* Use "abstract" keyword in Emp, Mgr, Worker hierarchy & test it.
+# final -- keyword in java
+ Usages
+ 1. final data member(primitive types) - constant. eg -- public final int data = 123;
+ 2. final methods -- can't be overriden, usage eg. public final void show{...} -- eg Object class -- wait, notify, notifyAll
+ 3. final class -- can't be subclassed(or extended) -- i.e. stopping inheritance hierarchy. -- eg -- String, StringBuffer, StringBuilder
+ 4. final reference -- references can't be re-assigned eg -- final Emp e = new Mgr(...); e = new Worker(...);//compiler err
+
+# static -- keyword in java
+Usages:
+1. static data members -- mem allocated only once @ class loading time -- not saved on object heap -- but special mem area -- meta space(method area from java 8 onwards) -- shared across all objects of the same class. Initialized to their default values(eg -- boolean -false, ref - null) How to refer? -- className.memberName -- most common way but generally 4 ways are there. eg -- public static int idCounter;
+   ![method local-instance-static](variable-types.png)
+2. static methods --- can be accessed without instantiation.(className.memnerName(...)) can't access 'this' or 'super' from within  static method
+   Rules:
+   1. Can static methods access other static members directly(w/o inst) -- YES
+   2. Can static methods access other non-static members directly(w/o inst) -- NO
+   3. Can non-static methods access other static members directly(w/o inst) -- YES
+      eg : In Test class; void test1(){test2();} static  void test2(){test1();//javac error}
+3. static import -- can directly use all static members from the specified class.
