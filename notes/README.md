@@ -3350,5 +3350,50 @@ Usages:
    1. Can static methods access other static members directly(w/o inst) -- YES
    2. Can static methods access other non-static members directly(w/o inst) -- NO
    3. Can non-static methods access other static members directly(w/o inst) -- YES
-      eg : In Test class; void test1(){test2();} static  void test2(){test1();//javac error}
+      eg : In Test class; void test1(){test2();}//no error static  void test2(){test1();//javac error}
 3. static import -- can directly use all static members from the specified class.
+   eg --
+   ```text
+    import static java.lang.System.*;
+    import static java.lang.Math.*;
+    import java.util.Scanner;
+    main(...){
+     out.println(...);
+     Scanner sc = new Scanner(in);//because we imported System class-> this "in" = "System.in"
+     sqrt(12.34);
+     gc();// = System.gc();
+     exit();//System.exit();
+    }
+   ```
+4. static initializer block
+   syntax--
+   ```text
+    static{
+    //block gets called only once @ class loading time
+   //usage -- to init all static data members
+   //& can add functionality - which HAS to be called precisely once.
+   Use case: singleton pattern, J2EE for loading hibernate/spring framework
+   }
+   ```
+   * They appear -- within class definition & can access only static members directly.(w/o inst)
+   * A class can have multiple static init blocks(legal BUT not recommended)
+   * Regarding non-static initializer blocks(instance initializer block)
+     Syntax:
+     ```text
+     {
+        //will be called per instantiation --  before matching constructor.
+         //better alternative -- parameterized constructor.
+     }
+     ```
+
+5. static nested classes ---
+   eg --
+   ```text
+    class Outer{
+    //static & non-static members
+       static class Nested{
+        //can access ONLY static members of the outer class DIRECTLY(w/o inst)
+   } 
+   }
+   ```
+        
