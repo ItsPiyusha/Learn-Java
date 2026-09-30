@@ -3061,23 +3061,26 @@ public class FruitBasket{
  "5. Exit: terminate the application.");
 System.out.println("Choose Option");
 switch(sc.nextInt()){
-case 1: System.out.println("Enter Apple's name");
+case 1: 
         //array being a fixed structure counter added
-if(counter < basket.length){
+if(counter < basket.length){//ArrayIndexOutOfBound Exception taken care of 
+   System.out.println("Enter Apple's name");
    basket[counter++] = new Apple(sc.next());//if you want to accept space in the input, use nextLine()
 //upcasting Apple ---> Fruit automatic bcoz Apple extends Fruit
 }else
     System.out.println("Basket full!!");
     break;
-case 2: System.out.println("Enter Orange's name");
+case 2: 
 if(counter < basket.length){
+   System.out.println("Enter Orange's name");
    basket[counter++] = new Orange(sc.next());
 //upcasting Orange ---> Fruit
 }else
     System.out.println("Basket full!!");
     break;
-case 3: System.out.println("Enter Mango's name");
+case 3: 
 if(counter < basket.length){
+   System.out.println("Enter Mango's name");
    basket[counter++] = new Mango(sc.next());
 //upcasting Mango ---> Fruit
 }else
@@ -3202,8 +3205,9 @@ Create suitable array to store organization details.
 Provide following options:
 1. Hire Manager - input all manager details
 2. Hire Worker - input all worker details
-3. Display information of all employees including net salary, display bonus if its' manager or display hourly rate of a worker using single for-each loop.
+3. Display information of all employees(toString) + including net salary(computeNetSalary), display bonus if its' manager or display hourly rate of a worker using single for-each loop.
 4. Update Manager's bonus - input emp id & bonus increment, output error or success message.
+5. Exit
 
 * Object class - public String toString() - returns a string representation of the object.
 ```java
@@ -3236,3 +3240,20 @@ public class TestEmp{
     }
 }
 ```
+# Day 5 1
+Revise
+Run time polymorphism-- Dynamic method dispatch(late binding): resolved by JVM 
+same method name, signature same, ret type must be same or it can be sub type of the overriden method(co-varient ret type)
+Rules of method overriding
+Types of polymorphism
+static (early binding) : compile time polymorphism
+method overloading
+same method name, signature different, ret type ignored by compiler.
+
+co variance
+toString
+@Override
+Abstraction
+final keyword
+static
+Interfaces
