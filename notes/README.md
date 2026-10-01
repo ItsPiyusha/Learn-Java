@@ -3448,3 +3448,83 @@ public class TestStatic{
       3. It can be used to achieve loose coupling.(Interfaces allow complete separation between WHAT(specification or a contract) is to be done vs HOW.
 
 eg: In JDBC(java DB connectivity)
+java.sql.Connection interface --- Sun
+Implement classes -- DB vendors --
+Oracle -- Oracle DB engine -- Implement class connection interface
+Red Hat -- Mysql -- Implementation class for connection interface
+
+The java compiler adds public and abstract keywords before the interface method and public, static and final keywords before data members.
+
+Syntax:
+```text
+default(no modifier)/public interface NameOfInterface extends comma separated list of super interfaces
+{
+//data members --- public static final
+int data = 100;
+//methods -- public abstract
+double calc(double d1, double d2);
+}
+```
+Implementing class syntax
+default(no modifier) / public class Name extends SuperClass implements comma separated list of interfaces{
+//Mandatory for implementation class to be non-abstract(concrete): MUST define/implement all abstract methods from interfaces.
+}
+eg : public class Circle extends Shape implements Computable, Runnable{...}
+0. Can 1 interface be implemented by multiple implementation classes? YES
+1. Relationship between classes and interfaces
+   A class inherits from another class(extends), an interface extends another interfaces(extends) but a class implements an interface.
+   eg:
+   superclass -- extends -- sub class
+   super interface -- extends -- sub interface
+   class -- implements -- interface
+2. Multiple inheritance in Java by interface
+   If a class implements multiple interfaces, or an interface extends multiple interfaces i.e. known as multiple inheritance.
+   eg:
+   ```text
+    Multiple inheritance in java
+   interface printable{
+    void print();
+   }
+   interface Showable{
+    void show();
+   }
+   class A implements Printable, Showable{
+    public void print(){System.out.println("Hello");}
+    public void show(){System.out.println("Welcome");}
+
+   public static void main(String args[]){
+    A obj = new A();
+    obj.print();
+    obj.show();
+    }
+   }
+   ```
+   Question : Multiple inheritance is not supported through class in java but it is possible by interface, why?
+   Multiple inheritance is not supported in case of class, since it can create ambiguity. But it is supported in case of interface because there is no ambiguity as implementation is provided by the...
+
+ ```java
+package p1;
+public interface Computable{
+    int data = 100;
+    double compute(double d1, double d2);
+}
+  ```
+```java
+package p1;
+public class MyComputable implements Computable{
+@Override
+ public double compute(double a, double b){
+ System.out.println("interface constant "+ data);
+ return a+b;
+ }
+}
+```
+```java
+package p1;
+public class Tester{
+    public static void main(String[] args){
+        MyComputable c1 = new MyComputable();
+        System.out.println(c1.compute(10, 20));
+    }
+}
+```
