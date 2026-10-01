@@ -3396,4 +3396,55 @@ Usages:
    } 
    }
    ```
-        
+
+
+```java
+package test_static;
+import static java.lang.System.out;
+
+public class TestStatic{
+    public static final double PI;
+    static int counter = 10;
+    private int i;
+    static {
+    PI = 3.1414;
+    out.println("from static initialiser block counter = " + (counter++));
+    testIt();
+    }
+// A class can have multiple static initialiser blocks.
+    static {
+        out.println("another static init block");
+    }
+    public TestStatic(int i){
+        out.println("in constructor");
+        this.i = i;
+    }
+    //instance initialiser block : invoked once per instantiation BEFORE matching constructor, typically replaced by parameterised constructor
+    {
+        out.println("in instance initialiser block");
+    }
+
+    public static void main(String[] args){
+        out.println("from main " + counter);
+        TestStatic t1 = new TestStatic(45);
+        TestStatic t2 = new TestStatic(56);
+    }
+    static void testIt(){
+        out.println("from testIt counter= " + counter++);
+    }
+}
+```
+* static initialiser block will execute before main.
+
+
+# Interfaces
+* An Interface in java is a blueprint of a class. It has public static final data members and public and abstract methods only.
+* The interface in java is a mechanism to achieve fully abstraction. There can be only abstract methods in java interface(not method body)(true till JDK 1.7). It is used to achieve full abstraction and multiple inheritance in Java.
+* Java interface also represents IS - A relationship.
+* It cannot be instantiated just like abstract class.
+* Why Java interfaces?
+      1. It is used to achieve full abstraction.
+      2. By interface, we can support the functionality of multiple inheritance
+      3. It can be used to achieve loose coupling.(Interfaces allow complete separation between WHAT(specification or a contract) is to be done vs HOW.
+
+eg: In JDBC(java DB connectivity)
