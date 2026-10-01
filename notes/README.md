@@ -3551,4 +3551,5 @@ public class Tester2{
     }
 }
 ```
+![part 1 of the image](interfacepart1.png)
 ![Interface memory pic why down casting required](interfacemempic.png)
