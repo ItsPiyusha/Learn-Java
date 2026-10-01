@@ -3553,3 +3553,42 @@ public class Tester2{
 ```
 ![part 1 of the image](interfacepart1.png)
 ![Interface memory pic why down casting required](interfacemempic.png)
+```java
+package p1;
+public class OtherComputable implements Computable{
+@Override
+public double compute(double d1, double d2){
+return d1*d2;
+}
+}
+```
+```java
+package p1;
+public class Tester3{
+    Computable ref;
+    ref = new MyComputable();
+    System.out.println(ref.compute(10,20));
+    System.out.println(((MyComputable)ref).isEven(14));
+    ref = new OtherComputable();
+    System.out.println(ref.compute(10,20));
+    if(ref instanceof MyComputable)
+        System.out.println(((MyComputable)ref).isEven(14));//run time error: ClassCastException
+    else
+        System.out.println("Invalid computable");
+}
+```
+```java
+package p1;
+public class Tester4{
+public static void main(String[] args){
+Computable[] computables = {new MyComputable(), new OtherComputable()};
+for(Computable c : computable){
+System.out.println(c.compute(12,13));
+if(c instanceof MyComputable)
+    System.out.println("Is Even " + ((MyComputable)c).isEven(1234));
+else
+    System.out.println("Invalid type");
+}
+}
+}
+```
