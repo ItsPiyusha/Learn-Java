@@ -3505,7 +3505,9 @@ eg : public class Circle extends Shape implements Computable, Runnable{...}
  ```java
 package p1;
 public interface Computable{
+//public static final : implicitly added by javac
     int data = 100;
+//public abstract : implicitly added by javac
     double compute(double d1, double d2);
 }
   ```
@@ -3517,14 +3519,36 @@ public class MyComputable implements Computable{
  System.out.println("interface constant "+ data);
  return a+b;
  }
+public boolean isEven(int num){
+return num % 2 == 0;
+}
 }
 ```
 ```java
 package p1;
 public class Tester{
     public static void main(String[] args){
-        MyComputable c1 = new MyComputable();
-        System.out.println(c1.compute(10, 20));
+//Indirect referencing : interfaces
+//Interface can't be instantiated
+//interface reference can DIRECTLY(without type casting) refer to ANY implementation class(IS - A relationship)
+Computable ref;//interface reference, nothing gets loaded on method area, only reference variable on stack!
+ref = new MyComputable();//up casting
+System.out.println(ref.compute(10,20));//javac resolves it by type of ref : Computable
+//JVM : for virtual (non-private / non-static and non-final) : type of the object: run time polymorphism
     }
 }
 ```
+
+```java
+package p1;
+public class Tester2{
+    public static void main(String[] args){
+        Computable ref;
+        ref = new MyComputable();
+        System.out.println(ref.compute(10,20));
+        MyComputable myComputable = (MyComputable)ref;
+        System.out.println(myComputable.isEven(13));
+    }
+}
+```
+![Interface memory pic why down casting required](interfacemempic.png)
