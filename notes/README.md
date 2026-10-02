@@ -3770,3 +3770,7 @@ Custom exceptions(user defined exceptions/ application exceptions) -- need & ste
 
 ## Flow of exception handling
 ![Exception handling flow](excflow.png)
+## Inheritance Hierarchy for Exception Handling classes
+![exception tree](exctree.png)
+
+![
