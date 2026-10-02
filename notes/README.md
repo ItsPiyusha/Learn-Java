@@ -3954,13 +3954,38 @@ Objective :
 Check the speed of vehicle on a freeway
 Accept the speed using Scanner : can be speed too low(exc) or too high(exc) or in range
 
+![throws vs throw](throwvsthrows.png)
+
 keyword --throw -- for throwing exception
 JVM uses it to throw built-in exceptions(eg. NullPointerExc, IOException etc) & prog uses it throw custom exception(user defined excs) in case of B.L. or validation failures.
 
 Syntax:
-throw Throwable instance;
-throw new NullPointerExc();
-throw new InterruptedExc();
-throw new Throwable("abc");
-throw new Account(..);//javac err
-throw new AccountOverdrawnException("funds too low..");//correct usage
+```throw Throwable instance;```
+eg:
+throw new NullPointerExc();//no javac error
+throw new InterruptedExc();//no javac error
+throw new Throwable("abc");//no javac error
+throw new Account(..);//javac err(provided it doesn't extend from Throwable hierarchy)
+throw new AccountOverdrawnException("funds too low..");//proper usage
+
+# Assignment
+Objective:
+Validate speed of a vehicle on a highway
+min speed = 40, max speed = 80
+Alert user via custom exception, in case speed is out of range.
+
+1. Create custom exception class(SpeedOutOfRangeException) -- in the package "cost_excs"
+2. Create static method, in the validationUtils class(in pkg utils) checkSpeed method -- which should throw the custom exc if speed is out of range.
+   Otherwise -- display msg -- "Speed within range"
+   Don't apply method level handling
+4. Create TestSpeed in the package "exc" ,with main method, --
+   using scanner(try-with-resources), accept speed of the vehicle,
+   invoke "checkSpeed(int speed) -- from within try - catch - catch all block in main
+   centralised exc handling
+
+```java
+package custom-exes;
+public class SpeedOutOfRangeException extends Exception{
+
+}
+```
