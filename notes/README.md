@@ -3714,6 +3714,20 @@ public class Tester{
 ```
 Even if both interfaces have same data members and methods, there is no ambiguity, no diamond problem in java as data members are implicitly static, so classname.variable name resolves ambiguity, and methods are resolved by dynamic method dispatch at runtime as there will be only one implementation of that method in implementation class.
 
+## Interface vs Abstract class
+### Interface vs Abstract Class (Java)
+
+| Interface                                       | Abstract Class                                    |
+| ----------------------------------------------- | ------------------------------------------------- |
+| Defines a contract (what to do).                | Defines partial implementation (what + how).      |
+| Supports multiple inheritance.                  | Supports single inheritance.                      |
+| Variables are `public static final` by default. | Can have instance variables.                      |
+| Methods: abstract, default, static, private.    | Can have abstract and concrete methods.           |
+| No constructors.                                | Can have constructors.                            |
+| Implemented using `implements`.                 | Extended using `extends`.                         |
+| Best for unrelated classes sharing a contract.  | Best for related classes sharing common behavior. |
+| Supports loose coupling.                        | Supports code reuse.                              |
+
 ## Exception Handling intro
 ```java
 package p5;
@@ -3773,6 +3787,8 @@ Custom exceptions(user defined exceptions/ application exceptions) -- need & ste
 ## Inheritance Hierarchy for Exception Handling classes
 ![exception tree](exctree.png)
 Unchecked exception come under ```java.lang.RuntimeException``` in hierarchy, we can check in java docs 
+There is no compiler error for unchecked exceptions, error comes at runtime only
+but compiler doesn't allow checked exceptions without making us handle them. 
 example:
 ![where to check in java doc](javadocexample.png)
 ## Checked vs Unchecked exceptions
@@ -3786,4 +3802,58 @@ javac forces handling of the checked exc. upon the prog.(handling by supplying m
   ```try{..} catch(exc1 e){} catch(exc2 e){}catch(Exception e){catch-all}```
   ```try{..} catch(exc1 e){} catch(exc2 | exc3 e){} catch(Exception e) {catch-all}```
   
-  
+* throws syntax --
+  method declaration throws comma separated list of exec classes.
+  eg: Integer class API
+  ```public static int parseInt(String s) throws NumberFormatException```
+  Thread class API
+  ```public static void sleep(long ms) throws InterruptedException```
+  FileReader API
+  ```public FileReader(String fileName) throws FileNotFoundException```
+throws -- meant for javac
+meaning -- method MAY raise specified exc.
+current method is NOT handling it, BUT its caller should handle.
+mandatory -- only in case of unhandled checked exceptions.
+use case - used in delegating the exception to caller.
+
+* Throwable class API
+1. public String toString() --  returns name of exc class & reason
+2. public String getMessage() -- returns error msg of exception
+3. public void printStackTrace() -- Displays name of exc class, reason, location details  
+* finally -- keyword in exception handling
+  finally -- block -- finally block ALWAYS survive(except System.exit(0))
+  i.e. in the presence or absence of exceptions.
+  * try{} catch(Exception e){} finally{}
+  * try{} catch(NullPointerException e){} finally{}
+  * try{} finally{}
+```java
+package p5;
+public class TestUncheckedExc{
+    public class void main(String[] args){
+        try{
+        System.out.println("in try");
+        int[] data = {12, 23, 45, 10};
+        System.out.println(data[4]);
+        int a = 100;
+        int b = 0;
+        System.out.println("Result : " + (a/b));
+        String s = "abc1234";
+        System.out.println("int value " + Integer.parseInt(s));
+        String s2 = null;
+        System.out.println("upper case " + s2.UpperCase());
+        System.out.println("main ends here");
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("1");
+        } catch (NullPointerException e){
+            System.out.println("2");
+        } catch(Exception e){
+            System.out.println("in catch-all block");
+            System.out.println("toString : " + e);
+            System.out.println("getMesg " + e.getMessage());
+            System.out.println("via printStackTrace");
+            e.printStackTrace();
+        }
+        System.out.println("main over..");
+    }
+}
+```
