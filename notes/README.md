@@ -3592,3 +3592,178 @@ else
 }
 }
 ```
+
+```java
+package p2;
+public interface Computable{
+    int data = 100;
+    double compute(double d1, double d2);
+}
+```
+```java
+package p2;
+public interface Printable{
+    void print(String msg);
+}
+```
+```java
+package p2;
+public class ImpleClass1 implements Computable, Printable{
+@Override
+public void print(String msg){
+    System.out.println("printing a msg " + msg);
+}
+@Override
+public double compute(double d1, double d2){
+return d1 + d2;
+}
+}
+```
+```java
+package p2;
+public class ImpleClass2 implements Computable, Printable{
+@Override
+public void print(String msg){
+    System.out.println("printing a msg in uppercase " + msg.toUpperCase());
+}
+@Override
+public double compute(double d1, double d2){
+return d1 * d2;
+}
+}
+```
+```java
+package p2;
+public class Tester{
+    public static void main(String[] args){
+        Printable ref = new ImpleClass1();
+        ref.print("Some message..");
+        ref = new ImpleClass2();
+        ref.print("Some message..");
+    }
+}
+```
+Shows multiple classes can implements same interfaces.
+```java
+package p3;
+public interface A{
+    void show();
+}
+```
+```java
+package p3;
+public interface B{
+void test();
+}
+```
+```java
+package p3;
+public interface C extends A, B{
+    void print(String msg);
+}
+```
+```java
+package p3;
+public class MyImpleClass implements C{
+@Override
+public void test(){
+..
+}
+@Override
+public void show(){
+..
+}
+@Override
+public void print(String msg){
+..
+}
+}
+```
+Even if you implement an interface that extends two other interfaces, you need to implement all the methods.
+```java
+package p4;
+public interface A{
+    int data = 100;
+    void show();
+}
+```
+```java
+package p4;
+public interface B{
+    int data = 200;
+    void show();
+}
+```
+```java
+package p4;
+public class C implements A, B{
+    @Override
+    public void show(){
+        System.out.println("In C's show " + A.data + " " + B.data);
+    }
+}
+```
+```java
+package p4;
+public class Tester{
+    public static void main(String[] args){
+        A ref = new C();
+        ref.show();
+    }
+}
+```
+Even if both interfaces have same data members and methods, there is no ambiguity, no diamond problem in java as data members are implicitly static, so classname.variable name resolves ambiguity, and methods are resolved by dynamic method dispatch at runtime as there will be only one implementation of that method in implementation class.
+
+## Exception Handling intro
+```java
+package p5;
+public class TestMe{
+    public class void main(String[] args){
+        int[] data = {12, 23, 45, 10};
+        System.out.println(data[4]);
+        int a = 100;
+        int b = 0;
+        System.out.println("Result : " + (a/b));
+        String s = "abc1234";
+        System.out.println("int value " + Integer.parseInt(s));
+        String s2 = null;
+        System.out.println("upper case " + s2.UpperCase());
+        System.out.println("main ends here");
+    }
+}
+```
+# Day 6
+Revise
+Exception Handling
+String Handling
+Regarding equals
+Association
+Questions:
+* What is an interface? Prototype for class creation
+* Why interfaces?
+      1. Full abstraction
+      2. Alternative to multiple inheritance
+      3. Separation between specifications and implementation
+* Which keyword to use for IS-A relationship?
+  Between super class and sub class : extends
+  Between super interface and sub interface : extends
+  Between interface and implementation class : implements
+* can 1 class implement multiple interfaces? YES
+* can 1 interface extend from multiple super interfaces? YES
+* can 1 class extend from multiple super classes? NO
+* Which are the keywords added by javac for interface data members implicitly? public static final
+* which are the keywords added by javac for interface method members implicitly? public abstract
+* can you assign interface reference directly(without type casting) to ANY implementation class instance? YES
+* When will you need down casting with interface ref? : to refer to additional members in the implementation class
+* Will you need instanceof checking ever with interfaces? : when you are using interface ref --> implementation class & trying to refer to additional members in the implementation class : before down casting : check with instanceof
+
+# Exception(run time errors : JVM) Handling
+Why?
+1. To avoid abnormal termination of the application
+2. Separation between Business logic(try) and error handling logic(catch
+Index:
+Flow
+Inheritance heirarchy
+checked vs unchecked exceptions
+keywords -> try, catch, finally, throw, throws, try-with-resources
+Custom exceptions(user defined exceptions/ application exceptions) -- need & steps
