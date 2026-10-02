@@ -3827,7 +3827,7 @@ use case - used in delegating the exception to caller.
   * try{} catch(NullPointerException e){} finally{}
   * try{} finally{}
 ```java
-package p5;
+package exc;
 public class TestUncheckedExc{
     public class void main(String[] args){
         try{
@@ -3857,3 +3857,24 @@ public class TestUncheckedExc{
     }
 }
 ```
+```java
+package exc;
+public class TestCheckedException{
+    public static void main(String[] args){
+        try{
+        System.out.println("Before");
+        Thread.sleep(3000);
+        System.out.println("After");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("main over...");
+    }
+}
+```
+try-with-resources
+from java SE 7 onwards -- Java has introduced java.lang.AutoCloseable -- interface
+It represents -- resources that must be closed -- when no longer required.
+Autoclosesable interface methods
+public void close() throws Exception -- closing resources.
+Java I/O classes(eg: BufferedReader, PrintWriter), Scanner -- have already implemented this interface -- to
