@@ -3953,3 +3953,14 @@ Steps:
 Objective :
 Check the speed of vehicle on a freeway
 Accept the speed using Scanner : can be speed too low(exc) or too high(exc) or in range
+
+keyword --throw -- for throwing exception
+JVM uses it to throw built-in exceptions(eg. NullPointerExc, IOException etc) & prog uses it throw custom exception(user defined excs) in case of B.L. or validation failures.
+
+Syntax:
+throw Throwable instance;
+throw new NullPointerExc();
+throw new InterruptedExc();
+throw new Throwable("abc");
+throw new Account(..);//javac err
+throw new AccountOverdrawnException("funds too low..");//correct usage
