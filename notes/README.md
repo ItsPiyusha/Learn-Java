@@ -3942,3 +3942,14 @@ FileReader fr = new FR(..)){
 Need:
 1. Validations : In case of validation failures : prog will have to throw custom exc class instance
 2. B.L. failures(eg : funds transfer : insufficient funds) : prog will have to throw custom exc class instance 
+
+Steps:
+1. Create a packaged public class which extends throwable(not recommended but legal)/ Exception(recommended)/Error(not recommended but legal)/RuntimeExc(not recommended but legal)
+   eg: public class MyException extends Exception{..}
+   public class MyException2 extends RunTimeException{..}
+2. CustExc(String msg) : overload the constructor : to invoke the super-class constructor of the form Exception(String msg) OR CustExc(String msg, Throwable rootCause)
+   public Exception(String message, Throwable cause)
+
+Objective :
+Check the speed of vehicle on a freeway
+Accept the speed using Scanner : can be speed too low(exc) or too high(exc) or in range
