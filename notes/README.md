@@ -3986,6 +3986,45 @@ Alert user via custom exception, in case speed is out of range.
 ```java
 package custom-exes;
 public class SpeedOutOfRangeException extends Exception{
-
+    public SpeedOutOfRangeException(String errorMesg){
+        super(errorMesg);
+    }
 }
 ```
+```java
+package utils;
+public class ValidationUtils{
+// add speed limits
+    public static final int MIN_SPEED, MAX_SPEED;
+    static{
+        MIN_SPEED = 40;
+        MAX_SPEED = 80;
+    }
+//validation rule
+    public static void validateSpeed(int speed) throws SpeedOutOfRangeException{
+        if(speed < MIN_SPEED)
+            throw new SpeedOutOfRangeException("You are driving too slow!");
+        if(speed > MAX_SPEED)
+            throw new SpeedOutOfRangeException("You are driving too fast!");
+        System.out.println("Speed within range, continue");
+    }
+}
+```
+```java
+package exc;
+import java.util.Scanner;
+import static utils.Validationutils.*;
+public class TestSpeed{
+    public static void main(String[] args){
+        try(Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter current speed");
+            validateSpeed(sc.nextInt());
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+// e.printStackTrace();
+        }
+        System.out.println("main continued..");
+    }
+}
+```
+# String Handling
