@@ -3921,6 +3921,24 @@ from java SE 7 onwards -- Java has introduced java.lang.AutoCloseable -- interfa
 It represents -- resources that must be closed -- when no longer required.
 Autoclosesable interface methods
 public void close() throws Exception -- closing resources.
-Java I/O classes(eg: BufferedReader, PrintWriter), Scanner -- have already implemented this interface 
+Java I/O classes(eg: BufferedReader, PrintWriter), Scanner -- have already implemented this interface -- to automatically close resource when no longer required.
+
+Syntax:
+```text
+try(//can open one or multiple AutoCloseable resources)
+{}catch(Exception e){} 
+```
+eg : 
+try(Scanner sc = new Scanner(System.in);
+FileReader fr = new FR(..)){
+..
+}catch-all
+
+* try block can exist alone, it has to end with catch or finally.
+* but try - with - resources can exist on its own, as it is basically, try + finally.
 
 
+## Creating custom exceptions
+Need:
+1. Validations : In case of validation failures : prog will have to throw custom exc class instance
+2. B.L. failures(eg : funds transfer : insufficient funds) : prog will have to throw custom exc class instance 
