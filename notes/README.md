@@ -3775,4 +3775,15 @@ Custom exceptions(user defined exceptions/ application exceptions) -- need & ste
 Unchecked exception come under ```java.lang.RuntimeException``` in hierarchy, we can check in java docs 
 example:
 ![where to check in java doc](javadocexample.png)
-
+## Checked vs Unchecked exceptions
+detected or occur only in run-time
+JRE does not distinguish between them
+Compiler(javac) differentiates between them
+javac forces handling of the checked exc. upon the prog.(handling by supplying matching try-catch block or including it in the throws clause.)
+* Legal Syntax
+  ```try{..} catch(exc1 e){..}```
+  ```try{..} catch(exc1 e){} catch(exc2 e){}..```
+  ```try{..} catch(exc1 e){} catch(exc2 e){}catch(Exception e){catch-all}```
+  ```try{..} catch(exc1 e){} catch(exc2 | exc3 e){} catch(Exception e) {catch-all}```
+  
+  
