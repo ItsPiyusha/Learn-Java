@@ -3872,9 +3872,55 @@ public class TestCheckedException{
     }
 }
 ```
+```java
+package exc;
+public class TestCheckedException{
+    public static void main(String[] args) throws InterruptedException{
+        System.out.println("Before");
+        Thread.sleep(3000);
+        System.out.println("After");
+    }
+}
+```
+```java
+package exc;
+public class TestFinally1{
+    public static void main(String[] args){
+        System.out.println("1");
+        try{
+            testMe();
+            System.out.println("back in main");
+        } catch(Exception e){
+            System.out.println("in main's catch-all " + e);
+        } finally {
+            System.out.println("in main's finally");
+        }
+            System.out.println("main over. ");
+    }
+    private static void testMe() throws InterruptedException {
+        try{
+        System.out.println("in meth's try");
+        String[] ss = {"aa","bb"};
+        Thread.sleep(1000);
+        System.out.println(ss[0]);
+        boolean flag = false;
+        if(flag)
+            return;
+        System.out.println("end of try");
+        } finally {
+            System.out.println("in meth's finally");
+        }
+        System.out.println("meth end");
+        }
+    }
+}
+```
+
 try-with-resources
 from java SE 7 onwards -- Java has introduced java.lang.AutoCloseable -- interface
 It represents -- resources that must be closed -- when no longer required.
 Autoclosesable interface methods
 public void close() throws Exception -- closing resources.
-Java I/O classes(eg: BufferedReader, PrintWriter), Scanner -- have already implemented this interface -- to
+Java I/O classes(eg: BufferedReader, PrintWriter), Scanner -- have already implemented this interface 
+
+
