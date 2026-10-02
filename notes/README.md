@@ -3772,5 +3772,7 @@ Custom exceptions(user defined exceptions/ application exceptions) -- need & ste
 ![Exception handling flow](excflow.png)
 ## Inheritance Hierarchy for Exception Handling classes
 ![exception tree](exctree.png)
+Unchecked exception come under ```java.lang.RuntimeException``` in hierarchy, we can check in java docs 
+example:
+![where to check in java doc](javadocexample.png)
 
-![
