@@ -3767,3 +3767,6 @@ Inheritance heirarchy
 checked vs unchecked exceptions
 keywords -> try, catch, finally, throw, throws, try-with-resources
 Custom exceptions(user defined exceptions/ application exceptions) -- need & steps
+
+## Flow of exception handling
+![Exception handling flow](excflow.png)
