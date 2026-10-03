@@ -1,12 +1,6 @@
-# Why Java?
-* Platform Independent — WORA, because .class files can run on any machine as JVM will platform specific
-* **Simple** because doesn't support complex features in cpp like multiple inheritance, operator overloading
-* **Robust** because it doesn't allow pointer arithmetic (Robust)
-* Secure - When the JVM loads the class, it performs verification as part of class loading automatically.
-* Object-Oriented
-Though java is not 100% Object oriented as it allows primitive data types as well.
-**OOP → Encapsulation + Inheritance + Polymorphism + 
-* Automatic Memory Management
+* Why Java? - Platform Independent(WORA, because .class files can run on any machine as JVM will platform specific), **Simple** because doesn't support complex features in cpp like multiple inheritance, operator overloading, **Robust** because it doesn't allow pointer arithmetic (Robust), Secure - When the JVM loads the class, it performs verification as part of class loading automatically.
+* Though java is not 100% Object oriented as it allows primitive data types as well.
+
 **JVM → Garbage Collector → automatically manages unused objects** -> Unlike CPP where we need to call destructor everytime to free the memory
 * Multithreaded - Java provides built-in support for concurrent execution.
 * Functional Programming Support
@@ -125,11 +119,6 @@ save as .java file
 An **identifier** is the **name given by the programmer to identify a program element**.
 
 # Access Specifiers/Modifier in Java
-
-In Java, **access specifiers (access modifiers)** control **where a class, method, variable, or constructor can be accessed from**.
-
-Java has **4 access levels**:
-
 ```text
              Same Class   Same Package   Subclass   Other Package
 public           ✅            ✅            ✅            ✅
@@ -146,8 +135,6 @@ private          ✅            ❌            ❌            ❌
 * API -> Application Programmer Interface
 * Package -> collection of functionally similar classes
 * java.lang package by default available always inherently
-* import -> to avail
-* syntax of import outside of class always
 * Java follows single root inherentance hierarchy-> all classes implicitly extend **Object class**
 * System-> static class having fields in, out
 * out has type PrintStream(from java.io package) which is another class shows -> HAS-A relationship
