@@ -4112,3 +4112,7 @@ public class Test3{
 # Assignment Day 6 lab
 0. How to debug in eclipse?
    toggle breakpoint on line before numbers of lines
+1. Complete Discussion on literal vs non-literal strings
+   ![literal vs non-literal strings](string5.png)
+
+# Day 7
