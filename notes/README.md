@@ -4106,6 +4106,7 @@ public class Test3{
     }
 }
 ```
+At the time of class loading:
 ![literal string pool](string4.png)
 
 
@@ -4113,6 +4114,10 @@ public class Test3{
 0. How to debug in eclipse?
    toggle breakpoint on line before numbers of lines
 1. Complete Discussion on literal vs non-literal strings
+When main execution begins:
    ![literal vs non-literal strings](string5.png)
-
+* String pool is for memory optimisation, strings having exact same case sensitive data will not be given separate space, it'll skip creating them, they will share same copy, same space.
+* new keyword will create separate object as usual. it won't come under string pool
+* when we nullify all references, separate objects will be marked for garbage collection, not the string pool.
+* String pool will be erased at the time of class unloading.
 # Day 7
