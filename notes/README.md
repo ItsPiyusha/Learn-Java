@@ -4108,3 +4108,7 @@ public class Test3{
 ```
 ![literal string pool](string4.png)
 
+
+# Assignment Day 6 lab
+0. How to debug in eclipse?
+   toggle breakpoint on line before numbers of lines
