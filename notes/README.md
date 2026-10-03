@@ -4106,4 +4106,5 @@ public class Test3{
     }
 }
 ```
+![literal string pool](string4.png)
 
