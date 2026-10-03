@@ -4028,3 +4028,20 @@ public class TestSpeed{
 }
 ```
 # String Handling
+![String handling](stringhandling.png)
+
+1. Immutability of strings
+2. == vs equals
+3. literal strings vs non-literal strings
+
+```java
+package strings;
+public class Test1{
+    public static void main(String[] args){
+        String s1 = "hello";
+        s1.concat("hi");
+        System.out.println(s1);
+    }
+}
+```
+![String memory pic](stringsmempic.png)
