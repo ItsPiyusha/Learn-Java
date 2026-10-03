@@ -4030,8 +4030,8 @@ public class TestSpeed{
 # String Handling
 ![String handling](stringhandling.png)
 
-1. Immutability of strings
-2. == vs equals
+1. Immutability of strings : Whatever changes we make, it creates new objects without new keyword and returned to the caller.
+2. == vs equals (ref equality vs content equality)
 3. literal strings vs non-literal strings
 
 ```java
@@ -4048,3 +4048,61 @@ public class Test1{
 Fix:
 ![fix for above](string3.png)
 
+```java
+package strings;
+public class Test1{
+    public static void main(String[] args){
+        String s1 = "hello";
+        s1=s1.concat("hi");
+        String s2 = s1.toUpperCase();
+        System.out.println(s2);
+        String s3 = s2.replace('L','T');
+        System.out.println(s3);
+        System.out.println(s1);
+    }
+}
+```
+
+```java
+package strings;
+public class Test2{
+    public static void main(String[] args){
+        String s1 = new String("Hello");
+        String s2 = new String("Hello");
+        String s3 = new String("hello");
+        String s4 = s1;
+        System.out.println(s1 == s2);
+        System.out.println(s1 == s3);
+        System.out.println(s1 == s4);
+        System.out.println(s1.equals(s2));
+        System.out.println(s1.equals(s3));
+        System.out.println(s1.equals(s4));
+        System.out.println(s1.equalsIgnoreCase(s3));
+    }
+}
+```
+* equals() in object class checks reference equality
+* overrides equals() in string class checks content equality
+* == on strings checks reference equality
+* equalsIgnoreCase() checks content equality ignore case.
+
+```java
+package strings;
+public class Test3{
+    public static void main(String[] args){
+        String s1 = "Hello";
+        String s2 = new String("Hello");
+        String s3 = "HELLO";
+        String s4 = "hello";
+        System.out.println(s1 == s2);
+        System.out.println(s1.equals(s2));
+        System.out.println(s1 == s3);
+        System.out.println(s1.equals(s3));
+        System.out.println(s1 == s4);
+        System.out.println(s1.equals(s4));
+        System.out.println(s1.equalsignorecase(s3));
+        System.out.println(s1 == s5);
+        System.out.println(s1.equals(s5));
+    }
+}
+```
