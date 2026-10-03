@@ -4045,3 +4045,6 @@ public class Test1{
 }
 ```
 ![String memory pic](stringsmempic.png)
+Fix:
+![fix for above](string3.png)
+
