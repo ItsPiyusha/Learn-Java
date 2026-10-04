@@ -3902,7 +3902,7 @@ public class TestFinally1{
     }
 }
 ```
-
+* TestFinally - error from finally block, return, system.exit(0)
 try-with-resources
 from java SE 7 onwards -- Java has introduced java.lang.AutoCloseable -- interface
 It represents -- resources that must be closed -- when no longer required.
@@ -4108,3 +4108,8 @@ When main execution begins:
 * when we nullify all references, separate objects will be marked for garbage collection, not the string pool.
 * String pool will be erased at the time of class unloading.
 # Day 7
+String APIs - charAt(), toUpperCase(), s1.compareTo(s2), contains(key), startsWith, endsWith, substring
+StringBuilder - initial capacity, append anything, length,s.capacity(), delete, reverse, trimToSize()
+
+## Date/Time Handling 
+Day 7 1 1:18:00
