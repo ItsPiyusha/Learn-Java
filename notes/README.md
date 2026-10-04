@@ -4113,3 +4113,154 @@ StringBuilder - initial capacity, append anything, length,s.capacity(), delete, 
 
 ## Date/Time Handling 
 Day 7 1 1:18:00
+sql DATE class, util DATE class
+string to date parsing using SimpleDateFormat class and their comparison 
+
+```java
+package strings;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+public class TestSDF{
+    public static void main(String[] args){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try(Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter DoB for User 1 : yr-mon-day");
+            Date dob1 = sdf.parse(sc.next());
+            System.out.println("Enter DoB for User 2 : yr-mon-day");
+            Date dob2 = sdf.parse(sc.next());
+            System.out.println("compareTo"+dob1.compareTo(dob2));
+        } catch (ParseException e){
+            //System.out.println(e);
+            e.printStackTrack();
+        }
+        System.out.println("main over..");
+    }
+}
+```
+
+limitation: any month number it accepts,parseexception error will not be thrown, it throws error only if pattern is incorrect, Java 8 LocalDate class solved this problem
+
+## var-args -> ...
+day 7 2 00:02:00
+* variable args syntax -- must be last arg in the method args
+* can use primitive type as well as ref types.
+```java
+void doStuff(int... x){....}// can accept 0 to many integars
+```
+usage: 
+```java
+ref.doStuff();//no args
+int[] ints = {1,2,3,4};
+ref.doStuff(ints);//array
+ref.doStuff(20,34,56);//comma separated list of args
+System.out.printf("%n");//check docs for printf
+System.out.printf(1234);//javac error
+//as parameters
+void doStuff2(char c, int... x){....}//expects first a char and then 0 to many integers.
+```
+
+```java
+class Test{
+    void doStuff3(Animal... animals){
+        for(Animal a : animals)
+            sop(a.getName());
+    }// 0 to many Animals
+}
+Test ref = new Test();
+```
+invocations--
+```java
+ref.doStuff3();
+Animal animals[] = {new Cat(), new Dog(), new Horse()};
+ref.doStuff3(animals);
+Animal a1 = new Horse();
+Animal a2 = new Cat();
+Animal a3 = new Dog();
+ref.doStuff3(a1,a2,a3);
+```
+
+WRONG CODES:
+```java
+void doStuff4(int x...){}//int... is correct, not int x...
+void doStuff5(int... x, char... y){}//only one var-arg allowed
+void doStuff6(String... s, byte b){}// var-arg must be in the last
+```
+continue from 00:11:02 day 7 2
+
+# EQUALS method
+day 7 2 00:26:00
+ORIGINAL EQUALS SIGNATURE-
+```public boolean equals(Object o)```
+1st correctly overriden equals method by PK by 1:10:00
+```java
+package test_equals;
+
+public class Car{
+    private int regNo;
+    private String color;
+    private double price;
+    public Car(int regNo, String color, double price){
+        super();
+        this.regNo = regNo;
+        this.color = color;
+        this.price = price;
+    }
+    @Override
+    public String toString(){
+        return "Car [regNo=" + regNo + ", color=" + color + ",price=" + price + "]"
+    }
+    //override equals method of Object class to replace ref equality to content equality (USING PRIMARY KEY)
+    // @Override
+    // public boolean equals(Object o){
+    //     System.out.println("in car equals");
+    //     if(o instanceof Car){
+    //         Car c = (Car) o;
+    //         return this.regNo == c.regNo;
+    //     }
+    //     return false;
+    // }
+    // USING SECONDARY KEY
+       @Override
+    public boolean equals(Object o){
+        System.out.println("in car equals");
+        if(o instanceof Car){
+            Car c = (Car) o;
+            return this.regNo == c.regNo && color.equals(c.color);
+        }
+        return false;
+    }
+}
+```
+```java
+package test_equals;
+public class Test1{
+    public static void main(String[] arg){
+        Car c1 = new Car(12345, "red", 500000);
+        Car c1 = new Car(12345, "red", 500000);
+        Car c3 = c1;
+        System.out.println(c1.equals(c2));
+        System.out.println(c1 == c2);
+        System.out.println(c1.equals(c3));
+        System.out.println(c1 == c3);
+        System.out.println(c1.hashCode() + " " + c2.hashCode() + " " + c3.hashCode());
+    }
+}
+```
+```java
+package test_equals;
+public class Test2{
+    public static void main(String[] args){
+        Car c1 = new Car(12345, "red", 500000);
+        Car c1 = new Car(12345, "red", 500000);
+        System.out.println(c1.equals(c2));
+        System.out.println(c1 == c2);
+    }
+}
+```
+No, composite PK
+
+# Enums
+Day 7 2 1:24:00
+
+# Wrapper class
+Day 7 2 2:07:00
