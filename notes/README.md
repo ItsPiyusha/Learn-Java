@@ -4261,6 +4261,67 @@ No, composite PK
 
 # Enums
 Day 7 2 1:24:00
+* Whenever we write enum class, it implicitly extends from Enum class
+```java
+package test_enums;
+public enum Direction{
+    EAST,WEST,NORTH,SOUTH;
+    @Override
+    public String toString(){
+        return name().toLowerCase()+" @ "+ordinal();
+    }
+}
+```
+What java internally generated code is:
+```java
+//Decompiled by jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+//Jad home page: http://www.kpdus.com/jad.html
+//Decompiler options: packimports(3)
+//Source File Name: Direction.java
 
+package test_enums;
+public final class Direction extends Enum{
+    private Direction(Sring s, int i){
+        super(s, i);
+    }
+    public String toString(){
+        return name().toLowerCase();
+    }
+    public static Direction[] values(){
+        Direction adirection[];
+        int i;
+        Direction adirection1[];
+        System.arraycopy(adirection = ENUM$VALUES, 0, adirection1 = new adirection)
+        return adirection1;
+    }
+    public static Direction valueOf(String s){
+        return (Direction)Enum.valueOf(java05/Direction, s);
+    }
+    public static final Direction EAST;
+    public static final Direction WEST;
+    public static final Direction NORTH;
+    public static final Direction SOUTH;
+    private static final Direction ENUM$VALUES[];
+
+    static{
+        EAST = new Direction("EAST", 0);
+        WEST = new Direction("WEST", 1);
+        NORTH = new Direction("NORTH", 2);
+        SOUTH = new Direction("SOUTH", 3);
+        ENUM$VALUES = (new Direction[] {
+            EAST, WEST, NORTH, SOUTH
+        });
+    }
+}
+```
 # Wrapper class
 Day 7 2 2:07:00
+
+# Day 7 lab
+* read SimpleDateFormat from java docs - parse() returns date, format(), compareTo() returns -1/0/+1
+* for month -> M
+* for minutes -> m
+* compareTo method is heart of natural ordering in java
+
+* revise overriden equals method in Car class.
+* **Whenever we are comapring strings, compare them using equals() method!**

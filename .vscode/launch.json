@@ -5,6 +5,13 @@
       "type": "java",
       "name": "TestPrimTypes",
       "request": "launch",
+      "mainClass": "java01.datatypes.TestPrimTypes",
+      "projectName": "Learn-Java_b0c1bbf7"
+    },
+    {
+      "type": "java",
+      "name": "TestPrimTypes",
+      "request": "launch",
       "mainClass": "TestPrimTypes",
       "projectName": "Learn-Java_b0c1bbf7"
     },
