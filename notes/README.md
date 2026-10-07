@@ -4325,3 +4325,162 @@ Day 7 2 2:07:00
 
 * revise overriden equals method in Car class.
 * **Whenever we are comapring strings, compare them using equals() method!**
+
+Assignment:
+2. Solve
+create java application for bank handling scenario along with validations.
+2.1 Create a class BankAccount -- acct no(int), customer name(string), acct type(enum), balance(double), creationDate(java.util.date)
+Add: toString, constr.
+
+Methods:
+public void withdraw(double amt)
+public void deposit(double amt)
+public void transferFunds(BankAccount dest, double amt)
+public void applyInterest()
+--to apply simple interest(yearly)(period = 1 yr)
+
+2.2 Validation rules(add it in separate class AccountValidationRules & add separate static validation methods for validation) In case of validation errors : throw the custom exception. handle the exception in a Tester in a centralized manner.
+
+Min balance for any type of account = 1000
+Account types supported -- saving/current/fd/loan/dmat
+customer name --min length 4 max length 10
+a/c creation date must be within this financial year(1st Apr 2020 -- 31st Mar 2021)
+
+2.3 Create a Tester with Scanner(try-with-resources)
+Menu
+1. Open new account
+Accept a/c details from user, validate the inputs
+In absence of validation errors, create suitable account & display success message.
+In case of errors -- show error message, via catch block
+
+```java
+package com.banking;
+
+public enum AcType{
+    SAVING, CURRENT, FD, LOAN, DMAT;
+    @Override
+    public String toString(){
+        return "Account type:" + name().toLowerCase();
+    }
+}
+```
+
+```java
+package com.banking;
+import java.util.Date;
+import static utils.AccountValidationRules.*;
+public class BankAccount{
+    private int acctNo;
+    private String custName;
+    private AcType acctType;
+    private double balance;
+    private Date creationDate;
+    public BankAccount(int acctNo, String custName, AcType acctType, double balance, Date creationDate){
+        super();
+        this.acctNo = acctNo;
+        this.custName = custName;
+        this.acctType = acctType;
+        this.balance = balance;
+        this.creationDate = creationDate;
+    }
+    @Override
+    public String toString(){
+        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + creationDate + "]";
+    }
+    // B.L. methods
+    /*
+    Methods public void withdraw(double amt)
+    public void deposit(double amt)
+    public void transferFunds(BankAccount dest, double amt)
+    public void applyInterest(double rate) -- to apply simple interest(yearly)(period = 1 year)
+    */
+   public void withdraw(double amt) throws AccountHandlingException{
+    validateBalance(balance-amt);
+    balance -= amt;
+   }
+   public void deposit(double amt){
+    balance += amt;
+   }
+   public void transferFunds(BankAccount dest, double amt) throws AccountHandlingException{
+    this.withdraw(amt);
+    dest.deposit(amt);
+   }
+   public void applyInterest(double interestRate){
+    balance += ((balance*interestRate)/100);
+   }
+
+}
+```
+
+```java
+package custom_excs;
+@SuppressWarning("serial")
+public class AccountHandlingException extends Exception{
+    public AccountHandlingException(String errMesg){
+        super(errMesg);
+    }
+}
+```
+
+```java
+package utils;
+public class AccountValidationRules{
+    public static final double MIN_BALANCE;
+    static{
+        MIN_BALANCE = 1000;
+    }
+    public static double validationBalance(double balance) throws AccountHandlingException{
+        if(balance < MIN_BALANCE)
+            throw new AccountHandlingException("Account overdrawn : insufficient funds!");
+        //success
+        return balance;
+    }
+    public static AcType parseNValidateAccountType(String acctType){
+        return AcType.valueOf(acctType);
+    }
+}
+```
+
+```java
+package tester;
+import com.banking.BankAccount;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+import java.util.Scanner;
+public class TestAccounts{
+    public static void main(String[] args){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try(Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter how many max no. of accounts?");
+            BankAccount[] accounts = new BankAccount[sc.nextInt()];
+            boolean exit = false;
+            int counter = 0;
+            while(!exit){
+                try{
+                    System.out.println("Menu 1.Create new account, 2.Display, 3.Exit");
+                    System.out.println("Choose option");
+                    switch(sc.nextInt()){
+                        case 1:
+                            if(counter < accounts.length){
+                                System.out.println("Enter account details: acctNo, custName, acctType, balance, creationDate");
+                                BankAccount a = new BankAccount(sc.nextInt(), sc.next(), parseNValidateAccountType(sc.next(), validateBalance(sc.nextDouble()), sdf.parse(sc.next())));
+                                accounts[counter++]=a;
+                                System.out.println("account created successfully!");
+                            } else
+                                throw new AccountHandlingException("Max Accounts reached!");
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            exit = true;
+                            break;
+                    }
+                } catch(Exception e){
+                    System.out.println("Error " + e);
+                    System.out.println("Please retry");
+                }
+            }
+        }
+    }
+}
+```
