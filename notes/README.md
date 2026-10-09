@@ -4368,6 +4368,7 @@ public enum AcType{
 ```java
 package com.banking;
 import java.util.Date;
+import custom_excs.AccountHandlingException;
 import static utils.AccountValidationRules.*;
 public class BankAccount{
     private int acctNo;
@@ -4385,7 +4386,7 @@ public class BankAccount{
     }
     @Override
     public String toString(){
-        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + creationDate + "]";
+        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + sdf.format(creationDate) + "]";
     }
     // B.L. methods
     /*
@@ -4426,8 +4427,21 @@ public class AccountHandlingException extends Exception{
 package utils;
 public class AccountValidationRules{
     public static final double MIN_BALANCE;
+    public static final int MIN_LENGTH;
+    public static final int MAX_LENGTH;
+    public static SimpleDateFormat sdf;
+    public static Date beginDate, endDate;
     static{
         MIN_BALANCE = 1000;
+        MIN_LENGTH = 4;
+        MAX_LENGTH = 10;
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try{
+            beginDate = sdf.parse("1-4-2020");
+            endDate = sdf.parse("31-3-2021");
+        } catch(ParseException e){
+            System.out.println("Error in static init block" + e)
+        }
     }
     public static double validationBalance(double balance) throws AccountHandlingException{
         if(balance < MIN_BALANCE)
@@ -4437,6 +4451,20 @@ public class AccountValidationRules{
     }
     public static AcType parseNValidateAccountType(String acctType){
         return AcType.valueOf(acctType);
+    }
+    public static String validateName(String name) throws AccountHandlingException{
+        if(name.length() < MIN_LENGTH || name.length() > MAX_LENGTH)
+            throw new AccountHandlingException("Invalid costomer name!");
+        return name;
+    }
+    //static method to parse and validate creation date
+    public static Date validateDate(String date) throws ParseException, AccountHandlingException{
+        Date creationDate = sdf.parse(date);
+        Date beginDate = sdf.parse("1-4-2020");
+        Date endDate = sdf.parse("31-3-2021");
+        if(creationDate.before(beginDate) || creationDate.after(endDate))
+            throw new AccountHandlingException("Invalid date!");
+        return creationDate;
     }
 }
 ```
@@ -4449,7 +4477,6 @@ import static utils.AccountValidationRules.*;
 import java.util.Scanner;
 public class TestAccounts{
     public static void main(String[] args){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try(Scanner sc = new Scanner(System.in)){
             System.out.println("Enter how many max no. of accounts?");
             BankAccount[] accounts = new BankAccount[sc.nextInt()];
@@ -4463,13 +4490,17 @@ public class TestAccounts{
                         case 1:
                             if(counter < accounts.length){
                                 System.out.println("Enter account details: acctNo, custName, acctType, balance, creationDate");
-                                BankAccount a = new BankAccount(sc.nextInt(), sc.next(), parseNValidateAccountType(sc.next(), validateBalance(sc.nextDouble()), sdf.parse(sc.next())));
+                                BankAccount a = new BankAccount(sc.nextInt(), validateName(sc.next()), parseNValidateAccountType(sc.next(), validateBalance(sc.nextDouble()), validateDate(sc.next())));
                                 accounts[counter++]=a;
                                 System.out.println("account created successfully!");
                             } else
                                 throw new AccountHandlingException("Max Accounts reached!");
                             break;
                         case 2:
+                            System.out.println("Display all account details");
+                            for(BankAccount a : accounts)
+                                if(a != null)
+                                    System.out.println(a);
                             break;
                         case 3:
                             exit = true;
@@ -4479,8 +4510,127 @@ public class TestAccounts{
                     System.out.println("Error " + e);
                     System.out.println("Please retry");
                 }
+                //to clear off pending tokens from buffer of a scanner
+                sc.nextLine();
             }
         }
     }
 }
 ```
+
+# Overview of nested classes
+* Day 8 0:55:00
+* Generics 2:47:06
+
+Generic syntax ---
+Available from Java SE5 onwards.
+Represents Parameterized types.
+Can Create Generic classes, interfaces, methods and constructors.
+Operates on Parameterized data types
+In pre-generics world, similar achieved via Object class reference.
+
+Syntax -- similar to c++  templates(angle brackets)
+eg- ArrayList<Emp>, HashMap<Integer, Account> ...
+1. Syntax is different than c++ -- for nested collections only.
+2. No code bloat issues unlike c++;
+
+Advantages:
+
+Adds Type Safety to the code @ compile time
+Meaning:
+1. Can add type safe code where type-mismatch errors(i.e. ClassCastExceptions) are detected at compile time.
+2. No need of explicit type casting, as all casts are automatic and implicit
+Note : upcasting is automatc already
+
+A generic class means that the class declaration includes a type parameter.
+eg -- class MyGeneric<T,U>{...}
+T,Y -- type -- ref type
+eg -- ArrayList<Emp>
+
+Understand why generics with example
+eg -- create a Holder class, that can hold ANY data type(prmitive/ref type)
+
+
+What will happen?
+
+Integer i1 = 100;//auto-boxing
+i1++;//auto un boxing -- inc -- auto boxing
+sop(i1);//101
+Number n = 123.45f; // float(primitive) --> Float(auto-boxing) --> Number(up-casting)
+n=true;//javac err boolean --> Boolean -- X -- number
+n = 12.34;// double --> Double ---> Number
+Object o = true;//boolean --> Boolean(auto boxing) --> Object(up casting)
+o = 123.456f;//no err
+o = "hello";//no err
+o = new BankAccount(..);//no err
+
+```java
+package non-generic;
+public class Holder{
+    private Object ref;
+    public Holder(Object ref){
+        super();
+        this.ref = ref;
+    }
+    public Object getRef(){
+        return ref;
+    }
+}
+```
+
+```java
+package non-generic;
+public class Tester{
+    public static void main(String[] args){
+        Holder h1 = new Holder(1234);// int --> Integer --> Object
+        //int data = h1.getRef();//type mis match error- type casting required.
+        int data = (Integer)h1.getRef();//down casting
+        Holder h2 = new Holder("hello");
+        String s = (String)h2.getRef();
+        h1 = h2;//compiler sees holder type both
+        data = (Integer)h1.getRef();//class cast exception: String can't be cast to Integer
+
+    }
+}
+```
+
+```java
+package generic;
+public class Holder<T>{
+    private T ref1;
+    public Holder(T ref){
+        super();
+        this.ref = ref;
+    }
+    public T getRef(){
+        return ref;
+    }
+}
+```
+
+
+```java
+package non-generic;
+public class Tester{
+    public static void main(String[] args){
+        //diamond operator : Generic type of RHS is inferred/deduced from LHS type
+        Holder<Integer> h1 = new Holder<>(1234);// int --> Integer
+        int data = h1.getRef();//Integer --> int : javac auto un boxing
+        Holder<String> h2 = new Holder<>("hello");//No conversion
+        String s = h2.getRef();
+        h1 = h2;//type mismatch error caught @ compile time
+        /*
+        data = (Integer)h1.getRef();//class cast exception: String can't be cast to Integer
+        */
+
+    }
+}
+```
+
+# Collection
+![collection framework](collection.png)
+ 
+![collection big part 1](collections1.png)
+![collection big part 2](collections2.png)
+![collection big part 3](collections3.png)
+![collection big part 4](collections4.png)
