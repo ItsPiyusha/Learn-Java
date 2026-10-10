@@ -45,3 +45,7 @@ What is it? : API -- java.sql -- to allow prog -- to connect to DB, CRUD, close 
 why? : allows prog: platform independence DB apps + DB vendor independence.
 JDBC allows only partial DB independence.
 ![JDBC applications](jdbc.png)
+JDBC -> Java to db language and DB lang to Java translator
+JDBC Driver is DB specific
+![JDBC steps](jdbc_steps.png)
+
