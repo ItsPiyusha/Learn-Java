@@ -4834,3 +4834,65 @@ public class TestAccounts{
 ![nested class memory pic](mem3.png)
 ![Arraylist memory pic](mem4.png)
 ![Arraylist memory pic](mem5.png)
+
+Solve all of these objectives using Tester class
+0. Create empty ArrayList of integers & populate it.(from array or user input via scanner) Display the contents using : toString, for, forEach
+1. Check if a specific element exists in the list.
+2. Display index of 1st occurance n last occurance of the element
+3. double values of the element in the list --if elem val > 20
+4. Create another Arraylist, to contain same elements as the 1st AL(arraylist)
+Display it(toString)
+5. From 1st list : remove elem at the specific index : remove(int index) : refer to javadocs
+6. From 2nd list : remove all odd elements in the list : search for odd elem : for loop & remove(index)
+7. Sort the 1st list as per asc order : java.util.Collections : class : public static void sort(List<T> list) eg : Collections.sort(l1);// l1 : AL IS A List
+8. Convert 2nd list into fixed size array. : toArray()
+
+
+```java
+package lists;
+import java.util.ArrayList;
+import java.util.Scanner;
+public class TestIntArrayList{
+    public static void main(String[] args){
+        //Create empty ArrayList of integers & populate it.(from array or user input via scanner till 999) Display the contents using : toString, for, forEach
+        try(Scanner sc = new Scanner(System.in)){
+            //empty arraylist
+            ArrayList<Integer> l1 = new ArrayList<>();
+            boolean exit = false;
+            while(!exit){
+                System.out.println("Enter data");
+                int data = sc.nextInt();
+                if(data == 999)
+                    exit = true;
+                else l1.add(data);
+            }
+            // display AL contents: using toString
+            System.out.println("AL via toString " + l1);
+            //Display the contents using : for
+            System.out.println("AL contents via for loop");
+            for(int i = 0; i<l1.size();i++)
+                System.out.print(l1.get(i) + " ");
+            // Display the contents using for-each
+            System.out.println("\n AL contents via for-each loop");
+            //it is possible because arraylist has implemented interable interface
+            for(int i : l1)//any impl conversion : auto unboxing(Integer --> int)
+                System.out.print(i + " ");
+            //check if a specific element exists in the list.
+            System.out.println("Enter data to search");
+            System.out.println(l1.contains(sc.nextInt()) ? "Present" : "Absent");
+            //Display index of 1st occurance n last occurance of the element
+            System.out.println("Enter search key to find its 1st and last occurance");
+            int data = sc.nextInt();
+            System.out.println("1st occurance " + l1.indexOf(data) + "last occurance " + l1.lastIndexOf(data));
+            //double values of the element in the list --if elem val > 20
+            for(int i = 0; i < l1.size(); i++)
+                if(l1.get(i)>20)
+                    System.out.println("Replaced " + l1.set(i, l1.get(i)*2));
+            System.out.println("AL after replace " + l1);
+
+        }
+    }
+}
+```
+
+madhura1020.anturkar@gmail.com
