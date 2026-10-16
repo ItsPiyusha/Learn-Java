@@ -4896,3 +4896,59 @@ public class TestIntArrayList{
 ```
 
 madhura1020.anturkar@gmail.com
+
+
+
+# Day 9 1
+Generics
+Why Generics?
+To inform the compiler about actual data type(RTTI : run time type info)
+1. No need of explicit downcasting
+2. No ClassCastException
+If there are any type mismatch errs : caught by javac
+
+Generics is needed for : only for javac
+Type erasure : generic info will not be present in compiled classes, since it was only meant for javac
+eg: ArrayList<Student>, ArrayList<String>, ArrayList<Integer>
+which all classes will be loaded in method area? : Object, ArrayList
+
+What is generics: parameterized types
+class, i/f, methods, constrs
+
+Non-Generic classes can contain generic methods.
+
+Generic method : Arrays.toList
+
+java.util.Arrays clas
+public static <T> List<T> asList(T... a)
+:generic method from a non-generic class.
+i/p : T... a : This method can accept : no args or T[] or T t1, T t2....
+o/p : FIXED size list
+Usage : Animal[] animals = {new Dog(), new Cat(),....};
+Convert this animals[] into fixed size list.
+List<Animal> animalList = Arrays.toList(animals);
+//a1,a2,a3,a4
+List<Animal> animalList = Arrays.toList(a,a2,a3,a4);//4
+```java
+//projectname: day9.1/src
+package generics;
+public static void main(String[] args){
+    //String[] ---> List<String>
+    List<String> strings = Arrays.asList("abc","sfg","ertqerter","34535");//creates fixed sized array
+    System.out.println(strings);
+    System.out.println(strings.get(0));
+    //strings.add("hello");//UnsupportedOperationException: RUNTIME Error
+    //strings.remove(strings.size()-1);UnsupportedOperationException: RUNTIME Error
+    strings.set(0,strings.get(0).toUpperCase());//set replaces the element-- no size change-- allowed
+    System.out.println("Strings again "+strings);
+}
+```
+![list1](list1.png)
+![list2](list3.png)
+![list3](list2.png)
+![list4](list4.png)
+Collection Framework Overview
+BankAccount CRUD operations : ArrayList
+Searching by PK n non-PK
+Sorting
+Attaching generic syntax : ArrayList constrs, addAll methods
