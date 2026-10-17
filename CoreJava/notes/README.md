@@ -4947,8 +4947,271 @@ public static void main(String[] args){
 ![list2](list3.png)
 ![list3](list2.png)
 ![list4](list4.png)
-Collection Framework Overview
+Assignment
+```text
+1. Revise class work & draw mem pics, for clear understanding(for nested classes n collections)
+2. Solve all of these objectives using a Tester class
+
+0. Create empty ArrayList of integers & populate it.(from array or user i/p via scanner)
+eg: ArrayList<Integer> l1 = new AL<>();//size = 0, init capa = 10
+Display the contents using : toString, for, for-each
+1. check if a specific element exists in the list.
+eg: contains
+2. display index of 1st occurance n last occurrence of the element
+eg: indexOf, lastIndexOf
+3. double values of element in the list --if elem val > 20
+eg: get/set(replace)
+4. Create another ArrayList, to contain same elements as the 1st AL(arraylist)
+Display it(toString)
+5. From 1st list : remove elem at the specific index
+eg: l1.remove(sc.nextInt());//valid range: 0 -- size() - 1: otherwise IndexOutOfBoundException
+6. From 2nd list : remove all odd elements in the list
+eg: for(int i=0; i<l2.zise();i++)
+        if(l2.get(i)%2 != 0)
+            l2.remove(i);
+sop(l2);//only even elements
+sop(l1);all elements: odd n even
+Solution: iterator required as indexes gonna be shifted in this solution.
+7. Sort the 1st list as per asc order
+eg: Collections : helper class in java.util pkg : meant for utility methods(static) for Collections
+Collections.sort(l1);
+8. Convert 2nd list into fixed size array 
+```
+```java
+package lists;
+import java.util.ArrayList;
+public class ListConversionToArray{
+    public static void main(String[] args){
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("vcxvgf");
+        strings.add("one");
+        strings.add("two");
+        strings.add("three");
+        strings.add("four");
+        strings.add("five");
+        //convert this to a fixed size array
+        String[] ss = new String[strings.size()];//array obj: 6 nulls// 0 also works the same
+        System.out.println("array before " + Arrays.toString(ss));
+        ss = strings.toArray(ss); 
+        System.out.println("array after " + Arrays.toString(ss));
+    }
+}
+```
+Collection Framework Overview(1:00:00)
+Java 8 Date/Time related APIs
+Java 8 new features
+java.time : new package is introduced
+LocalDate : Date(immutable)(yr-mon-day) : inherently thread safe.
+API 
+1. public static LocalDate now()
+Obtains the current date from the system clock in the default time-zone
+eg: LocalTime : Time(immutable)(hr-min-sec): inherently thrd safe
+LocalDateTime : Date n Time : inherently thrd safe
+eg: sop("current date" + now());
+2. public static LocalDate of(int year, int month, int dayOfMonth)
+Obtains an instance of LocalDate from a year, month and day.
+eg: LocalDate dt = of(sc.nextInt(),...);
+3. public static LocalDate parse(CharSequence text)
+Obtains an instance of LocalDate from a text string such as 2007-12-03.
+eg: LocalDate dt = parse(sc.next());//0 based dates
+4. Methods:
+isBefore, isAfter,isEqual
+
+from day 8.2 to 9.1
+```java
+package com.banking;
+import java.time.LocalDate;//java.util.Date;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+public class BankAccount{
+    private int acctNo;
+    private String custName;
+    private AcType acctType;
+    private double balance;
+    private LocalDate creationDate;
+    //HAS-A relationship(composition) add a reference of KYC
+    private KYC customerInfo;
+
+    public BankAccount(int acctNo, String custName, AcType acctType, double balance, LocalDate creationDate){
+        super();
+        this.acctNo = acctNo;
+        this.custName = custName;
+        this.acctType = acctType;
+        this.balance = balance;
+        this.creationDate = creationDate;
+    }
+    @Override
+    public String toString(){
+        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + creationDate + "]";
+    }
+    // B.L. methods
+    /*
+    Methods public void withdraw(double amt)
+    public void deposit(double amt)
+    public void transferFunds(BankAccount dest, double amt)
+    public void applyInterest(double rate) -- to apply simple interest(yearly)(period = 1 year)
+    */
+   public void withdraw(double amt) throws AccountHandlingException{
+    validateBalance(balance-amt);
+    balance -= amt;
+   }
+   public void deposit(double amt){
+    balance += amt;
+   }
+   public void transferFunds(BankAccount dest, double amt) throws AccountHandlingException{
+    this.withdraw(amt);
+    dest.deposit(amt);
+   }
+   public void applyInterest(double interestRate){
+    balance += ((balance*interestRate)/100);
+   }
+
+}
+```
+```
+enum and custom exception as it is.
+```
+```java
+package utils;
+import java.time.LocalDate;
+public class AccountValidationRules{
+    public static final double MIN_BALANCE;
+    public static final int MIN_LENGTH;
+    public static final int MAX_LENGTH;
+    // no need of public static SimpleDateFormat sdf;
+    public static LocalDate beginDate, endDate;
+    import static java.time.LocalDate
+    static{
+        MIN_BALANCE = 1000;
+        MIN_LENGTH = 4;
+        MAX_LENGTH = 10;
+
+        beginDate = of(2020, 4, 1);
+        endDate = of(2021, 3, 31);
+    }
+    public static double validationBalance(double balance) throws AccountHandlingException{
+        if(balance < MIN_BALANCE)
+            throw new AccountHandlingException("Account overdrawn : insufficient funds!");
+        //success
+        return balance;
+    }
+    public static AcType parseNValidateAccountType(String acctType){
+        return AcType.valueOf(acctType);
+    }
+    public static String validateName(String name) throws AccountHandlingException{
+        if(name.length() < MIN_LENGTH || name.length() > MAX_LENGTH)
+            throw new AccountHandlingException("Invalid costomer name!");
+        return name;
+    }
+    //static method to parse and validate creation date
+    public static LocalDate validateDate(String date) throws AccountHandlingException{
+        LocalDate creationDate = parse(date);
+        if(creationDate.isBefore(beginDate) || creationDate.isAfter(endDate))
+            throw new AccountHandlingException("Invalid date!");
+        return creationDate;
+    }
+}
+```
+
+
+
 BankAccount CRUD operations : ArrayList
 Searching by PK n non-PK
 Sorting
-Attaching generic syntax : ArrayList constrs, addAll methods
+1. Create empty AL to store bank account info.
+2. Create new a/c (with validation rules)
+i/p : acct no
+o/p : present/ absent
+4. Fetch A/c summary (should work even w/o linking KYC)
+i/p : acct no
+o/p : acct details or exec
+5. Link KYC
+i/p : acct no n KYC info 
+o/p: success msg or exc
+6. Funds Transfer
+i/p : src, dest acct nos n amount
+7. Apply interest on all saving type of accts
+i/p : interest rate
+8. Display phone no of all customers with FD
+9. close a/c
+i/p : acct no.
+10. sort accts as per asc acct no
+11. sort accts as per desc balance
+
+Attaching generic syntax : ArrayList constrs, addAll methods 
+
+```java
+package tester;
+import com.banking.BankAccount;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+import java.util.Scanner;
+public class TestAccounts{
+    public static void main(String[] args){
+        try(Scanner sc = new Scanner(System.in)){
+            //NOT NEEDED: growable capacity- System.out.println("Enter how many max no. of accounts?");
+
+            ArrayList<BankAccount> accts = new ArrayList<>(100);
+            boolean exit = false;
+            while(!exit){
+                try{
+                    System.out.println("Menu 1.Create new account, 2.Display, 3.Link KYC 4.Withdraw 10.Exit");
+                    System.out.println("Choose option");
+                    switch(sc.nextInt()){
+                        case 1:
+                                System.out.println("Enter account details: acctNo, custName, acctType, balance, creationDate");
+                                BankAccount a = new BankAccount(sc.nextInt(), validateName(sc.next()), parseNValidateAccountType(sc.next(), validateBalance(sc.nextDouble()), validateDate(sc.next())));
+                                accts.add(a);
+                                System.out.println("account created successfully!");
+                            break;
+                        case 2:
+                            System.out.println("Display all account details");
+                            for(BankAccount a1 : accts)
+                                if(a1 != null)
+                                    System.out.println(a1);
+                            break;
+                        case 3: // check if account exists
+                            // i/p : acct no
+                            // o/p : present / absent
+                            System.out.println("Enter acct no");
+                            int acctNo = sc.nextInt();
+                            break;
+                        case 5://link KYC details i/p acct no n KYC details
+                            System.out.println("Enter acct no");
+                            int acctNo = sc.nextInt();
+                            //write a method to validate bank acct no.
+                            //failure : throw exc
+                            //found : returns validated bank acct ref
+                            //check if acct exists
+                        //    BankAccount bankAccount = validateAccountNo(acctNo, accts);
+                            //a/c exists
+                            System.out.println("Enter KYC details: email address phoneNo");
+                            bankAccount.linkKYC(sc.next(),sc.next(),sc.next());
+                            System.out.println("KYC linked...");
+                        case 4:// withdraw 
+                            //i/p : acct no, withdrawl amount
+                            System.out.println("Enter a/c no & amount to withdraw");
+                            acctNo = sc.nextInt();
+                            double amount = sc.nextDouble();
+                            //acct no validation : for-each / for --  doesn't exist : throw exc
+                            // bankAccount = validationAccountNo(acctNo, accounts);
+                            //acct no exists
+                            //if it's linked to KYC : allow tx -- o.w=otherwise throw exc.
+                           // bankAccount.withdraw(amount); 
+                           //System.out.println("Hello, " + bankAccount.getCustName() + "Withdrawl successful");
+                           break;
+                        case 6:
+                            exit = true;
+                            break;
+                    }
+                } catch(Exception e){
+                    System.out.println("Error " + e);
+                    System.out.println("Please retry");
+                }
+                //to clear off pending tokens from buffer of a scanner
+                sc.nextLine();
+            }
+        }
+    }
+}
+```
