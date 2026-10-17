@@ -4519,7 +4519,176 @@ public class TestAccounts{
 ```
 
 # Overview of nested classes
-* Day 8 0:55:00
+* Day 8 0:55:00 Adding KYC
+![nestedclasses1](nestedclass1.png)
+![nestedclasses2](nestedclass2.png)
+![nestedclasses3](nestedclass3.png)
+
+```java
+package com.banking;
+
+public enum AcType{
+    SAVING, CURRENT, FD, LOAN, DMAT;
+    @Override
+    public String toString(){
+        return "Account type:" + name().toLowerCase();
+    }
+}
+```
+
+```java
+package com.banking;
+import java.util.Date;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+public class BankAccount{
+    private int acctNo;
+    private String custName;
+    private AcType acctType;
+    private double balance;
+    private Date creationDate;
+    public BankAccount(int acctNo, String custName, AcType acctType, double balance, Date creationDate){
+        super();
+        this.acctNo = acctNo;
+        this.custName = custName;
+        this.acctType = acctType;
+        this.balance = balance;
+        this.creationDate = creationDate;
+    }
+    @Override
+    public String toString(){
+        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + sdf.format(creationDate) + "]";
+    }
+    // B.L. methods
+    /*
+    Methods public void withdraw(double amt)
+    public void deposit(double amt)
+    public void transferFunds(BankAccount dest, double amt)
+    public void applyInterest(double rate) -- to apply simple interest(yearly)(period = 1 year)
+    */
+   public void withdraw(double amt) throws AccountHandlingException{
+    validateBalance(balance-amt);
+    balance -= amt;
+   }
+   public void deposit(double amt){
+    balance += amt;
+   }
+   public void transferFunds(BankAccount dest, double amt) throws AccountHandlingException{
+    this.withdraw(amt);
+    dest.deposit(amt);
+   }
+   public void applyInterest(double interestRate){
+    balance += ((balance*interestRate)/100);
+   }
+
+}
+```
+
+```java
+package custom_excs;
+@SuppressWarning("serial")
+public class AccountHandlingException extends Exception{
+    public AccountHandlingException(String errMesg){
+        super(errMesg);
+    }
+}
+```
+
+```java
+package utils;
+public class AccountValidationRules{
+    public static final double MIN_BALANCE;
+    public static final int MIN_LENGTH;
+    public static final int MAX_LENGTH;
+    public static SimpleDateFormat sdf;
+    public static Date beginDate, endDate;
+    static{
+        MIN_BALANCE = 1000;
+        MIN_LENGTH = 4;
+        MAX_LENGTH = 10;
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try{
+            beginDate = sdf.parse("1-4-2020");
+            endDate = sdf.parse("31-3-2021");
+        } catch(ParseException e){
+            System.out.println("Error in static init block" + e)
+        }
+    }
+    public static double validationBalance(double balance) throws AccountHandlingException{
+        if(balance < MIN_BALANCE)
+            throw new AccountHandlingException("Account overdrawn : insufficient funds!");
+        //success
+        return balance;
+    }
+    public static AcType parseNValidateAccountType(String acctType){
+        return AcType.valueOf(acctType);
+    }
+    public static String validateName(String name) throws AccountHandlingException{
+        if(name.length() < MIN_LENGTH || name.length() > MAX_LENGTH)
+            throw new AccountHandlingException("Invalid costomer name!");
+        return name;
+    }
+    //static method to parse and validate creation date
+    public static Date validateDate(String date) throws ParseException, AccountHandlingException{
+        Date creationDate = sdf.parse(date);
+        Date beginDate = sdf.parse("1-4-2020");
+        Date endDate = sdf.parse("31-3-2021");
+        if(creationDate.before(beginDate) || creationDate.after(endDate))
+            throw new AccountHandlingException("Invalid date!");
+        return creationDate;
+    }
+}
+```
+
+```java
+package tester;
+import com.banking.BankAccount;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+import java.util.Scanner;
+public class TestAccounts{
+    public static void main(String[] args){
+        try(Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter how many max no. of accounts?");
+            BankAccount[] accounts = new BankAccount[sc.nextInt()];
+            boolean exit = false;
+            int counter = 0;
+            while(!exit){
+                try{
+                    System.out.println("Menu 1.Create new account, 2.Display, 3.Exit");
+                    System.out.println("Choose option");
+                    switch(sc.nextInt()){
+                        case 1:
+                            if(counter < accounts.length){
+                                System.out.println("Enter account details: acctNo, custName, acctType, balance, creationDate");
+                                BankAccount a = new BankAccount(sc.nextInt(), validateName(sc.next()), parseNValidateAccountType(sc.next(), validateBalance(sc.nextDouble()), validateDate(sc.next())));
+                                accounts[counter++]=a;
+                                System.out.println("account created successfully!");
+                            } else
+                                throw new AccountHandlingException("Max Accounts reached!");
+                            break;
+                        case 2:
+                            System.out.println("Display all account details");
+                            for(BankAccount a : accounts)
+                                if(a != null)
+                                    System.out.println(a);
+                            break;
+                        case 3:
+                            exit = true;
+                            break;
+                    }
+                } catch(Exception e){
+                    System.out.println("Error " + e);
+                    System.out.println("Please retry");
+                }
+                //to clear off pending tokens from buffer of a scanner
+                sc.nextLine();
+            }
+        }
+    }
+}
+```
+
 * Generics 2:47:06
 
 Generic syntax ---
@@ -5175,10 +5344,12 @@ public class TestAccounts{
                             // o/p : present / absent
                             System.out.println("Enter acct no");
                             int acctNo = sc.nextInt();
+                            //override equals method in BankAccount class
+                            System.out.println(accts.contains(acctNo)?"Present":"Absent")
                             break;
                         case 5://link KYC details i/p acct no n KYC details
                             System.out.println("Enter acct no");
-                            int acctNo = sc.nextInt();
+                            acctNo = sc.nextInt();
                             //write a method to validate bank acct no.
                             //failure : throw exc
                             //found : returns validated bank acct ref
@@ -5213,5 +5384,57 @@ public class TestAccounts{
             }
         }
     }
+}
+```
+```java
+package com.banking;
+import java.time.LocalDate;//java.util.Date;
+import custom_excs.AccountHandlingException;
+import static utils.AccountValidationRules.*;
+public class BankAccount{
+    private int acctNo;
+    private String custName;
+    private AcType acctType;
+    private double balance;
+    private LocalDate creationDate;
+    //HAS-A relationship(composition) add a reference of KYC
+    private KYC customerInfo;
+
+    public BankAccount(int acctNo, String custName, AcType acctType, double balance, LocalDate creationDate){
+        super();
+        this.acctNo = acctNo;
+        this.custName = custName;
+        this.acctType = acctType;
+        this.balance = balance;
+        this.creationDate = creationDate;
+    }
+    @Override
+    public String toString(){
+        return "BankAccount[aactNo=" + aactNo + ", custName = " + custName + ", acctType=" + acctType + ", balance=" + balance + ", creationDate = " + creationDate + "]";
+    }
+    //override equals method in BankAccount class based upon PK (acctNo) to replace equality by content equality
+    @Override
+    public boolean equals(Object o){
+        System.out.println("in bank acct equals");
+        if(o instanceof BankAccount){
+            return this.acctNo == ((BankAccount))
+        }
+    }
+ 
+   public void withdraw(double amt) throws AccountHandlingException{
+    validateBalance(balance-amt);
+    balance -= amt;
+   }
+   public void deposit(double amt){
+    balance += amt;
+   }
+   public void transferFunds(BankAccount dest, double amt) throws AccountHandlingException{
+    this.withdraw(amt);
+    dest.deposit(amt);
+   }
+   public void applyInterest(double interestRate){
+    balance += ((balance*interestRate)/100);
+   }
+
 }
 ```
