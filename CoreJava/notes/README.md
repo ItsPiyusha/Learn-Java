@@ -4524,6 +4524,158 @@ public class TestAccounts{
 ![nestedclasses2](nestedclass2.png)
 ![nestedclasses3](nestedclass3.png)
 
+Nested class rules readme
+```text
+1. The inner class(non-static nested) has access to all of the outer class's members, including those marked private, directly(without inst.)
+BUT Outer class MUST make an instance of the inner class, to access its members.
+2. To instantiate an inner class, you must have a reference to an instance of the outer class.
+syntax:
+Instantiating a non-static nested class requires using both the outer inst and nested class names as follows :
+BigOuter.Nested n = new BigOuter().new Nested();
+3. Such Inner classes can't have static members(Java SE 8 -- allows static final data members)
+
+About method-local inner classes
+
+1. A method-local inner class is defined within a method of the enclosing class.
+2. For the inner class to be used, you must instantiate it, and that instantiation must happen within the same method, but after the class definition code.
+3. A method-local inner class cannot use variables declared within the method
+(including parameters) unless those variables are marked final or effectively final.
+
+static nested classes(to be continued in readme)
+```
+```java
+package nested_class;
+public class Outer{
+    private int i;
+    private static int j;
+
+    static {
+        j = 199;
+    }
+    public Outer(int i){
+        super();
+        this.i = i;
+    }
+    //static method
+    public static void show(){
+        System.out.println("Outer's static method " + j);
+        //can you access inner cls's private members from outer's static method? : YES
+        //HOW : create outer cls's instance n within such an enclosing instance create inner cls instance
+        Outer outer = new Outer(123);
+        Outer.Nested inner = outer.new Nested(45);//compiler err w/o outer
+        inner.displayInner();
+    }
+    //non-static(instance) method
+    public void display(){
+        System.out.println("Outer's non-static method "+ i + " " + j);
+        //can you access inner cls's private members from outer's non-static method? : YES (Not directly but)-> BY creating inner cls instance
+        Nested ref = new Nested(123);
+        System.out.println(ref.l + "static member " + Nested.k);//ref.k is also legal BUT NOT RECOMMENEDED
+    }
+    //non static nested class: inner class
+    //data member of outer class: when private
+    public class Nested{
+        //can contain only non-static members
+        private static final int k=100;
+        private int l;
+        /*{
+        static { k = 10; }
+        }*/
+       //No static members allowed including static initializer block
+       //constr
+       public Nested(int i){
+        super();
+        this.l = l;
+       }
+       /*
+       public static void test(){
+       can't contain any static methods
+       }
+       */
+      //non static method
+      void displayInner(){
+        // can access all members from both inner and outer class
+        //can access DIRECTLY (w/o instantiating outer class) ALL (static n non-static)
+        //members of outer class
+        System.out.println("via display inner : " + i + " " + j + " " + k + " " + l );
+      }
+    }
+}
+```
+```java
+package nested_class;
+public class Tester{
+    public static void main(String[] args){
+        Outer.Nested nestedClsRef = new Outer(88).new Nested(99);
+        nestedClsRef.displayInner();//since displayInner : default scope method in nested class
+    }
+}
+```
+```java
+package nested_class2;
+public class Outer{
+    private int i = 100;
+    public static void main(String[] args){
+        //how to invoke show method?
+        Outer.Inner innerRef = new Outer().new Inner();
+        innerRef.show(300);
+
+    }
+    class Inner{
+        private int i = 200;
+        void show(int i){
+            //display 300, 200, 100
+            System.out.println("method local var " + i);
+            System.out.println("instance var " + this.i);
+            //inner class can access DIRECTLY outer cls's members
+            System.out.println("Outer's i " + Outer.this.i);
+        }
+    }
+}
+```
+regarding association readme
+```text
+Regarding Association
+Association is relationship between two separate classes, using object references.
+represents HAS-A
+Why : Code reusability
+Association can be one-to-one, one-to-many, many-to-many
+composition and aggregation are two forms of association
+eg: refer to association-aggregation-composition.png
+Association:
+Owner HAS-A Pet -- Owner feeds a Pet & Pet plays with owner.
+Aggregation implies a HAS-A relationship where the child can exist independently of the parent.
+eg: class & student / Bank HAS-A customer
+class Bank{
+    private String name;
+    private String ifsc;
+    private String address;
+    //one to many
+    private Customer[] customers;//one to many
+} 
+class Customer{ ...
++
+//many to one
+private Bank myBank;
+}
+
+Composition(Part Of or Belongs To)
+Pet HAS-A Tail
+It implies a relationship where the child cannot exist independent of the parent .
+eg: Human HAS-A Lungs / Car HAS-A Engine / Person HAS-A Address
+(when parent is deleted, typically child can't exist on its own)
+eg:
+class Person{
+    private String firstName, lastName;
+    private Date dob;
+    private String uid;
+    private class Address{
+        private String street, city, state, country;
+        ...
+    }
+}
+```
+BankAccount HAS-A KYC(Know your customer)
 ```java
 package com.banking;
 
