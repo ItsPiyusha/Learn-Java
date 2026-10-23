@@ -699,7 +699,7 @@ Day 2
 1. Revise JDBC CRUD app, by importing day 2.1 in your workspace
 1.1 Fix build path
 1.2 Edit DB username n password
-
+## (29:00:00)
 2. Fresh assignment, to complete data access logic of the Content Management System(topic-tutorials). MUST be done using layered architecture.
 
 You can give it a try independently, otherwise, I will discuss it after I join.
@@ -709,8 +709,49 @@ Layers : Tester --DAO --DBUtils --POJO --DB
 User Login 
 i/p : email, password
 o/p : User details in case of successful login or login failed message
+Steps
+1. DB Layer : user (exists)
+2. User POJO
+2.1 properties : => cols : id | name | email | passoword | reg_amt | reg_date | role : java style names
+2.2 def ctor
+2.3 getters n setters
+2.4 toString
+3. DBUtils : copy from earlier
+4. DAO : i/f 
+4.1 User authenticateUser(String em, String pass) throws SE
+5. JDBC based DAO imple class
+5.1 state : cn pst1
+5.2 def ctor : open cn(DBUtils), pst1
+5.3 CRUD method 
+User  authenticateUser(String em, String pass) throws SE
+set IN params
+execQuery --> RST --> process RST -- SUCCESS => return User pojo populated with DB data failure => null
+5.4 clean Up : close pst n then cn
+6. TestUserLogin
+create dao instance, pass user credentials, invoke dao's method, clean up dao.
 
 2.2 Display all available topics
+DAO i/f
+List<Topic> getAllAvailableTopics() throws SE
 
 2.3 Display all available tutorial names, under selected topic, sorted as per visits , in desc order.
 i/p : topic id
+DAO i/f
+List<String> getTutorialsByTopicId(int topicId) throws SE
+
+2.4 Display selected tutorial details by name
+1/p : tutorial name
+ITutorialDAO i/f 
+Tutorial getTutorialDetailsByName(String tutName) throws SE
+
+2.5 Update visits
+i/p : tutorial id
+ITutorialDao i/f 
+String updateVisits(int tutorialId) throws SE
+ 
+3. Steps will be discussed.
+Add a web server to the workspace. Test it, Deploy a simple web app n test HTML content.
+
+4. Discuss reading H.W
+
+## (1:25:00) tomcat steps readme
