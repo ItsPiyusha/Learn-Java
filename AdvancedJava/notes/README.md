@@ -855,7 +855,7 @@ URL : http://host:port/day1.1/validate?...
 2. Using XML tags
 How to deploy a servlet w/o annotations -- via XML tags
 web.xml
-
+```xml
 <servlet>
  <servlet-name>abc</servlet-name>
 <servlet-class>pages.SecondServlet</servlet-class>
@@ -864,9 +864,10 @@ web.xml
  <servlet-name>abc</servlet-name>
  <url-pattern>/test2</url-pattern>
 </servlet-mapping>
-WC : map
-key : /test2
-value : pages.SecondServlet
+```
+* WC : map
+* key : /test2
+* value : pages.SecondServlet
 (1:45:23)
 **web.xml**
 ```xml
