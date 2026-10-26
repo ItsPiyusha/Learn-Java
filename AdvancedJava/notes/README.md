@@ -162,7 +162,8 @@ Fix it.
 Day 22
 1.Complete earlier work
 2.import day 22.1 in your core java workspace n revise, ITC n daemon threads 
-
+### LAB
+```text
 Java EE
 Day 1
 1. import day1.1, in your newly created J2EE workspace
@@ -186,6 +187,7 @@ O: A message indicating success or failure
 
 3. Get all available topics
 to be continued in day 5..
+```
 interface ResultSet 
 02 Advanced Java- Learn with CDAC 1:36:18
 cms - content management system
@@ -243,7 +245,8 @@ POJO - plain old java object-> represents DB entity doesn't have any business lo
 
 Enter layered architecture
 ![layers](layers.png)
-
+### LAB
+```text
 Solve below Objectives, using layers
 Display details(id, name, salary, join date) of all emps from a specific dept, joined between start date n end date
 sql : select id, name, salary, join_date from my_emp where deptid=? and join_date between ? and  ?
@@ -279,7 +282,7 @@ String updateEmpDetails(emp id, new dept, sal incr) throws SQLExc
 
 5. Remove emp details
 i/p emp id
-
+```
 
 refer earlier utils/DBUtils class
 pojos/Employee.java
@@ -694,7 +697,8 @@ public class TestStoredProc{
 ```
 
 # 05 - Advance JAVA - Day 2.3 - JDBC Types, Stored Procedures, and Tomcat Web Server - CDAC
-
+LAB
+```text
 Day 2
 1. Revise JDBC CRUD app, by importing day 2.1 in your workspace
 1.1 Fix build path
@@ -753,7 +757,7 @@ String updateVisits(int tutorialId) throws SE
 Add a web server to the workspace. Test it, Deploy a simple web app n test HTML content.
 
 4. Discuss reading H.W
-
+```
 ## (1:25:00) tomcat steps readme
  watch yourself
 
@@ -845,16 +849,16 @@ public void init() throws ServletException{
 
 Deployment of the servlet
 1. via annotation
-eg: @WebServlet(value="/validate")
-public class LoginServlet extends H.S{...}
-Map:
-key -- /validate
-value -- F.Q servlet class name
-URL : http://host:port/day1.1/validate?...
+* eg: @WebServlet(value="/validate")
+* public class LoginServlet extends H.S{...}
+* Map:
+* key -- /validate
+* value -- F.Q servlet class name
+* URL : http://host:port/day1.1/validate?...
 
 2. Using XML tags
-How to deploy a servlet w/o annotations -- via XML tags
-web.xml
+* How to deploy a servlet w/o annotations -- via XML tags
+* web.xml
 ```xml
 <servlet>
  <servlet-name>abc</servlet-name>
@@ -890,4 +894,150 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org" id=
 </servlet-mapping>
 </web-app>
 ```
+* Interface ServletRequest has methods
+ -> String getParameter(String name)--> returns value of the parameter as string or null if not available 
+ -> String[] getParameterValues(String name) --> returns array of Strings containing all values the given parameter has or null if doesn't exist.
+* in scroll options, single select-> getParameter
+* multiple select -> getParameterValues
+* ```<input type="radio" .. >``` -> getParameter -> only single value accepted by radio buttons
+* html code ```<td><input type="text" name="f1"/></td>```will have Java code ``` request.getParameter(f1);```
+* html code
+```html
+<tr>
+<td>Choose Favorite colors</td>
+<td>Blue<input type="checkbox" name="clr" value="blue"/></td>
+<td>Red<input type="checkbox" name="clr" value="red"/></td>
+<td>Pink<input type="checkbox" name="clr" value="pink"/></td>
+<td>Yellow<input type="checkbox" name="clr" value="yellow"/></td>
+</tr>
+```
+will have Java code ``` Arrays.toString(request.getParameterValues(clr))```
+
+* ```<form action="test_input">``` --> dafault method is get
+* ```<form action="test_input" method="post">``` --> changed example--> cross check -> refresh browser -> right click and "view page source"
+
+# 08 - Advance JAVA - Day 3.3 - JDBC Types, Statements - Java By Madhura Anturkar - CDAC
+
+### LAB
+from  05
+```text
+Day 3
+Please follow this sequence in today's lab
+Refer to today's sequence.text, diagrams, readmes for better understanding n revise.
+
+Steps
+1. Create a new dynamic web project(check web.xml checkbox): eg day3_lab
+
+1.1 Create a welcome page : index.html
+Add a link : to invoke the servlet(which will be deployed using @WebServlet annotation)
+
+Create FirstServlet.java, override life cycle methods & trace the life cycle.
+Use @WebServlet annotation
+
+1.2 Add another link in index.html : to invoke the servlet(which will be deployed using xml tags)
+
+Create SecondServlet.java, override life cycle methods & trace the life cycle.
+DO NOT use @WebServlet annotation, instead add xml tags in web.xml
+
+1.3 Add / in anchor tag's href. Observe n conclude
+1.4 Remove / from the url-pattern. Observe n conclude
+1.5 Give same url-pattern to both of these servlets. Observe n conclude
+1.55 Can one servlet be deployed under multiple url patterns? YES
+using @WebServlet(value={"/hello","/hi"})
+1.6 Add a new link in index.html : for User Login
+Copy login.html from \JavaEE\day3-data\day3_help\HTML pages\login.html under webapp(i.e. root of the web application)
+Write a LoginServlet, to display user's email n password.
+
+2. Complete pending work.
+```
+
+new dynamic web project
+perspective to javaEE,
+servers projects on, rest day's projects better be closed.
+day3/src/main/webapp/WEB-INF/web.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://http://www.w3.org/2001/XMLSchema-instance" xmlns=..>
+    <display-name>day3_lab</display-name>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+</web-app>
+```
+![Where does src/main/webapp contents deployed- to the root of project i.e. /../ is root basically](wheresrcmainwebappconentsdeployed.png)
+public document space is root of webapp-> /
+
+create new file as src/main/webapp/index.html
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <h5>
+            <a href="helo">Test Servlet Deployed using annotation</a>
+        </h5>
+    </body>
+</html>
+```
+![new servlet](newservlet.png)
+![which src/main/java note that](whichsrcmainjava.png)
+![create servlet](createservlet.png)
+create new servlet as src/main/java/
+* metion package and classname
+* edit URL mappings -> match with form or link href tag from html
+* select init, destroy, doGet
+HelloServlet.java
+```java
+package pages;
+import java.io.IOException;
+/**
+ * Servlet implementation class HelloServlet
+ * /
+ //http://host:port/day3_lab/hello : URL
+ //URI : /day3_lab/hello
+ //URL Pattern : /hello
+ //WC creates empty Map @ web app deployment time
+ //populates it. Key : /hello
+ //Value : pages.HelloServlet
+ @WebServlet("/hello")
+ public class HelloServlet extends HttpServlet{
+    private static  final long serialVersionUID = 1L;
+
+    /**
+     * @see Servlet#init(SerletConfig)
+     * /
+     public void init() throws ServletException{
+        System.out.println("in init : by "+ Thread.currentThread());//name.prio:thrdgrp
+     }
+     /**
+      * @see Servlet#destroy()
+      * /
+      public void destroy(){
+        System.out.println("in destroy : by "+ Thread.currentThread());
+      }
+      /**
+       *  @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+       * /
+       protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+            System.out.println("in do-get : by " + Thread.currentThread());
+            //1. set content type : resp header
+            response.setContentType("text/html");
+            //2. get char buffered o/p stream : to send the resp from servlet --> client
+            try(PrintWriter pw=response.getWriter()){
+            //resp body
+            pw.print("<h5> Hello from Servlet, Server TimeStamp" + LocalDateTime.now()+"</h5>");
+
+            }
+       }
+ }
+```
+
+WC behaves in lazy loading manner - servlet called as requested by client
+
+# 09 - Advance JAVA - Day 4.1 - Servlets, Databases, Navigation, and Session Tracking - CDAC
+
 
