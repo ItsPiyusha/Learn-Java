@@ -755,3 +755,138 @@ Add a web server to the workspace. Test it, Deploy a simple web app n test HTML 
 4. Discuss reading H.W
 
 ## (1:25:00) tomcat steps readme
+ watch yourself
+
+# 06 - Advance JAVA - Day 3.1 - JDBC Types, Statements - Java By Madhura Anturkar - CDAC
+revision till(0:17:00)
+URL- uniform resource locator
+HTTP request-response flow:
+
+
+# 07 - Advance JAVA - Day 3.2 - JDBC Types, Statements - Java By Madhura Anturkar - CDAC
+
+created by -- developer
+who reads it -- WC
+when -- @ deployment
+what -- deployment instructions -- welcome page, servelet deployment tags, sess config, sec config...
+
+9. Why servelets? --- To add dynamic nature to the web application
+
+what is servlet?
+-- java class(with no main method) -- represents dynamic web component - whose life cycle will be managed by WC(web container : server side JVM)
+no main method
+life cycle method -- init, service, destroy
+
+job list
+1. Request processing
+2. B.L.
+3. Dynamic response generation
+4.  Data access logic (DAO class -- managing DAO layer)
+5. Page Navigation
+
+Servlet API details -- refer to diag servlet-api.png
+
+Objective 1 : Test basic servlet life cycle -- init(called only once), service(once per request), destroy(only once)-- web container calls these methods
+![0:18:39](javaeedocs.png)
+10. Creating & deploying Hello Servlet.
+![folder structure](3.1folder.png)
+```html
+**index.html**
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h4>Welcome to web app..</h4>
+<h5>
+<a href="test">Invoke a servlet</a>
+</h5>
+</body>
+</html>
+```
+HelloWorldServlet.java
+```java
+package pages;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/test")
+public class HelloWorldServlet extends HttpServlet{
+@Override
+protected void doGet(HttpSerletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    System.out.println("in do-get : invoked by " + Thread.currentThread());
+    //set response content type
+    //method of HttpServletResponse : public void setContentType(String contType)
+    resp.setContentType("text/html");//resp pkt header
+    //to send resp from server --> clnt (i.e to set resp body :) get writer instance from Http resp
+    try(PrintWriter pw =resp.getWriter()){
+        pw.print("Welcome 2 servlets!! @ " + LocalDateTime.now());//resp body
+    }//pw.close -- WC sends PW's buffer contents to web server --> resp pkt(SC 200 | Headers | body)
+}
+
+@Override
+public void destroy(){
+    System.out.println("in destroy : invoked by " + Thread.currentThread());
+}
+
+@Override
+public void init() throws ServletException{
+    System.out.println("in init : invoked by " + Thread.currentThread());
+}
+
+}
+```
+![new servlet](newservlet.png)
+
+Deployment of the servlet
+1. via annotation
+eg: @WebServlet(value="/validate")
+public class LoginServlet extends H.S{...}
+Map:
+key -- /validate
+value -- F.Q servlet class name
+URL : http://host:port/day1.1/validate?...
+
+2. Using XML tags
+How to deploy a servlet w/o annotations -- via XML tags
+web.xml
+
+<servlet>
+ <servlet-name>abc</servlet-name>
+<servlet-class>pages.SecondServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+ <servlet-name>abc</servlet-name>
+ <url-pattern>/test2</url-pattern>
+</servlet-mapping>
+WC : map
+key : /test2
+value : pages.SecondServlet
+(1:45:23)
+**web.xml**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance
+xmlns = "https://xmlns.jcp.org/xml/ns/javaee"
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org" id="WebApp_ID" version="3.1">
+<display-name>day 3.1</display-name>
+<welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+</welcome-file-list>
+<!--Servlet deployment tags-->
+<servlet>
+    <servlet-name> abc </servlet-name>
+    <servlet-class>pages.TestServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name> abc </servlet-name>
+    <url-pattern>/test2</url-pattern>
+</servlet-mapping>
+</web-app>
+```
+
