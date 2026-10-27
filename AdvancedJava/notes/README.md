@@ -1040,4 +1040,77 @@ WC behaves in lazy loading manner - servlet called as requested by client
 
 # 09 - Advance JAVA - Day 4.1 - Servlets, Databases, Navigation, and Session Tracking - CDAC
 
+Today's main topics
+
+What is Java EE/Jakarta EE?
+Specifications for primary services, required to build enterprise apps
+
+Why J2EE 1.8/Java EE 8/Jakarta EE 8
+1. Supports different type of clients(web client, java client, smart client)
+2. Supports J2EE Server independence
+3. Ready made imple of prim services is supplied auto.
+
+Who provides specs of prim services in J2EE/Java EE: Oracle / Sun / Eclipse Foundation
+Imple : J2EE Server vendors
+
+Popular vendors & their products
+(Apache : Tomcat/Tomee, Oracle -- Glassfish, Jboss, weblogic..)
+
+Request response flow(layers)
+URL -- http://www.abc.com:8080/day4.1/input-->here "/input" is called as url pattern
+
+Revise request response flow
+http : scheme (protocol) : application layer protocol
+www.abc.com : resolved by DNS (mapping service based upon IP) : --IP layer : Host hosting web server
+8080 : port no : TCP (Transport layer protocol : conn oriented, reliable) -- Web server (tomcat) W.S. delegates req handling to --> WC
+
+What is WC?
+
+WC : server side JVM
+Manages web apps.
+Provides run time env for server side dynamic web comps(servleyts, JSP, filter)
+
+1. Server side JVM residing within web server
+Its run time env for dynamic web components(servlets & JSP, Filter)
+Jobs--
+1. Creating Http req & http resp objects
+2. COntrolling life-cycle of dyn web comps(manages life cycle of servlet, JSP, filters)
+3. Giving ready-made support for services - naming, security, conn pooling
+4. Handling concurrent request from multiple clients
+5. Managing session tracking
+
+
+6. What is web.xml ? -- deployment descriptor one per web appln
+* created by developer
+* read by WC
+* at the web app deployment time
+* consists of -- deployment instructions -- welcome page, servlet deployment tags, sess config, sec config..
+
+J2EE compliant folder structure of dynamic web appln
+refer to a diagram
+servlets
+lazy loading by default
+eager loading code:
+![eager loading](eagerloading.png)
+![eager loading by xml](eagerloadingxml.png)
+
+## Topics-tutorial case study
+copy pojos(Topic,Tutorial,User), dao(IToipcDao,ITutorialDao,IUserDao,UserDaoImpl), utils(DBUtils.java) packages from earlier code
+ We'll add servlets today
+ we use pw.print() to write to client
+# 10 - Advance JAVA - Day 4.2 - Servlets, Databases, Navigation, and Session Tracking - CDAC
+ ![page navigation](pagenavigation.png)
+![page navigation](pagenavigationauto.png)
+![code](code.png)
+now topics servlet to be written
+
+
+# 49 - Advance JAVA - Day 18.2 - Web Applications, REST APIs, and HTTP Message Converters - CDAC
+
+REST simplified.text
+```text
+REpresentational State Transfer
+Web standards based architecture and uses HTTP protocol for data communication
+
+```
 
