@@ -1103,7 +1103,30 @@ copy pojos(Topic,Tutorial,User), dao(IToipcDao,ITutorialDao,IUserDao,UserDaoImpl
 ![page navigation](pagenavigationauto.png)
 ![code](code.png)
 now topics servlet to be written
-
+day4.1/src/main/java/pages/LoginServlet.java
+```java
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws Servlet, IOException{
+    //set content type
+    response.setContentType("text/html");
+    //get PW to send response
+    try (PrintWriter pw = response.getWriter()){
+        //read req params : email n pwd
+        String email = request.getParameter("em");
+        String pwd = request.getParameter("pass");
+        //LoginServlet invokes dao's CRUD method
+        User user = userDao.validateUser(email, pwd);
+        //chk null => invalid login -- send retry link
+        if(user == null)
+            pw.print("<h5> Invalid Login Phase <a href = 'login.html'>Retry</a></h5>");
+        //not null => successful login : send validated user details to client
+        else
+            pw.print("<h5> Login Successful, User Details : " + user + "</h5>");
+    } catch(Exception e){
+        //re throw the exception to caller (WC)
+        throw new ServletException("err in do-post of" + getClass(), e);
+    }
+}
+```
 
 # 49 - Advance JAVA - Day 18.2 - Web Applications, REST APIs, and HTTP Message Converters - CDAC
 

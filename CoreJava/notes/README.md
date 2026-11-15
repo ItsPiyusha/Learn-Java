@@ -5239,7 +5239,7 @@ class, i/f, methods, constrs
 Non-Generic classes can contain generic methods.
 
 Generic method : Arrays.toList
-
+```text
 java.util.Arrays clas
 public static <T> List<T> asList(T... a)
 :generic method from a non-generic class.
@@ -5250,6 +5250,7 @@ Convert this animals[] into fixed size list.
 List<Animal> animalList = Arrays.toList(animals);
 //a1,a2,a3,a4
 List<Animal> animalList = Arrays.toList(a,a2,a3,a4);//4
+```
 ```java
 //projectname: day9.1/src
 package generics;
