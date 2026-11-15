@@ -5228,14 +5228,14 @@ To inform the compiler about actual data type(RTTI : run time type info)
 2. No ClassCastException
 If there are any type mismatch errs : caught by javac
 
-Generics is needed for : only for javac
-Type erasure : generic info will not be present in compiled classes, since it was only meant for javac
-eg: ArrayList<Student>, ArrayList<String>, ArrayList<Integer>
+Generics is needed for : only for javac.    
+Type erasure : generic info will not be present in compiled classes, since it was only meant for javac.   
+eg: ArrayList<Student>, ArrayList<String>, ArrayList<Integer>.   
 which all classes will be loaded in method area? : Object, ArrayList
 
 What is generics: parameterized types
 class, i/f, methods, constrs
-
+**SafeVarargs** annotation built in in asList method.
 Non-Generic classes can contain generic methods.
 
 Generic method : Arrays.toList
