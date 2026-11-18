@@ -1,3 +1,40 @@
+### practicing on paper will help me learn faster? if yes, how to do that?
+
+And to answer your question: **Yes, practicing on paper (or a physical whiteboard/notepad) will make you learn 10x faster.**
+
+When you stare at a screen, your brain tries to hold all the variables, loop indexes, and array values in your head at once. That cognitive overload is what causes panic and mental blocks. Paper externalizes your working memory.
+
+Here is a simple, step-by-step framework on **how to practice on paper** effectively:
+
+---
+
+### The 4-Step Paper Practice Routine
+
+1. **Draw the Inputs Visually**
+* Don't just look at code text. Draw arrays as boxes with index numbers underneath them (`0, 1, 2...`). Draw strings as boxes of characters. Seeing the data physically laid out on paper makes boundaries (like why `i < k` or `i = 1`) instantly obvious.
+
+
+2. **Create a "Variable Trace Table"**
+* On the side of your paper, draw a tiny table or list for your tracking variables (e.g., `i`, `prefix`, `currentSum`). Every time a loop runs or a variable changes, **manually cross out the old value and write the new value** with your pen.
+
+
+3. **Simulate the Code Before Typing**
+* Before opening LeetCode or an IDE, trace the algorithm manually for 2 or 3 iterations using your pen. Act like the computer. Ask yourself: *"If I am at index 1, what is `strs[1]`? Does `indexOf` match? Do I need to shrink?"*
+
+
+4. **Write Plain English / Pseudocode First**
+* Do what you tried to do on your very first attempt: write your logic in plain steps using your own native language or simple English. Only translate those steps into Java syntax *after* you have proven on paper that the logic actually works.
+
+
+
+---
+
+### Why This Changes Everything
+
+When you do this, coding stops being about memorizing syntax and starts being about **solving a puzzle on a notepad**. By the time you actually type the code into the computer, you've already run the program inside your head and on paper—meaning the code will compile and work much faster, with way less frustration.
+
+# Java
+
 * Why Java? - Platform Independent(WORA, because .class files can run on any machine as JVM will platform specific), **Simple** because doesn't support complex features in cpp like multiple inheritance, operator overloading, **Robust** because it doesn't allow pointer arithmetic (Robust), Secure - When the JVM loads the class, it performs verification as part of class loading automatically.
 * Though java is not 100% Object oriented as it allows primitive data types as well.
 
